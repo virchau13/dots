@@ -1,0 +1,5 @@
+.config/[
+    ambit/config.ambit,
+    nvim/init.vim,
+    nvim/lua/*
+];

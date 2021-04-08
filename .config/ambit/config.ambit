@@ -1,5 +1,7 @@
 .config/[
     ambit/config.ambit,
-    nvim/init.vim,
-    nvim/lua/lsp.lua
+    nvim/[
+        init.vim,
+        lua/lsp.lua
+    ]
 ];

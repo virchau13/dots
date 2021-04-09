@@ -13,6 +13,7 @@ set termguicolors
 set background=dark
 set inccommand=split
 set cursorline
+set mouse=a
 " autocmd BufRead,BufNewFile *.pcse set ft=pcse
 " autocmd BufRead,BufNewFile *.ebnf set syntax=ebnf
 

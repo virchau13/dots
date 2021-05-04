@@ -91,6 +91,7 @@ vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 
+
 local on_attach = function(client, bufnr)
 	local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 	local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -100,6 +101,7 @@ local on_attach = function(client, bufnr)
 	-- Mappings.
 	local opts = { noremap=true, silent=true }
 
+	buf_set_keymap('n', '<leader>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 	buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 	buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
 	buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -144,14 +146,14 @@ nvim_lsp.rust_analyzer.setup {
 }
 ]]
 
-local servers = {'ccls', 'tsserver', 'pyls', 'rust_analyzer', 'omnisharp', 'cmake', 'texlab', 'jdtls', 'bashls'}
+local servers = {'ccls', 'tsserver', 'pyls', 'rust_analyzer', 'omnisharp', 'cmake', 'texlab', 'jdtls', 'bashls', 'html', 'haxe_language_server'}
 local settings = {
 	-- ccls
-	{}, 
+	{},
 	-- tsserver
-	{}, 
+	{},
 	-- pyls
-	{ 
+	{ settings = {
 		pyls = {
 			configurationSources = { "flake8" },
 			plugins = {
@@ -163,15 +165,17 @@ local settings = {
 				},
 			}
 		}
-	},
+	} },
 	-- rust_analyzer
 	{
-		["rust-analyzer"] = {
-			cargo = {
-				loadOutDirsFromCheck = true,
-			},
-			procMacro = {
-				enable = true,
+		settings = {
+			["rust-analyzer"] = {
+				cargo = {
+					loadOutDirsFromCheck = true,
+				},
+				procMacro = {
+					enable = true,
+				}
 			}
 		}
 	},
@@ -185,13 +189,30 @@ local settings = {
 	{},
 	-- bashls
 	{},
+	-- html
+	{
+		cmd = {'vscode-html-languageserver', '--stdio'},
+	},
+    -- haxe_language_server
+    {
+        cmd = {'node', '~/prog/github/haxe-language-server/bin/server.js'}
+    }
 }
+
+-- Merges ...dictionaries? objects? tables?
+function merge(a, b)
+	for k, v in pairs(b) do
+		a[k] = v
+	end
+end
+
 for i, lsp in ipairs(servers) do
-	nvim_lsp[lsp].setup {
+	setup_obj = {
 		on_attach = on_attach,
 		capabilities = capabilities,
-		settings = settings[i],
 	}
+	merge(setup_obj, settings[i])
+	nvim_lsp[lsp].setup(setup_obj)
 end
 
 -- sumneko_lua doesn't have default executable set

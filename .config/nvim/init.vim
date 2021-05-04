@@ -21,6 +21,8 @@ if (has("termguicolors"))
 set termguicolors
 endif
 
+let g:polyglot_disabled = ['autoindent']
+
 call plug#begin('~/.config/nvim/plugged')
 
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -73,11 +75,11 @@ let g:lightline = {
 colorscheme sonokai " sitruuna gruvbox-material onedark material sitruuna brogrammer material monokai sitruuna  slate
 
 " fix cursor styling for xterm / urxvt
-if &term =~# 'xterm' || &term =~# 'rxvt'
-    let &t_EI = "\<Esc>[2 q"
-    let &t_SI = "\<Esc>[6 q"
-    let &t_SR = "\<Esc>[4 q"
-endif
+" if &term =~# 'xterm' || &term =~# 'rxvt'
+"     let &t_EI = "\<Esc>[2 q"
+"     let &t_SI = "\<Esc>[6 q"
+"     let &t_SR = "\<Esc>[4 q"
+" endif
 
 let $BASH_ENV = "~/.bash_aliases"
 

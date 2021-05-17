@@ -1,5 +1,7 @@
 filetype plugin indent on
 
+let $BASH_ENV = "~/.bash_aliases"
+
 set nocompatible
 syntax on
 set tabstop=4
@@ -23,6 +25,20 @@ endif
 
 let g:polyglot_disabled = ['autoindent']
 
+let g:sonokai_style = 'shusia'
+let g:sonokai_enable_italic = 1
+
+let g:lightline = {}
+let g:lightline.separator = { 'left': "\ue0b8", 'right': "\ue0be" }
+" xterm doesn't like this.
+if $TERM !=# 'xterm-256color' 
+    let g:lightline.subseparator = { 'left': "\ue0b9", 'right': "\ue0b9" }
+endif
+let g:lightline.tabline_separator = { 'left': "\ue0bc", 'right': "\ue0ba" }
+let g:lightline.tabline_subseparator = { 'left': "\ue0bb", 'right': "\ue0bb" }
+let g:lightline.colorscheme = 'sonokai'
+
+
 call plug#begin('~/.config/nvim/plugged')
 
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -38,6 +54,7 @@ Plug 'scrooloose/nerdtree'
 " Plug 'vim-airline/vim-airline'  (lmao vim airline)
 Plug 'itchyny/lightline.vim'
 Plug 'eemed/sitruuna.vim'
+Plug 'phaazon/hop.nvim'
 " Plug 'MaxMEllon/vim-jsx-pretty'
 " Plug 'marciomazza/vim-brogrammer-theme'
 " Plug 'wilsaj/chuck.vim'
@@ -53,7 +70,7 @@ Plug 'liuchengxu/vista.vim'
 Plug 'sainnhe/sonokai'
 Plug 'rhysd/vim-clang-format'
 " Plug 'delphinus/vim-firestore'
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 Plug 'onsails/lspkind-nvim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -61,15 +78,11 @@ Plug 'junegunn/fzf.vim'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'ryanoasis/vim-devicons'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'mhartington/formatter.nvim'
 
 call plug#end()
 
-let g:sonokai_style = 'shusia'
-let g:sonokai_enable_italic = 1
-
-let g:lightline = {
-            \ 'colorscheme': 'sonokai',
-            \ }
 " let g:lightline = { 'colorscheme': 'sitruuna' }
 
 colorscheme sonokai " sitruuna gruvbox-material onedark material sitruuna brogrammer material monokai sitruuna  slate
@@ -81,7 +94,6 @@ colorscheme sonokai " sitruuna gruvbox-material onedark material sitruuna brogra
 "     let &t_SR = "\<Esc>[4 q"
 " endif
 
-let $BASH_ENV = "~/.bash_aliases"
 
 set foldmethod=marker
 set signcolumn=yes
@@ -114,6 +126,21 @@ lua << EOF
 require 'lsp'
 EOF
 
+" Lua treesitter config
+lua << EOF
+require 'nvim-treesitter.configs'.setup {
+    ensure_installed = "all",
+    highlight = {
+        enable = true,
+    },
+}
+EOF
+
+" Lua formatter config
+lua << EOF
+require 'format'
+EOF
+
 autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 set completeopt=menuone,noinsert,noselect
 " make Tab autocomplete (these binds are now set in lua/lsp.lua)
@@ -128,3 +155,7 @@ set spelllang=en_sg
 inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 autocmd BufEnter *.tex setlocal spell
 nnoremap <Leader>cf :<C-u>ClangFormat<CR>
+
+nnoremap <Leader><Leader>w :<C-u>HopWord<CR>
+nnoremap <Leader><Leader>l :<C-u>HopLine<CR>
+nnoremap <Leader><Leader>/ :<C-u>HopPattern<CR>

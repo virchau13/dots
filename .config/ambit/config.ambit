@@ -2,6 +2,6 @@
     ambit/config.ambit,
     nvim/[
         init.vim,
-        lua/lsp.lua
+        lua/[lsp, lsp-custom, format].lua
     ]
 ];

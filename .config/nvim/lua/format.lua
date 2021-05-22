@@ -9,6 +9,6 @@ require('formatter').setup {
                     stdin = true
                 }
             end
-        }
+        },
     }
 }

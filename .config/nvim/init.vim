@@ -29,13 +29,10 @@ let g:sonokai_style = 'shusia'
 let g:sonokai_enable_italic = 1
 
 let g:lightline = {}
-let g:lightline.separator = { 'left': "\ue0b8", 'right': "\ue0be" }
-" xterm doesn't like this.
-if $TERM !=# 'xterm-256color' 
-    let g:lightline.subseparator = { 'left': "\ue0b9", 'right': "\ue0b9" }
-endif
-let g:lightline.tabline_separator = { 'left': "\ue0bc", 'right': "\ue0ba" }
-let g:lightline.tabline_subseparator = { 'left': "\ue0bb", 'right': "\ue0bb" }
+let g:lightline.separator = { 'left': "\ue0bc", 'right': "\ue0ba" }
+let g:lightline.subseparator = { 'left': "\ue0bb", 'right': "\ue0bb" }
+let g:lightline.tabline_separator = { 'left': "\ue0b8", 'right': "\ue0be" }
+let g:lightline.tabline_subseparator = { 'left': "\ue0b9", 'right': "\ue0b9" }
 let g:lightline.colorscheme = 'sonokai'
 
 
@@ -59,7 +56,6 @@ Plug 'phaazon/hop.nvim'
 " Plug 'marciomazza/vim-brogrammer-theme'
 " Plug 'wilsaj/chuck.vim'
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/diagnostic-nvim'
 " Plug 'nvim-lua/completion-nvim'
 " Plug 'joshdick/onedark.vim'
 " Plug 'sainnhe/gruvbox-material'
@@ -73,13 +69,21 @@ Plug 'rhysd/vim-clang-format'
 " Plug 'sheerun/vim-polyglot'
 Plug 'onsails/lspkind-nvim'
 Plug 'hrsh7th/nvim-compe'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" Plug 'junegunn/fzf.vim'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'ryanoasis/vim-devicons'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'mhartington/formatter.nvim'
+
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'ray-x/lsp_signature.nvim'
+" Plug 'romgrk/nvim-treesitter-context'
+Plug 'nacro90/numb.nvim'
 
 call plug#end()
 
@@ -141,6 +145,12 @@ lua << EOF
 require 'format'
 EOF
 
+lua << EOF
+require('gitsigns').setup()
+require'lsp_signature'.on_attach()
+require('numb').setup()
+EOF
+
 autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 set completeopt=menuone,noinsert,noselect
 " make Tab autocomplete (these binds are now set in lua/lsp.lua)
@@ -154,8 +164,16 @@ nnoremap <leader>tn :<C-u>tabnew
 set spelllang=en_sg
 inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 autocmd BufEnter *.tex setlocal spell
-nnoremap <Leader>cf :<C-u>ClangFormat<CR>
-
+" hop.nvim
 nnoremap <Leader><Leader>w :<C-u>HopWord<CR>
 nnoremap <Leader><Leader>l :<C-u>HopLine<CR>
 nnoremap <Leader><Leader>/ :<C-u>HopPattern<CR>
+" telescope.nvim
+nnoremap <Leader>tl :<C-u>Telescope<CR>
+nnoremap <Leader>op :<C-u>Telescope find_files<CR>
+
+" show trailing spaces
+highlight ExtraWhitespace guifg=#b0b0b0
+match ExtraWhitespace /\s\+$/
+" set listchars=trail:·
+" set list

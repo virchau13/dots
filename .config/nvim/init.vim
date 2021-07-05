@@ -1,21 +1,22 @@
-filetype plugin indent on
+filetype plugin on
 
 let $BASH_ENV = "~/.bash_aliases"
 
 set nocompatible
-syntax on
+syntax off
 set tabstop=4
 set shiftwidth=4
 set expandtab
 set number
 filetype on
-" set autoindent
+set autoindent smartindent
 set encoding=utf-8
 set termguicolors
 set background=dark
 set inccommand=split
 set cursorline
 set mouse=a
+set undofile
 " autocmd BufRead,BufNewFile *.pcse set ft=pcse
 " autocmd BufRead,BufNewFile *.ebnf set syntax=ebnf
 
@@ -31,10 +32,11 @@ let g:sonokai_enable_italic = 1
 let g:lightline = {}
 let g:lightline.separator = { 'left': "\ue0bc", 'right': "\ue0ba" }
 let g:lightline.subseparator = { 'left': "\ue0bb", 'right': "\ue0bb" }
-let g:lightline.tabline_separator = { 'left': "\ue0b8", 'right': "\ue0be" }
-let g:lightline.tabline_subseparator = { 'left': "\ue0b9", 'right': "\ue0b9" }
+if 0
+    let g:lightline.tabline_separator = { 'left': "\ue0b8", 'right': "\ue0be" }
+    let g:lightline.tabline_subseparator = { 'left': "\ue0b9", 'right': "\ue0b9" }
+endif
 let g:lightline.colorscheme = 'sonokai'
-
 
 call plug#begin('~/.config/nvim/plugged')
 
@@ -65,7 +67,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'liuchengxu/vista.vim'
 Plug 'sainnhe/sonokai'
 Plug 'rhysd/vim-clang-format'
-" Plug 'delphinus/vim-firestore'
+Plug 'delphinus/vim-firestore'
 " Plug 'sheerun/vim-polyglot'
 Plug 'onsails/lspkind-nvim'
 Plug 'hrsh7th/nvim-compe'
@@ -80,10 +82,12 @@ Plug 'mhartington/formatter.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'lewis6991/gitsigns.nvim'
+" Plug 'lewis6991/gitsigns.nvim'
 Plug 'ray-x/lsp_signature.nvim'
 " Plug 'romgrk/nvim-treesitter-context'
 Plug 'nacro90/numb.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+" Plug 'romgrk/barbar.nvim'
 
 call plug#end()
 
@@ -137,6 +141,9 @@ require 'nvim-treesitter.configs'.setup {
     highlight = {
         enable = true,
     },
+    -- indent = {
+    --     enable = true,
+    -- }
 }
 EOF
 
@@ -146,7 +153,7 @@ require 'format'
 EOF
 
 lua << EOF
-require('gitsigns').setup()
+-- require('gitsigns').setup()
 require'lsp_signature'.on_attach()
 require('numb').setup()
 EOF
@@ -161,9 +168,9 @@ set completeopt=menuone,noinsert,noselect
 nnoremap <leader>nt :<C-u>NERDTreeTabsToggle<CR>
 nnoremap <leader>tn :<C-u>tabnew 
 
-set spelllang=en_sg
-inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
-autocmd BufEnter *.tex setlocal spell
+" set spelllang=en_sg
+" inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+" autocmd BufEnter *.tex setlocal spell
 " hop.nvim
 nnoremap <Leader><Leader>w :<C-u>HopWord<CR>
 nnoremap <Leader><Leader>l :<C-u>HopLine<CR>
@@ -177,3 +184,39 @@ highlight ExtraWhitespace guifg=#b0b0b0
 match ExtraWhitespace /\s\+$/
 " set listchars=trail:·
 " set list
+
+" barbar.nvim binds
+" Move to previous/next
+nnoremap <silent>    <A-,> :BufferPrevious<CR>
+nnoremap <silent>    <A-.> :BufferNext<CR>
+" Re-order to previous/next
+nnoremap <silent>    <A-<> :BufferMovePrevious<CR>
+nnoremap <silent>    <A->> :BufferMoveNext<CR>
+" Goto buffer in position...
+nnoremap <silent>    <A-1> :BufferGoto 1<CR>
+nnoremap <silent>    <A-2> :BufferGoto 2<CR>
+nnoremap <silent>    <A-3> :BufferGoto 3<CR>
+nnoremap <silent>    <A-4> :BufferGoto 4<CR>
+nnoremap <silent>    <A-5> :BufferGoto 5<CR>
+nnoremap <silent>    <A-6> :BufferGoto 6<CR>
+nnoremap <silent>    <A-7> :BufferGoto 7<CR>
+nnoremap <silent>    <A-8> :BufferGoto 8<CR>
+nnoremap <silent>    <A-9> :BufferLast<CR>
+" Close buffer
+nnoremap <silent>    <A-c> :BufferClose<CR>
+" Wipeout buffer
+"                          :BufferWipeout<CR>
+" Close commands
+"                          :BufferCloseAllButCurrent<CR>
+"                          :BufferCloseBuffersLeft<CR>
+"                          :BufferCloseBuffersRight<CR>
+" Magic buffer-picking mode
+nnoremap <silent> <C-s>    :BufferPick<CR>
+" Sort automatically by...
+nnoremap <silent> <Space>bd :BufferOrderByDirectory<CR>
+nnoremap <silent> <Space>bl :BufferOrderByLanguage<CR>
+
+" barbar.nvim options
+let bufferline = get(g:, 'bufferline', {})
+let bufferline.animation = v:false
+let bufferline.auto_hide = v:true

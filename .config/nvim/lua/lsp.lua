@@ -139,8 +139,10 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local servers = {
     'ccls', 'tsserver', 'pyls', 'rust_analyzer', 'omnisharp', 'cmake', 'texlab',
-    'jdtls', 'bashls', 'html', 'haxe_language_server', 'sumneko_lua', 'glsl'
+    'jdtls', 'bashls', 'html', 'haxe_language_server', 'sumneko_lua', 'glsl',
+    'hls'
 }
+
 local settings = {
     -- ccls
     {},
@@ -176,7 +178,19 @@ local settings = {
     -- cmake
     {},
     -- texlab
-    {},
+    {
+        cmd = { 'texlab', '-vvvv', '--log-file', '/home/hexular/log' },
+        settings = {
+            texlab = {
+                build = {
+                    isContinuous = true,
+                    args = { "-pvc", "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+                    executable = "latexmk",
+                    onSave = true
+                },
+            }
+        }
+    },
     -- jdtls
     {},
     -- bashls
@@ -215,7 +229,13 @@ local settings = {
         }
     },
     -- glsl
-    {}
+    {},
+    -- hls (haskell-language-server)
+    {
+        languageServerHaskell = {
+            logFile = "/home/hexular/.hls-log"
+        }
+    }
 }
 
 -- Merges ...dictionaries? objects? tables?

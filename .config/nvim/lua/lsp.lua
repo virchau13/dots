@@ -140,7 +140,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local servers = {
     'ccls', 'tsserver', 'pyls', 'rust_analyzer', 'omnisharp', 'cmake', 'texlab',
     'jdtls', 'bashls', 'html', 'haxe_language_server', 'sumneko_lua', 'glsl',
-    'hls'
+    'hls', 'cssls'
 }
 
 local settings = {
@@ -196,9 +196,7 @@ local settings = {
     -- bashls
     {},
     -- html
-    {
-        cmd = {'vscode-html-languageserver', '--stdio'}
-    },
+    {},
     -- haxe_language_server
     {
         cmd = {'node', '~/prog/repos/haxe-language-server/bin/server.js'}
@@ -235,7 +233,9 @@ local settings = {
         languageServerHaskell = {
             logFile = "/home/hexular/.hls-log"
         }
-    }
+    },
+    -- cssls
+    {},
 }
 
 -- Merges ...dictionaries? objects? tables?

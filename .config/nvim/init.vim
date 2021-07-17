@@ -9,7 +9,7 @@ set shiftwidth=4
 set expandtab
 set number
 filetype on
-set autoindent smartindent
+set autoindent
 set encoding=utf-8
 set termguicolors
 set background=dark
@@ -141,9 +141,9 @@ require 'nvim-treesitter.configs'.setup {
     highlight = {
         enable = true,
     },
-    -- indent = {
-    --     enable = true,
-    -- }
+    indent = {
+        enable = true,
+    }
 }
 EOF
 

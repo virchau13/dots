@@ -9,7 +9,7 @@ set shiftwidth=4
 set expandtab
 set number
 filetype on
-set autoindent
+set autoindent smartindent
 set encoding=utf-8
 set termguicolors
 set background=dark
@@ -141,9 +141,9 @@ require 'nvim-treesitter.configs'.setup {
     highlight = {
         enable = true,
     },
-    indent = {
-        enable = true,
-    }
+    -- indent = {
+    --     enable = true,
+    -- }
 }
 EOF
 
@@ -220,3 +220,5 @@ nnoremap <silent> <Space>bl :BufferOrderByLanguage<CR>
 let bufferline = get(g:, 'bufferline', {})
 let bufferline.animation = v:false
 let bufferline.auto_hide = v:true
+
+au BufRead,BufNewFile *.nix set filetype=nix

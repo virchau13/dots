@@ -140,7 +140,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local servers = {
     'ccls', 'tsserver', 'pyls', 'rust_analyzer', 'omnisharp', 'cmake', 'texlab',
     'jdtls', 'bashls', 'html', 'haxe_language_server', 'sumneko_lua', 'glsl',
-    'hls', 'cssls'
+    'hls', 'cssls', 'rnix'
 }
 
 local settings = {
@@ -235,6 +235,8 @@ local settings = {
         }
     },
     -- cssls
+    {},
+    -- rnix
     {},
 }
 

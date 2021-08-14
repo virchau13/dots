@@ -36,27 +36,23 @@ if 0
     let g:lightline.tabline_separator = { 'left': "\ue0b8", 'right': "\ue0be" }
     let g:lightline.tabline_subseparator = { 'left': "\ue0b9", 'right': "\ue0b9" }
 endif
-let g:lightline.colorscheme = 'sonokai'
+let g:lightline.colorscheme = 'tokyonight'
+
+let g:nvim_tree_auto_close = 1
+let g:nvim_tree_tab_open = 1
 
 call plug#begin('~/.config/nvim/plugged')
 
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'dense-analysis/ale'
-" Plug 'autozimu/LanguageClient-neovim', {
-"             \ 'branch': 'next',
-"             \ 'do': 'bash install.sh',
-"             \ }
-" Plug 'junegunn/fzf'
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'scrooloose/nerdtree'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+Plug 'kyazdani42/nvim-tree.lua'
 " Plug 'pangloss/vim-javascript'
-" Plug 'vim-airline/vim-airline'  (lmao vim airline)
 Plug 'itchyny/lightline.vim'
+" Plug 'jistr/vim-nerdtree-tabs'
 Plug 'eemed/sitruuna.vim'
 Plug 'phaazon/hop.nvim'
 " Plug 'MaxMEllon/vim-jsx-pretty'
 " Plug 'marciomazza/vim-brogrammer-theme'
-" Plug 'wilsaj/chuck.vim'
 Plug 'neovim/nvim-lspconfig'
 " Plug 'nvim-lua/completion-nvim'
 " Plug 'joshdick/onedark.vim'
@@ -65,7 +61,7 @@ Plug 'neovim/nvim-lspconfig'
 " Plug 'aurieh/discord.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug 'rust-lang/rust.vim'
 Plug 'liuchengxu/vista.vim'
-Plug 'sainnhe/sonokai'
+" Plug 'sainnhe/sonokai'
 Plug 'rhysd/vim-clang-format'
 Plug 'delphinus/vim-firestore'
 " Plug 'sheerun/vim-polyglot'
@@ -74,11 +70,9 @@ Plug 'hrsh7th/nvim-compe'
 " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Plug 'junegunn/fzf.vim'
 Plug 'hrsh7th/vim-vsnip'
-Plug 'jistr/vim-nerdtree-tabs'
 Plug 'ryanoasis/vim-devicons'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'mhartington/formatter.nvim'
-
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
@@ -86,14 +80,12 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'ray-x/lsp_signature.nvim'
 " Plug 'romgrk/nvim-treesitter-context'
 Plug 'nacro90/numb.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
 " Plug 'romgrk/barbar.nvim'
 
 call plug#end()
 
 " let g:lightline = { 'colorscheme': 'sitruuna' }
 
-colorscheme sonokai " sitruuna gruvbox-material onedark material sitruuna brogrammer material monokai sitruuna  slate
 
 " fix cursor styling for xterm / urxvt
 " if &term =~# 'xterm' || &term =~# 'rxvt'
@@ -154,18 +146,17 @@ EOF
 
 lua << EOF
 -- require('gitsigns').setup()
-require'lsp_signature'.on_attach()
 require('numb').setup()
 EOF
 
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+" autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 set completeopt=menuone,noinsert,noselect
 " make Tab autocomplete (these binds are now set in lua/lsp.lua)
 " inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 " inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Tab keybinds
-nnoremap <leader>nt :<C-u>NERDTreeTabsToggle<CR>
+nnoremap <leader>nt :<C-u>NvimTreeToggle<CR>
 nnoremap <leader>tn :<C-u>tabnew 
 
 " set spelllang=en_sg
@@ -185,40 +176,8 @@ match ExtraWhitespace /\s\+$/
 " set listchars=trail:·
 " set list
 
-" barbar.nvim binds
-" Move to previous/next
-nnoremap <silent>    <A-,> :BufferPrevious<CR>
-nnoremap <silent>    <A-.> :BufferNext<CR>
-" Re-order to previous/next
-nnoremap <silent>    <A-<> :BufferMovePrevious<CR>
-nnoremap <silent>    <A->> :BufferMoveNext<CR>
-" Goto buffer in position...
-nnoremap <silent>    <A-1> :BufferGoto 1<CR>
-nnoremap <silent>    <A-2> :BufferGoto 2<CR>
-nnoremap <silent>    <A-3> :BufferGoto 3<CR>
-nnoremap <silent>    <A-4> :BufferGoto 4<CR>
-nnoremap <silent>    <A-5> :BufferGoto 5<CR>
-nnoremap <silent>    <A-6> :BufferGoto 6<CR>
-nnoremap <silent>    <A-7> :BufferGoto 7<CR>
-nnoremap <silent>    <A-8> :BufferGoto 8<CR>
-nnoremap <silent>    <A-9> :BufferLast<CR>
-" Close buffer
-nnoremap <silent>    <A-c> :BufferClose<CR>
-" Wipeout buffer
-"                          :BufferWipeout<CR>
-" Close commands
-"                          :BufferCloseAllButCurrent<CR>
-"                          :BufferCloseBuffersLeft<CR>
-"                          :BufferCloseBuffersRight<CR>
-" Magic buffer-picking mode
-nnoremap <silent> <C-s>    :BufferPick<CR>
-" Sort automatically by...
-nnoremap <silent> <Space>bd :BufferOrderByDirectory<CR>
-nnoremap <silent> <Space>bl :BufferOrderByLanguage<CR>
-
-" barbar.nvim options
-let bufferline = get(g:, 'bufferline', {})
-let bufferline.animation = v:false
-let bufferline.auto_hide = v:true
-
 au BufRead,BufNewFile *.nix set filetype=nix
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+let g:tokyonight_style = 'night'
+colorscheme tokyonight " sitruuna gruvbox-material onedark material sitruuna brogrammer material monokai sitruuna  slate

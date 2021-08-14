@@ -33,7 +33,7 @@ require'compe'.setup {
     autocomplete = true,
     debug = false,
     min_length = 1,
-    preselect = 'enable',
+    preselect = 'disable',
     throttle_time = 80,
     source_timeout = 200,
     incomplete_delay = 400,
@@ -95,6 +95,8 @@ vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 
 local on_attach = function(client, bufnr)
+    require("lsp_signature").on_attach()
+
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
     end
@@ -107,7 +109,7 @@ local on_attach = function(client, bufnr)
     -- Mappings.
     local opts = {noremap = true, silent = true}
 
-    buf_set_keymap('n', '<leader>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+    buf_set_keymap('n', '<space>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
     buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
     buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -138,9 +140,9 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local servers = {
-    'ccls', 'tsserver', 'pyls', 'rust_analyzer', 'omnisharp', 'cmake', 'texlab',
+    'ccls', 'tsserver', 'pylsp', 'rust_analyzer', 'omnisharp', 'cmake', 'texlab',
     'jdtls', 'bashls', 'html', 'haxe_language_server', 'sumneko_lua', 'glsl',
-    'hls', 'cssls', 'rnix'
+    'hls', 'cssls', 'rnix', 'dockerls'
 }
 
 local settings = {
@@ -148,7 +150,7 @@ local settings = {
     {},
     -- tsserver
     {},
-    -- pyls
+    -- pylsp
     {
         settings = {
             pyls = {
@@ -192,7 +194,9 @@ local settings = {
         }
     },
     -- jdtls
-    {},
+    {
+        cmd = { 'bash', '-c', 'exec jdtls' }
+    },
     -- bashls
     {},
     -- html
@@ -217,11 +221,15 @@ local settings = {
                     enable = true,
                     globals = {
                         -- VIM
-                        "vim", "use", -- Packer use keyword
+                        "vim", -- "use", -- Packer use keyword
                         -- AwesomeWM
                         "awesome", "client", "root"
                     },
                     disable = "lowercase-global"
+                },
+                completion = {
+                    enable = true,
+                    workspaceWord = false
                 }
             }
         }
@@ -237,6 +245,8 @@ local settings = {
     -- cssls
     {},
     -- rnix
+    {},
+    -- dockerls
     {},
 }
 

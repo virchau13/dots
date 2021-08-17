@@ -153,7 +153,7 @@ local settings = {
     -- pylsp
     {
         settings = {
-            pyls = {
+            pylsp = {
                 configurationSources = {"flake8"},
                 plugins = {
                     pycodestyle = {

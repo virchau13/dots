@@ -142,7 +142,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local servers = {
     'ccls', 'tsserver', 'pylsp', 'rust_analyzer', 'omnisharp', 'cmake', 'texlab',
     'jdtls', 'bashls', 'html', 'haxe_language_server', 'sumneko_lua', 'glsl',
-    'hls', 'cssls', 'rnix', 'dockerls'
+    'hls', 'cssls', 'rnix', 'dockerls', 'jsonls'
 }
 
 local settings = {
@@ -247,6 +247,8 @@ local settings = {
     -- rnix
     {},
     -- dockerls
+    {},
+    -- jsonls
     {},
 }
 

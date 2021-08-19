@@ -126,7 +126,6 @@ lua << EOF
 require 'lsp'
 EOF
 
-" Lua treesitter config
 lua << EOF
 require 'nvim-treesitter.configs'.setup {
     ensure_installed = "all",
@@ -137,16 +136,17 @@ require 'nvim-treesitter.configs'.setup {
     --     enable = true,
     -- }
 }
-EOF
 
-" Lua formatter config
-lua << EOF
 require 'format'
-EOF
 
-lua << EOF
 -- require('gitsigns').setup()
 require('numb').setup()
+
+local tree_cb = require'nvim-tree.config'.nvim_tree_callback
+
+vim.g.nvim_tree_bindings = {
+    { key = "t", cb = tree_cb("tabnew") }
+}
 EOF
 
 " autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()

@@ -77,7 +77,7 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 " Plug 'lewis6991/gitsigns.nvim'
-Plug 'ray-x/lsp_signature.nvim'
+" Plug 'ray-x/lsp_signature.nvim'
 " Plug 'romgrk/nvim-treesitter-context'
 Plug 'nacro90/numb.nvim'
 " Plug 'romgrk/barbar.nvim'
@@ -132,9 +132,9 @@ require 'nvim-treesitter.configs'.setup {
     highlight = {
         enable = true,
     },
-    -- indent = {
-    --     enable = true,
-    -- }
+    indent = {
+        enable = {"jsx"},
+    }
 }
 
 require 'format'

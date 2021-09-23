@@ -51,3 +51,5 @@ fi
 HISTFILE=~/.zsh_history
 bindkey -e
 if [ -e /home/hexular/.nix-profile/etc/profile.d/nix.sh ]; then . /home/hexular/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+# for NVM
+source /usr/share/nvm/init-nvm.sh

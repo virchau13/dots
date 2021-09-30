@@ -1,8 +1,0 @@
-.config/[
-    ambit/config.ambit,
-    nvim/[
-        init.vim,
-        lua/[lsp, lsp-custom, format].lua
-    ]
-];
-.zshrc;

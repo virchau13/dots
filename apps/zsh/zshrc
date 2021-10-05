@@ -1,0 +1,53 @@
+zstyle :compinstall filename '/home/hexular/.zshrc'
+
+autoload -Uz colors && colors
+autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
+
+setopt interactive_comments
+
+export HISTSIZE=500000
+export HISTFILESIZE=500000
+export SAVEHIST=500000
+HISTFILE=~/.zsh_history
+export MANPAGER='nvim +Man!'
+export MANWIDTH=80
+export EDITOR=nvim
+export VISUAL=nvim
+
+
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias NR='awk '"'"'{ print NR " " $0 }'"'"
+alias ip='ip -color=auto'
+alias rs-clippy='cargo clippy --all-targets --all-features'
+alias rs-fmt='cargo fmt'
+
+setopt HIST_IGNORE_SPACE
+
+# System specific config
+HOSTNAME="$(hostname -s)"
+case "$HOSTNAME" in
+    hexagon)
+        HOST_COLOR="red"
+        alias pbcopy='xclip -selection c'
+        alias pbpaste='xclip -selection c -o'
+        alias pbimgpaste='xclip -selection c -t image/png -o'
+        alias open='xdg-open'
+        ;;
+    hexamac)
+        HOST_COLOR="green"
+        if [ -e /Users/virchaudhury/.nix-profile/etc/profile.d/nix.sh ]; then 
+            . /Users/virchaudhury/.nix-profile/etc/profile.d/nix.sh; 
+        fi # added by Nix installer
+        export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
+        ;;
+esac
+
+if [ ! -z "$HOST_COLOR" ]; then
+    PROMPT="<%{%F{$HOST_COLOR}%}$HOSTNAME%{%f%}:%~>%# "
+else
+    PROMPT="<%M:%~>%# "
+fi
+
+bindkey -e

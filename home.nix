@@ -4,6 +4,9 @@
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
 
+    # An unfortunate, but necessary, line.
+    nixpkgs.config.allowUnfree = true;
+
     nixpkgs.overlays = [
         (import (builtins.fetchTarball {
             url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
@@ -15,22 +18,53 @@
     home.username = "hexular";
     home.homeDirectory = "/home/hexular";
 
+
     home.packages = let 
+            hexhls = pkgs.haskell-language-server.override { supportedGhcVersions = [ "8107" ]; };
             packages = with pkgs; [
                 neovim-nightly
                 tmux
-                cmake-language-server
-                python-language-server
-                # haskell-language-server (is buggy for some reason)
+                neofetch
+                pavucontrol
+                google-chrome
+                pass
+                discord
+                xbindkeys
+                pamixer
+                picom
+                bat
+                flameshot
+                minecraft
+                yarn
+                nodejs
+                peek
+                dunst
+                stack
+                rofi
+                notify-desktop
+                mpc_cli
+
+                # language servers
                 sumneko-lua-language-server
                 rnix-lsp
+                rust-analyzer
+                cmake-language-server
+                ccls
+                hexhls
             ];
             nodePackages = with pkgs.nodePackages; [
+                firebase-tools
+                ijavascript
+
+                # language servers
                 bash-language-server
                 typescript-language-server
                 dockerfile-language-server-nodejs
+                vscode-json-languageserver
             ];
-        in packages ++ nodePackages;
+            haskellPackages = with pkgs.haskellPackages; [
+            ];
+        in packages ++ nodePackages ++ haskellPackages;
 
     programs.git = {
         enable = true;
@@ -38,11 +72,37 @@
         userEmail = "virchau13@hexular.net";
     };
 
+    programs.alacritty = {
+        enable = true;
+    };
+
+    services.mpd = {
+        enable = true;
+        musicDirectory = ~/Music;
+    };
+
+    # Don't autostart.
+    systemd.services.dunst.wantedBy = lib.mkForce [];
+    services.dunst = {
+        enable = true;
+        settings = {
+        };
+    };
+
+    # services.picom = {
+    #     enable = true;
+    #     backend = "glx";
+    #     vSync = true;
+    #     experimentalBackends = true;
+    # };
+
+    # services.flameshot.enable = true;
+
     xdg.configFile = {
-        "nvim/init.vim".source = ./config/nvim/init.vim;
-        "nvim/lua/lsp.lua".source = ./config/nvim/lua/lsp.lua;
-        "nvim/lua/lsp-custom.lua".source = ./config/nvim/lua/lsp-custom.lua;
-        "nvim/lua/format.lua".source = ./config/nvim/lua/format.lua;
+        "nvim/init.vim".source = ./nvim/init.vim;
+        "nvim/lua/lsp.lua".source = ./nvim/lua/lsp.lua;
+        "nvim/lua/lsp-custom.lua".source = ./nvim/lua/lsp-custom.lua;
+        "nvim/lua/format.lua".source = ./nvim/lua/format.lua;
     };
 
     home.file = {

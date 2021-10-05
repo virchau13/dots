@@ -13,6 +13,8 @@ SAVEHIST=500000
 HISTFILE=~/.zsh_history
 export MANPAGER='nvim +Man!'
 export MANWIDTH=80
+export EDITOR=nvim
+export VISUAL=nvim
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'

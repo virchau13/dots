@@ -38,9 +38,6 @@ if 0
 endif
 let g:lightline.colorscheme = 'tokyonight'
 
-let g:nvim_tree_auto_close = 1
-let g:nvim_tree_tab_open = 1
-
 " Autodownload vim-plug
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
@@ -149,7 +146,7 @@ require 'format'
 -- require('gitsigns').setup()
 require('numb').setup()
 
--- following options are the default
+local tree_cb = require'nvim-tree.config'.nvim_tree_callback
 require'nvim-tree'.setup {
   -- disables netrw completely
   disable_netrw       = true,
@@ -162,7 +159,7 @@ require'nvim-tree'.setup {
   -- closes neovim automatically when the tree is the last **WINDOW** in the view
   auto_close          = false,
   -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
-  open_on_tab         = false,
+  open_on_tab         = true,
   -- hijack the cursor in the tree to put it at the start of the filename
   hijack_cursor       = false,
   -- updates the root directory of the tree on `DirChanged` (when your run `:cd` usually) 
@@ -200,7 +197,9 @@ require'nvim-tree'.setup {
       -- if true, it will only use your list to set the mappings
       custom_only = false,
       -- list of mappings to set on the tree manually
-      list = {}
+      list = {
+          { key = 't', cb = tree_cb("tabnew") }
+      }
     }
   }
 }

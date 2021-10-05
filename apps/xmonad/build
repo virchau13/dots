@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+unset STACK_YAML
+exec &> ~/.cache/xmonad/build.out
+cd ~/.config/nixpkgs/apps/xmonad/xmonad-config
+stack build --copy-bins --local-bin-path ~/.xmonad/
+mv ~/.xmonad/xmonad-config-exe ~/.xmonad/xmonad-x86_64-linux

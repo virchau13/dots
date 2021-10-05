@@ -1,1 +1,0 @@
-/Users/virchaudhury/.config/nixpkgs/hexamac.nix

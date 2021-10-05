@@ -29,11 +29,13 @@ main =
             }
           `removeKeys` [ (modMask .|. shiftMask, xK_slash) -- xmessage help
                        ]
-          `additionalKeys` [ ( (modMask .|. controlMask, xK_r),
+          `additionalKeys` [ ( (modMask, xK_q),
                                spawn
                                  "notify-desktop 'Recompiling...' && \
-                                 \ xmonad --recompile && xmonad --restart && \
+                                 \ ~/.xmonad/xmonad-x86_64-linux --recompile && \
+                                 \ ~/.xmonad/xmonad-x86_64-linux --restart && \
                                  \ notify-desktop 'Done!'"
                              ),
-                             ((modMask, xK_p), spawn "rofi -show run")
+                             ((modMask, xK_p), spawn "rofi -show run"),
+                             ((modMask .|. shiftMask, xK_s), spawn "flameshot gui")
                            ]

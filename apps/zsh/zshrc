@@ -15,7 +15,6 @@ export MANWIDTH=80
 export EDITOR=nvim
 export VISUAL=nvim
 
-
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias NR='awk '"'"'{ print NR " " $0 }'"'"
@@ -38,7 +37,7 @@ case "$HOSTNAME" in
     hexamac)
         HOST_COLOR="green"
         if [ -e /Users/virchaudhury/.nix-profile/etc/profile.d/nix.sh ]; then 
-            . /Users/virchaudhury/.nix-profile/etc/profile.d/nix.sh; 
+            source /Users/virchaudhury/.nix-profile/etc/profile.d/nix.sh; 
         fi # added by Nix installer
         export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
         ;;
@@ -51,3 +50,6 @@ else
 fi
 
 bindkey -e
+
+HM_SESSION="$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+if [ -e "$HM_SESSION" ]; then source "$HM_SESSION"; fi

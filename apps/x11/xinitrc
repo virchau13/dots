@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+xbindkeys
+xset r rate 660 35
+setxkbmap -option compose:ralt
+
+# exec awesome > ~/.cache/awesome/stdout 2> ~/.cache/awesome/stderr
+exec ~/.xmonad/xmonad-x86_64-linux > ~/.cache/xmonad/stdout 2> ~/.cache/xmonad/stderr

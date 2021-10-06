@@ -20,10 +20,10 @@
             python = python3.withPackages pythonPackages;
             hexhls = pkgs.haskell-language-server.override { supportedGhcVersions = [ "8107" ]; };
             packages = [
-                # editor
-                neovim-nightly
-
                 python
+
+                # lua
+                lua
 
                 # haskell
                 stack
@@ -62,6 +62,31 @@
         enable = true;
         userName = "virchau13";
         userEmail = "virchau13@hexular.net";
+    };
+
+    programs.neovim = {
+        enable = true;
+        package = pkgs.neovim-nightly;
+        withNodeJs = true;
+        withPython3 = true;
+        withRuby = true;
+        plugins = with pkgs.vimPlugins; [
+            nvim-web-devicons
+            tokyonight-nvim
+            nvim-tree-lua
+            lightline-vim
+            nvim-lspconfig
+            # vim-firestore
+            lspkind-nvim
+            nvim-compe
+            nvim-treesitter
+            popup-nvim
+            plenary-nvim
+            telescope-nvim
+            numb-nvim
+            gitsigns-nvim
+        ];
+        extraConfig = "lua require 'init' -- ";
     };
 
     xdg.configFile = {

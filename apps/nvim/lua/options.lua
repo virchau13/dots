@@ -1,15 +1,15 @@
-function setopt(name, val) 
+function setopt(name, val)
     if val == nil then
         val = true
     end
-    return vim.api.nvim_set_option(name, val)
+    vim.o[name] = val
 end
 
-function getopt(name) 
-    return vim.api.nvim_get_option(name)
+function getopt(name)
+    return vim.o[name]
 end
 
-function addopt(name, val) 
+function catopt(name, val)
     setopt(name, getopt(name) .. val)
 end
 
@@ -39,7 +39,7 @@ setopt("mouse", "a")
 setopt("inccommand", "split")
 -- Enable persisting undos over multiple editing sessions
 setopt("undofile")
-setopt("backupdir", "~/.local/share/nvim/backup")
+setopt("backupdir", vim.env.HOME .. "/.local/share/nvim/backup")
 
 setopt("foldmethod", "marker")
 setopt("linebreak")
@@ -47,4 +47,4 @@ setopt("hlsearch", false)
 setopt("completeopt", "menuone,noinsert,noselect")
 
 setopt("updatetime", 300)
-addopt("shortmess", "c")
+catopt("shortmess", "c")

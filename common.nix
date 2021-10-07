@@ -36,6 +36,8 @@
                 tmux
                 cmake
                 neofetch
+                gnupg
+                ripgrep
                 pass
                 bat
 
@@ -62,6 +64,11 @@
         enable = true;
         userName = "virchau13";
         userEmail = "virchau13@hexular.net";
+        signing = {
+            signByDefault = true;
+            # Let GPG decide based on my email.
+            key = "AA1BA03FFF02700DFD836BD325B242ED74B61B15";
+        };
     };
 
     programs.neovim = {
@@ -86,7 +93,7 @@
             numb-nvim
             gitsigns-nvim
         ];
-        extraConfig = "lua require 'init' -- ";
+        extraConfig = "lua require 'init'";
     };
 
     xdg.configFile = {

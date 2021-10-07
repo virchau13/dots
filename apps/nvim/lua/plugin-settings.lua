@@ -1,3 +1,5 @@
+require 'util'
+
 -- Uses nerd-fonts extra symbols.
 setgvar("lightline", {
     separator = {

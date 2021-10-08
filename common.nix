@@ -7,9 +7,10 @@
     nixpkgs.config.allowUnfree = true;
 
     nixpkgs.overlays = [
-        (import (builtins.fetchTarball {
-            url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-        }))
+        # neovim-nightly
+        # (import (builtins.fetchTarball {
+        #     url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+        # }))
     ];
 
      home.packages = with pkgs; let 
@@ -73,7 +74,7 @@
 
     programs.neovim = {
         enable = true;
-        package = pkgs.neovim-nightly;
+        # package = pkgs.neovim-nightly;
         withNodeJs = true;
         withPython3 = true;
         withRuby = true;

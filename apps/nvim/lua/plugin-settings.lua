@@ -63,3 +63,5 @@ require'nvim-tree'.setup {
         }
     }
 }
+
+setgvar("tokyonight_style", "night")

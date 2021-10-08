@@ -1,3 +1,5 @@
+require 'util'
+
 local nvim_lsp = require('lspconfig')
 -- Load in custom language server configs for those that don't exist in nvim-lspconfig.
 require 'lsp-custom'
@@ -249,13 +251,6 @@ local settings = {
     -- jsonls
     {},
 }
-
--- Merges ...dictionaries? objects? tables?
-function merge(a, b)
-    for k, v in pairs(b) do
-        a[k] = v
-    end
-end
 
 for i, lsp in ipairs(servers) do
     setup_obj = {

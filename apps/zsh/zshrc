@@ -34,11 +34,6 @@ case "$HOSTNAME" in
         alias pbpaste='xclip -selection c -o'
         alias pbimgpaste='xclip -selection c -t image/png -o'
         alias open='xdg-open'
-        # Required for some systemd user services to work properly
-        (
-            VARS="$(env TODO get import-environment working)"
-            systemctl --user import-environment
-        )
         ;;
     hexamac)
         HOST_COLOR="green"

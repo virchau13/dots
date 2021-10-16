@@ -36,11 +36,13 @@
                 # misc
                 tmux
                 cmake
+                file
                 neofetch
                 gnupg
                 ripgrep
                 pass
                 bat
+                bind
 
                 # language servers
                 rnix-lsp
@@ -67,14 +69,12 @@
         userEmail = "virchau13@hexular.net";
         signing = {
             signByDefault = true;
-            # Let GPG decide based on my email.
             key = "AA1BA03FFF02700DFD836BD325B242ED74B61B15";
         };
     };
 
     programs.neovim = {
         enable = true;
-        # package = pkgs.neovim-nightly;
         withNodeJs = true;
         withPython3 = true;
         withRuby = true;

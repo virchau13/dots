@@ -5,8 +5,45 @@
     home.username = "hexular";
     home.homeDirectory = "/home/hexular";
 
+
     imports = [
         ./common.nix
+    ];
+
+    nixpkgs.overlays = [
+        (self: super: {
+            # Enable GPU rasterization for Discord,
+            # as well as no seccomp sandbox
+            # (otherwise it lags too much.)
+            discord-canary = super.discord-canary.overrideAttrs (old: {
+                nativeBuildInputs = old.nativeBuildInputs ++ [
+                    pkgs.nodePackages.asar
+                ];
+                buildPhase = 
+                    let 
+                      # Sanitize for sed in single quotes in bash.
+                      replaceCode = builtins.replaceStrings 
+                          ["'" "/" "&" "\n"] 
+                          ["'\"'\"'" "\\/" "\\&" "\\n"] 
+                          ''
+                              for(let s of [
+                                  "no-sandbox",
+                                  "flag-switches-begin", 
+                                  "enable-gpu-rasterization", 
+                                  "flag-switches-end"
+                              ]) {
+                                  app.commandLine.appendSwitch(s);
+                                  console.log("--" + s);
+                              }
+                          ''; 
+                    in ''
+                    ASAR_FILE="resources/app.asar"
+                    asar extract "$ASAR_FILE" "$TMP/work"
+                    sed -i "s/require('electron');"'/require("electron"); ${replaceCode}/' "$TMP/work/app_bootstrap/index.js"
+                    asar pack "$TMP/work" "$ASAR_FILE"
+                    '';
+            });  
+        })
     ];
 
     home.packages = let 
@@ -14,7 +51,7 @@
             pavucontrol
             pass
             google-chrome
-            discord
+            discord-canary
             xbindkeys
             pamixer
             picom
@@ -23,8 +60,10 @@
             rofi
             notify-desktop
             mpc_cli
+            obs-studio
             i3lock
             easyeffects
+            peek
 
             # language servers
             sumneko-lua-language-server
@@ -35,13 +74,15 @@
         enable = true;
     };
 
+    systemd.user.sessionVariables = {
+        DISPLAY = ":0";
+    };
+
     services.mpd = {
         enable = true;
         musicDirectory = ~/Music;
     };
 
-    # Don't autostart.
-    systemd.user.services.dunst.wantedBy = lib.mkForce {};
     services.dunst = {
         enable = true;
         settings = {
@@ -92,7 +133,9 @@
     };
 
     systemd.user.services.flameshot.Unit.Requires = lib.mkForce [];
-    services.flameshot.enable = true;
+    services.flameshot = {
+        enable = true;
+    };
 
     services.polybar = {
         enable = true;
@@ -141,10 +184,12 @@
         # because otherwise XMonad complains about not being called 'xmonad-x86_64-linux'.
         "bin/xmonad" = {
             text = ''#!/usr/bin/env bash
-            exec ~/.xmonad/xmonad-x86_64-linux "$@";
+            exec -a "$0" ~/.xmonad/xmonad-x86_64-linux "$@";
             '';
             executable = true;
         };
+        # More convenient link to ~/.config/nixpkgs.
+        "config".source = config.lib.file.mkOutOfStoreSymlink ~/.config/nixpkgs;
     };
 
     # services.picom = {

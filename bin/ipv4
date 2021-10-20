@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Get public IPv4 address
+exec dig @resolver4.opendns.com myip.opendns.com +short

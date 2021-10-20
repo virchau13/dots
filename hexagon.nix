@@ -64,6 +64,7 @@
             i3lock
             easyeffects
             peek
+            lutris
 
             # language servers
             sumneko-lua-language-server
@@ -81,6 +82,12 @@
     services.mpd = {
         enable = true;
         musicDirectory = ~/Music;
+        extraConfig = ''
+            audio_output {
+                type "pulse"
+                name "My Pulse Output"
+            }
+        '';
     };
 
     services.dunst = {
@@ -179,15 +186,6 @@
         ".xbindkeysrc".source = ./apps/x11/xbindkeysrc;
         ".xprofile".source = ./apps/x11/xprofile;
         ".xmonad/build".source = ./apps/xmonad/build;
-        # So that `xmonad` knows how to restart itself.
-        # The indirect `exec` rather than a symlink is required
-        # because otherwise XMonad complains about not being called 'xmonad-x86_64-linux'.
-        "bin/xmonad" = {
-            text = ''#!/usr/bin/env bash
-            exec -a "$0" ~/.xmonad/xmonad-x86_64-linux "$@";
-            '';
-            executable = true;
-        };
         # More convenient link to ~/.config/nixpkgs.
         "config".source = config.lib.file.mkOutOfStoreSymlink ~/.config/nixpkgs;
     };

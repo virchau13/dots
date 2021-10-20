@@ -40,8 +40,10 @@
                 neofetch
                 gnupg
                 ripgrep
+                unzip
                 pass
                 bat
+                jq
                 bind
 
                 # language servers
@@ -107,6 +109,7 @@
     home.file = {
         ".zshrc".source = ./apps/zsh/zshrc;
         ".zshenv".source = ./apps/zsh/zshenv;
+        "bin".source = config.lib.file.mkOutOfStoreSymlink ~/.config/nixpkgs/bin;
     };
 
     # Extra $PATH directories

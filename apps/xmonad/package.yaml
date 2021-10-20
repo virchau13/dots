@@ -1,14 +1,10 @@
 name:                xmonad-config
 version:             0.1.0.0
-github:              "githubuser/xmonad-config"
-license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2021 Author name here"
-
-extra-source-files:
-- README.md
-- ChangeLog.md
+github:              "virchau13/dots"
+license:             MIT
+author:              "virchau13"
+maintainer:          "virchau13@hexular.net"
+copyright:           "2021 Vir Chaudhury"
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
@@ -17,7 +13,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/xmonad-config#readme>
+description:         "virchau13's XMonad configuration; <https://github.com/virchau13/dots/tree/master/apps/xmonad>"
 
 dependencies:
 - base >= 4.7 && < 5

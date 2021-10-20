@@ -17,40 +17,41 @@ import qualified XMonad.StackSet as W
 startup :: X ()
 startup = do
   spawnOnce
-    "picom \
+    "killall picom; echo > ~/.cache/picom.out; picom \
     \ --xrender-sync-fence --experimental-backends --backend glx \
     \ --use-damage --vsync --config /dev/null --show-all-xerrors \
-    \ --glx-no-stencil &> ~/.cache/picom.out"
-  spawnOnce "dunst &> ~/.cache/dunst.out"
+    \ --glx-no-stencil --log-level INFO --log-file ~/.cache/picom.out"
+  -- spawnOnce "killall dunst; dunst &> ~/.cache/dunst.out"
 
-eventLogHook :: X ()
-eventLogHook = do
-    winset <- gets windowset
-    title <- maybe (return "") (fmap show . getName) . W.peek $ winset
-    let currWs = W.currentTag winset
-    let wss = map W.tag $ W.workspaces winset
-    let wsStr = join $ map (fmt currWs) $ sort' wss
-
-    io $ appendFile "/tmp/.xmonad-title-log" (title ++ "\n")
-    io $ appendFile "/tmp/.xmonad-workspace-log" (wsStr ++ "\n")
-
-    where fmt currWs ws
-            | currWs == ws = "[" ++ ws ++ "]"
-            | otherwise    = " " ++ ws ++ " "
-          sort' = sortBy (compare `on` (!! 0))
+-- eventLogHook :: X ()
+-- eventLogHook = do
+--     winset <- gets windowset
+--     title <- maybe (return "") (fmap show . getName) . W.peek $ winset
+--     let currWs = W.currentTag winset
+--     let wss = map W.tag $ W.workspaces winset
+--     let wsStr = join $ map (fmt currWs) $ sort' wss
+-- 
+--     io $ appendFile "/tmp/.xmonad-title-log" (title ++ "\n")
+--     io $ appendFile "/tmp/.xmonad-workspace-log" (wsStr ++ "\n")
+-- 
+--     where fmt currWs ws
+--             | currWs == ws = "[" ++ ws ++ "]"
+--             | otherwise    = " " ++ ws ++ " "
+--           sort' = sortBy (compare `on` (!! 0))
 
 main :: IO ()
 main = do 
     -- Set up pipes to let Polybar know of workspaces
-    forM_ [".xmonad-workspace-log", ".xmonad-title-log"] $ \file -> safeSpawn "mkfifo" ["/tmp/" ++ file]
+    -- forM_ [".xmonad-workspace-log", ".xmonad-title-log"] $ \file -> safeSpawn "mkfifo" ["/tmp/" ++ file]
     -- Main config
     let modMask = mod4Mask in xmonad $
          ewmh
-           desktopConfig
+           def
              { modMask = modMask, -- Super key
                startupHook = startup,
                terminal = "alacritty",
-               logHook = eventLogHook
+               handleEventHook = handleEventHook def <+> fullscreenEventHook
+               -- logHook = eventLogHook
              }
            `removeKeys` [ (modMask .|. shiftMask, xK_slash) -- xmessage help
                         ]

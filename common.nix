@@ -45,12 +45,13 @@
                 bat
                 jq
                 bind
+                pv
 
                 # language servers
                 rnix-lsp
                 rust-analyzer
                 # cmake-language-server
-                ccls
+                clang-tools
                 hexhls
             ];
             nodePackages = with pkgs.nodePackages; [

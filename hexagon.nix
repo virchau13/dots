@@ -48,6 +48,7 @@
 
     home.packages = let 
         packages = with pkgs; [
+            xfce.thunar xfce.xfconf xfce.tumbler xfce.exo
             pavucontrol
             pass
             google-chrome
@@ -65,6 +66,9 @@
             easyeffects
             peek
             lutris
+            mpv
+            wine
+            winetricks
 
             # language servers
             sumneko-lua-language-server

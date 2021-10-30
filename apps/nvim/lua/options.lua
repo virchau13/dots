@@ -31,3 +31,7 @@ setopt("completeopt", "menuone,noinsert,noselect")
 
 setopt("updatetime", 300)
 catopt("shortmess", "c")
+
+-- Make the screen start scrolling when the cursor is
+-- 5 lines from the top or bottom
+setopt('scrolloff', 5)

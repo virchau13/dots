@@ -41,6 +41,7 @@
                 gnupg
                 ripgrep
                 unzip
+                fd
                 pass
                 bat
                 jq
@@ -50,6 +51,7 @@
                 # language servers
                 rnix-lsp
                 rust-analyzer
+                sumneko-lua-language-server
                 # cmake-language-server
                 clang-tools
                 hexhls
@@ -78,39 +80,50 @@
 
     programs.neovim = {
         enable = true;
-        withNodeJs = true;
-        withPython3 = true;
-        withRuby = true;
         plugins = with pkgs.vimPlugins; [
+            # fs icons
             nvim-web-devicons
-            tokyonight-nvim
-            nvim-tree-lua
-            lightline-vim
-            nvim-lspconfig
-            # vim-firestore
-            lspkind-nvim
-            nvim-compe
-            nvim-treesitter
+            # popups
             popup-nvim
+            # async lua (required for telescope)
             plenary-nvim
+            # colorscheme
+            tokyonight-nvim
+            # file browser (alternative to nerdtree)
+            nvim-tree-lua
+            # bar
+            lightline-vim
+            # lsp configuration
+            nvim-lspconfig
+            # lsp pictograms
+            lspkind-nvim
+            # autocomplete
+            cmp-nvim-lsp
+            cmp-buffer
+            cmp-path
+            nvim-cmp
+            # treesitter highlighting
+            nvim-treesitter
+            # snippets
+            luasnip
+            # fzf alternative
             telescope-nvim
+            # peeks lines when you :<line number>
             numb-nvim
+            # displays gitsigns on the left bar
             gitsigns-nvim
         ];
         extraConfig = "lua require 'init'";
     };
 
     xdg.configFile = {
-        "nvim" = {
-            source = ./apps/nvim;
-            recursive = true;
-        };
+        "nvim/lua".source = config.lib.file.mkOutOfStoreSymlink ./apps/nvim/lua;
     };
 
     home.file = {
         ".zshrc".source = ./apps/zsh/zshrc;
         ".zshenv".source = ./apps/zsh/zshenv;
-        "bin".source = config.lib.file.mkOutOfStoreSymlink ~/.config/nixpkgs/bin;
+        "bin".source = config.lib.file.mkOutOfStoreSymlink ./bin;
     };
 
     # Extra $PATH directories

@@ -7,8 +7,8 @@ setopt("termguicolors")
 setopt("tabstop", 4)
 setopt("shiftwidth", 4)
 setopt("expandtab")
-setopt("autoindent")
-setopt("smartindent")
+-- setopt("autoindent")
+-- setopt("smartindent")
 
 -- Line numbers
 setopt("number")

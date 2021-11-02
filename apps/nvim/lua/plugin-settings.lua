@@ -22,7 +22,7 @@ require 'nvim-treesitter.configs'.setup {
         enable = true,
     },
     indent = {
-        enable = { "jsx" }
+        enable = true
     }
 }
 
@@ -36,7 +36,7 @@ require'nvim-tree'.setup {
     -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
     open_on_tab         = true,
     -- show lsp diagnostics in the signcolumn
-    lsp_diagnostics     = false,
+    diagnostics = { enable = false },
     -- configuration options for the system open command (`s` in the tree by default)
     system_open = {
         -- the command to run this, leaving nil should work in most cases
@@ -60,7 +60,8 @@ require'nvim-tree'.setup {
             list = {
                 { key = 't', cb = tree_cb("tabnew") }
             }
-        }
+        },
+        hide_root_folder = true
     }
 }
 

@@ -1,25 +1,27 @@
-{ inputs, config, pkgs, lib, ... }: 
+{ inputs, configDir, config, pkgs, lib, ... }: 
 let 
     inherit (config.lib.file) mkOutOfStoreSymlink;
     # Produces an expression that can be passed to `home.file` or
     # `xdg.configFile` that symlinks all dirs in `sourceDir` 
     # to the relative string `targetDir`.
+    # Both arguments must be strings.
+    # `sourceDir` is relative to `./.`.
     symlinkDirContents = sourceDir: targetDir: with pkgs.lib;
         mapAttrs' (name: _: 
-            nameValuePair (targetDir + "/${name}") { source = mkOutOfStoreSymlink (sourceDir + "/${name}"); }
-        ) (builtins.readDir sourceDir);
+            nameValuePair (targetDir + "/${name}") { source = mkOutOfStoreSymlink ("${configDir}/" + sourceDir + "/${name}"); }
+        ) (builtins.readDir (./. + "/${sourceDir}"));
 in {
     nixpkgs.overlays = [
         inputs.neovim-nightly-overlay.overlay
     ];
 
     xdg.configFile = {
-    } // symlinkDirContents ./apps/nvim "nvim";
+    } // symlinkDirContents "apps/nvim" "nvim";
 
     home.file = {
         ".zshrc".source = ./apps/zsh/zshrc;
         ".zshenv".source = ./apps/zsh/zshenv;
-        "bin".source = config.lib.file.mkOutOfStoreSymlink ./bin;
+        "bin".source = mkOutOfStoreSymlink "${configDir}/bin";
     };
 
     # Extra $PATH directories

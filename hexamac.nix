@@ -29,7 +29,12 @@ experimental-features = nix-command flakes
 build-users-group = nixbld
     '';
 
-    home-manager.extraSpecialArgs = { inherit inputs; };
+    home-manager.extraSpecialArgs = let 
+        homeDir = config.users.users.virchaudhury.home; 
+    in { 
+        inherit inputs homeDir;
+        configDir = "${homeDir}/.config/nixpkgs";
+    };
     home-manager.users.virchaudhury = { pkgs, ... }: {
         imports = [ ./common-home.nix ];
     };

@@ -169,10 +169,11 @@ local settings = {
     rnix = {},
     dockerls = {},
     jsonls = {},
+    svelte = {},
 }
 
 vim.lsp.set_log_level('debug')
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 local nvim_lsp = require('lspconfig')
 for server, config in pairs(settings) do
     setup_obj = {
@@ -183,64 +184,64 @@ for server, config in pairs(settings) do
     nvim_lsp[server].setup(setup_obj)
 end
 
-local cmp = require 'cmp'
-local luasnip = require 'luasnip'
-cmp.setup {
-    snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end
-    },
-    mapping = {
-        ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
-            elseif has_words_before() then
-                cmp.complete()
-            else
-                fallback()
-            end
-        end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
-            else
-                fallback()
-            end
-        end, { "i", "s" }),
-        -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    },
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' }
-    }, {
-        { name = 'buffer' }
-    }),
-    sorting = {
-        comparators = {
-            cmp.config.compare.offset,
-            cmp.config.compare.exact,
-            cmp.config.compare.score,
-            cmp.config.compare.recently_used,
-            -- prioritizes snippets, we don't want that
-            function (a, b)
-                local res = cmp.config.compare.kind
-                if kind == nil then
-                    return kind
-                else
-                    return not kind
-                end
-            end,
-            cmp.config.compare.sort_text,
-            cmp.config.compare.length,
-            cmp.config.compare.order,
-        }
-    },
-    formatting = {
-        format = require('lspkind').cmp_format({with_text = false, maxwidth = 50})
-    }
-}
+-- local cmp = require 'cmp'
+-- local luasnip = require 'luasnip'
+-- cmp.setup {
+--     snippet = {
+--         expand = function(args)
+--             luasnip.lsp_expand(args.body)
+--         end
+--     },
+--     mapping = {
+--         ["<Tab>"] = cmp.mapping(function(fallback)
+--             if cmp.visible() then
+--                 cmp.select_next_item()
+--             elseif luasnip.expand_or_jumpable() then
+--                 luasnip.expand_or_jump()
+--             elseif has_words_before() then
+--                 cmp.complete()
+--             else
+--                 fallback()
+--             end
+--         end, { "i", "s" }),
+--         ["<S-Tab>"] = cmp.mapping(function(fallback)
+--             if cmp.visible() then
+--                 cmp.select_prev_item()
+--             elseif luasnip.jumpable(-1) then
+--                 luasnip.jump(-1)
+--             else
+--                 fallback()
+--             end
+--         end, { "i", "s" }),
+--         -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
+--     },
+--     sources = cmp.config.sources({
+--         { name = 'nvim_lsp' },
+--         { name = 'luasnip' }
+--     }, {
+--         { name = 'buffer' }
+--     }),
+--     sorting = {
+--         comparators = {
+--             cmp.config.compare.offset,
+--             cmp.config.compare.exact,
+--             cmp.config.compare.score,
+--             cmp.config.compare.recently_used,
+--             -- prioritizes snippets, we don't want that
+--             function (a, b)
+--                 local res = cmp.config.compare.kind
+--                 if kind == nil then
+--                     return kind
+--                 else
+--                     return not kind
+--                 end
+--             end,
+--             cmp.config.compare.sort_text,
+--             cmp.config.compare.length,
+--             cmp.config.compare.order,
+--         }
+--     },
+--     formatting = {
+--         format = require('lspkind').cmp_format({with_text = false, maxwidth = 50})
+--     }
+-- }

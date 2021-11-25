@@ -1,4 +1,14 @@
 { config, lib, pkgs, ... }:
+let 
+    inherit (config.lib.file) mkOutOfStoreSymlink;
+    # Produces an expression that can be passed to `home.file` or
+    # `xdg.configFile` that symlinks all dirs in `sourceDir` 
+    # to the relative string `targetDir`.
+    symlinkDirContents = sourceDir: targetDir: with pkgs.lib;
+        mapAttrs' (name: _: 
+            nameValuePair (targetDir + "/${name}") { source = mkOutOfStoreSymlink (sourceDir + "/${name}"); }
+        ) (builtins.readDir sourceDir);
+in
 {
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
@@ -8,13 +18,13 @@
 
     nixpkgs.overlays = [
         # neovim-nightly
-        # (import (builtins.fetchTarball {
-        #     url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-        # }))
+        (import (builtins.fetchTarball {
+            url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+        }))
     ];
 
      home.packages = with pkgs; let 
-             pythonPackages = python-pkgs: with python-pkgs; [
+            pythonPackages = python-pkgs: with python-pkgs; [
                 ipython
                 jupyter
             ];
@@ -47,6 +57,7 @@
                 jq
                 bind
                 pv
+                age
 
                 # language servers
                 rnix-lsp
@@ -80,6 +91,7 @@
 
     programs.neovim = {
         enable = true;
+        package = pkgs.neovim-nightly;
         plugins = with pkgs.vimPlugins; [
             # fs icons
             nvim-web-devicons
@@ -117,13 +129,12 @@
     };
 
     xdg.configFile = {
-        "nvim/lua".source = config.lib.file.mkOutOfStoreSymlink ./apps/nvim/lua;
-    };
+    } // symlinkDirContents ./apps/nvim "nvim";
 
     home.file = {
         ".zshrc".source = ./apps/zsh/zshrc;
         ".zshenv".source = ./apps/zsh/zshenv;
-        "bin".source = config.lib.file.mkOutOfStoreSymlink ./bin;
+        "bin".source = mkOutOfStoreSymlink ./bin;
     };
 
     # Extra $PATH directories

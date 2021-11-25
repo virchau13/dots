@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 unset STACK_YAML
 (
+    set -e
+    set -o pipefail
     cd ~/.config/nixpkgs/apps/xmonad
     stack build --copy-bins --local-bin-path ~/.xmonad/
     mv ~/.xmonad/xmonad-config-exe ~/.xmonad/xmonad-x86_64-linux

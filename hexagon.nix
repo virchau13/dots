@@ -1,10 +1,12 @@
 { lib, config, pkgs, ... }:
+let 
+    inherit (config.lib.file) mkOutOfStoreSymlink;
+in
 {
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
     home.username = "hexular";
     home.homeDirectory = "/home/hexular";
-
 
     imports = [
         ./common.nix
@@ -47,6 +49,25 @@
     ];
 
     home.packages = let 
+        xmonadAlias = pkgs.writeShellScriptBin "xmonad" ''
+        #!${pkgs.bash}/bin/bash
+        # So that `xmonad` knows how to restart itself.
+        # The indirect `exec` rather than a symlink is required
+        # because otherwise XMonad complains about not being called 'xmonad-x86_64-linux'.
+        exec -a "$0" ~/.xmonad/xmonad-x86_64-linux "$@";
+        '';
+        devAlias = pkgs.writeShellScriptBin "dev" ''
+        if [ -f ./flake.nix ]; then
+            # flakes, use `nix develop`
+            exec nix develop
+        elif [ -f ./shell.nix -o -f ./default.nix ]; then
+            # old nix, use `nix-shell`
+            exec nix-shell
+        else
+            # do nothing
+            echo "! No files detected, doing nothing"
+        fi
+        '';
         packages = with pkgs; [
             xfce.thunar xfce.xfconf xfce.tumbler xfce.exo
             pavucontrol
@@ -69,6 +90,9 @@
             mpv
             wine
             winetricks
+            multimc
+            xmonadAlias
+            devAlias
 
             # language servers
             sumneko-lua-language-server
@@ -148,39 +172,6 @@
         enable = true;
     };
 
-    services.polybar = {
-        enable = true;
-        script = ''
-            export DISPLAY=:0
-            polybar left &
-            polybar right &
-        '';
-        settings = {
-            "bar/left" = {
-                monitor = "DVI-D-0";
-                modules-right = "cpu memory";
-            };
-            "bar/right" = {
-                monitor = "HDMI-0";
-                modules-left = "xmonad-workspaces";
-            };
-            "module/cpu" = {
-                type = "internal/cpu";
-                interval = 5;
-            };
-            "module/memory" = {
-                type = "internal/memory";
-                interval = 5;
-            };
-            "module/xmonad-workspaces" = {
-                type = "custom/script";
-                exec = "tail -F /tmp/.xmonad-workspace-log";
-                exec-if = "[ -p /tmp/.xmonad-workspace-log ]";
-                tail = true;
-            };
-        };
-    };
-
     services.easyeffects = {
         enable = true;
     };
@@ -189,15 +180,8 @@
         ".xinitrc".source = ./apps/x11/xinitrc;
         ".xbindkeysrc".source = ./apps/x11/xbindkeysrc;
         ".xprofile".source = ./apps/x11/xprofile;
-        ".xmonad/build".source = ./apps/xmonad/build;
+        ".xmonad".source = mkOutOfStoreSymlink ./apps/xmonad;
         # More convenient link to ~/.config/nixpkgs.
-        "config".source = config.lib.file.mkOutOfStoreSymlink ~/.config/nixpkgs;
+        "config".source = mkOutOfStoreSymlink ~/.config/nixpkgs;
     };
-
-    # services.picom = {
-    #     enable = true;
-    #     backend = "glx";
-    #     vSync = true;
-    #     experimentalBackends = true;
-    # };
 }

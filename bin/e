@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# don't recursively make nix shells
+if [ -z "$IN_NIX_SHELL" ]; then 
+    if [ -f ./flake.nix ]; then
+        # this is a flake project, use flake develop
+        # `nix develop` escapes args by default
+        exec nix develop --command "$EDITOR" "$@"
+    elif [ -f ./default.nix -o -f ./shell.nix ]; then
+        # use nix-shell
+        cmd=("$EDITOR" "$@")
+        # https://unix.stackexchange.com/questions/475569/stringify-bash-command-from-array-of-arguments-for-use-in-bash-c
+        escapedCmd="$(printf '%q ' "${cmd[@]}")"
+        # nix-shell has no way to escape arguments
+        exec nix-shell --run "$escapedCmd"
+    else
+        # just launch editor
+        exec "$EDITOR" "$@"
+    fi
+fi

@@ -66,3 +66,7 @@ require'nvim-tree'.setup {
 }
 
 setgvar("tokyonight_style", "night")
+
+vim.g.coq_settings = {
+    auto_start = 'shut-up',
+}

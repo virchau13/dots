@@ -1,15 +1,10 @@
-{ lib, config, pkgs, ... }:
+{ lib, config, homeDir, configDir, pkgs, ... }:
 let 
     inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 {
-    # Home Manager needs a bit of information about you and the
-    # paths it should manage.
-    home.username = "hexular";
-    home.homeDirectory = "/home/hexular";
-
     imports = [
-        ./common.nix
+        ../common/home.nix
     ];
 
     nixpkgs.overlays = [
@@ -109,7 +104,7 @@ in
 
     services.mpd = {
         enable = true;
-        musicDirectory = ~/Music;
+        musicDirectory = "${homeDir}/Music";
         extraConfig = ''
             audio_output {
                 type "pulse"
@@ -177,11 +172,11 @@ in
     };
 
     home.file = {
-        ".xinitrc".source = ./apps/x11/xinitrc;
-        ".xbindkeysrc".source = ./apps/x11/xbindkeysrc;
-        ".xprofile".source = ./apps/x11/xprofile;
-        ".xmonad".source = mkOutOfStoreSymlink ./apps/xmonad;
+        ".xinitrc".source = ../../apps/x11/xinitrc;
+        ".xbindkeysrc".source = ../../apps/x11/xbindkeysrc;
+        ".xprofile".source = ../../apps/x11/xprofile;
+        ".xmonad".source = mkOutOfStoreSymlink "${configDir}/apps/xmonad";
         # More convenient link to ~/.config/nixpkgs.
-        "config".source = mkOutOfStoreSymlink ~/.config/nixpkgs;
+        "config".source = mkOutOfStoreSymlink configDir;
     };
 }

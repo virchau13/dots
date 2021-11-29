@@ -23,11 +23,6 @@
     };
 
     nix.trustedUsers = [ "virchaudhury" ];
-    
-    nix.extraOptions = ''
-experimental-features = nix-command flakes
-build-users-group = nixbld
-    '';
 
     home-manager.extraSpecialArgs = let 
         homeDir = config.users.users.virchaudhury.home; 

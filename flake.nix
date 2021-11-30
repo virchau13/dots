@@ -29,8 +29,8 @@
             specialArgs = { inputs = inputs; };
             modules = [ 
                 home-manager.darwinModule
-                ./hexamac.nix
-                ./common-sys.nix
+                ./hosts/hexamac/sys.nix
+                ./hosts/common/sys.nix
             ];
         };
 

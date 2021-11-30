@@ -51,18 +51,6 @@ in
         # because otherwise XMonad complains about not being called 'xmonad-x86_64-linux'.
         exec -a "$0" ~/.xmonad/xmonad-x86_64-linux "$@";
         '';
-        devAlias = pkgs.writeShellScriptBin "dev" ''
-        if [ -f ./flake.nix ]; then
-            # flakes, use `nix develop`
-            exec nix develop
-        elif [ -f ./shell.nix -o -f ./default.nix ]; then
-            # old nix, use `nix-shell`
-            exec nix-shell
-        else
-            # do nothing
-            echo "! No files detected, doing nothing"
-        fi
-        '';
         packages = with pkgs; [
             xfce.thunar xfce.xfconf xfce.tumbler xfce.exo
             pavucontrol
@@ -87,7 +75,6 @@ in
             winetricks
             multimc
             xmonadAlias
-            devAlias
 
             # language servers
             sumneko-lua-language-server

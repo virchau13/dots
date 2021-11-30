@@ -31,6 +31,6 @@
         configDir = "${homeDir}/.config/nixpkgs";
     };
     home-manager.users.virchaudhury = { pkgs, ... }: {
-        imports = [ ./common-home.nix ];
+        imports = [ ../common/home.nix ];
     };
 }

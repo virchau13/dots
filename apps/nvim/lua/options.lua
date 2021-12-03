@@ -1,5 +1,8 @@
 require 'util'
 
+-- Set leader to space
+vim.g.mapleader = " "
+
 setopt("encoding", "utf-8")
 setopt("termguicolors")
 

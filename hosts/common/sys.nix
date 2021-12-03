@@ -7,7 +7,7 @@
             experimental-features = nix-command flakes
             build-users-group = nixbld
         '';
-        trustedUsers = [ "root" ];
+        trustedUsers = [ "root" "hexular" ];
         binaryCaches = [
             "https://cache.nixos.org/"
             "https://nix-community.cachix.org"
@@ -23,58 +23,62 @@
             pythonPackages = python-pkgs: with python-pkgs; [
                ipython
                jupyter
-           ];
-           python = python3.withPackages pythonPackages;
-           hexhls = pkgs.haskell-language-server.override { supportedGhcVersions = [ "8107" ]; };
-           packages = [
-               python
+            ];
+            python = python3.withPackages pythonPackages;
+            hls = pkgs.haskell-language-server.override { 
+                supportedGhcVersions = [ "901" ]; 
+            };
+            packages = [
+                python
 
-               # lua
-               lua
+                # lua
+                lua
 
-               # haskell
-               stack
+                # haskell
+                stack
 
-               # js
-               nodejs
-               yarn
+                # js
+                nodejs
+                yarn
 
-               # misc
-               tmux
-               cmake
-               file
-               neofetch
-               coreutils
-               gnupg
-               ripgrep
-               htop
-               unzip
-               fd
-               pass
-               bat
-               jq
-               bind
-               pv
+                # misc
+                tmux
+                cmake
+                file
+                neofetch
+                coreutils
+                gnupg
+                ripgrep
+                htop
+                unzip
+                imagemagick
+                fd
+                pass
+                bat
+                jq
+                bind
+                pv
 
-               # language servers
-               rnix-lsp
-               rust-analyzer
-               # sumneko-lua-language-server
-               # cmake-language-server
-               (clang-tools.override { llvmPackages = pkgs.llvmPackages_12; })
-               hexhls
-           ];
-           nodePackages = with pkgs.nodePackages; [
-               # firebase-tools
-               ijavascript
+                # language servers
+                rnix-lsp
+                rust-analyzer
+                # sumneko-lua-language-server
+                # cmake-language-server
+                # (for compatibility with MacOS, because LLVM 13 is marked as broken there)
+                (clang-tools.override { llvmPackages = pkgs.llvmPackages_12; })
+                hls
+            ];
+            nodePackages = with pkgs.nodePackages; [
+                # firebase-tools
+                ijavascript
 
-               # language servers
-               bash-language-server
-               typescript-language-server
-               dockerfile-language-server-nodejs
-               vscode-json-languageserver
-               svelte-language-server
-           ];
+                # language servers
+                bash-language-server
+                typescript-language-server
+                dockerfile-language-server-nodejs
+                vscode-json-languageserver
+                svelte-language-server
+            ];
        in packages ++ nodePackages;
 
 }

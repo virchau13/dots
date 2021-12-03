@@ -5,6 +5,7 @@ in
 {
     imports = [
         ../common/home.nix
+        ../../apps/eww
     ];
 
     nixpkgs.overlays = [

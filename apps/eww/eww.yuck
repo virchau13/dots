@@ -1,0 +1,21 @@
+(defvar iconsize 50)
+
+(defwidget icon [path]
+  (image
+    :class "icon"
+    :path path
+    :image-width iconsize
+    :image-height iconsize))
+
+(defwindow bar
+  :monitor 0
+  :geometry (geometry
+              :x "0%"
+              :y "0%"
+              :height "100%"
+              :width "50px"
+              :anchor "top left")
+  :stacking "fg"
+  :wm-ignore false
+  :reserve  (struts :distance "50px" :side "left")
+  (icon :path "/home/hexular/Downloads/kitty.png"))

@@ -144,6 +144,8 @@
         cmake
         gnumake
         killall
+        feh
+        xcolor
         python
         nix-index
         gnome3.adwaita-icon-theme

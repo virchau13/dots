@@ -1,20 +1,63 @@
 #!/usr/bin/env bash
 
+# Computes the common filesystem prefix of multiple files.
+# Must have at least one arg.
+common_prefix() {
+    python3 -c '
+import sys, os
+def startswith(list, prefix):
+    return len(prefix) <= len(list) and all(x[0] == x[1] for x in zip(list, prefix))
+paths = [os.path.abspath(p).split(os.path.sep) for p in sys.argv[1:]]
+print(paths)
+prefix = paths[0]
+while len(prefix) > 0:
+    all_have_prefix = all(startswith(path, prefix) for path in paths[1:])
+    if all_have_prefix:
+        break
+    prefix.pop()
+print("".join(os.path.sep + part for part in prefix), end="")
+    ' "$@"
+}
+
+# https://unix.stackexchange.com/questions/6463/find-searching-in-parent-directories-instead-of-subdirectories
+find-up() {
+    path="$(pwd)"
+    while [[ "$path" != "" && ! -e "$path/$1" ]]; do
+        path="''${path%/*}"
+    done
+    echo "$path"
+}
+
+if [ -z "$@" ]; then
+    PREFIX="$(pwd)"
+else
+    PREFIX="$(common_prefix "$@")"
+fi
+
 # don't recursively make nix shells
 if [ -z "$IN_NIX_SHELL" ]; then 
-    if [ -f ./flake.nix ]; then
+    flake="$(find-up flake.nix)"
+    if [ -f "$flake" ]; then
+        echo "Found at $flake"
         # this is a flake project, use flake develop
         # `nix develop` escapes args by default
         exec nix develop --command "$EDITOR" "$@"
-    elif [ -f ./default.nix -o -f ./shell.nix ]; then
+    fi
+    default="$(find-up default.nix)"
+    shell="$(find-up shell.nix)"
+    if [ -f "$default" -o -f "$shell" ]; then
+        echo "Found at $default or $shell"
         # use nix-shell
         cmd=("$EDITOR" "$@")
         # https://unix.stackexchange.com/questions/475569/stringify-bash-command-from-array-of-arguments-for-use-in-bash-c
         escapedCmd="$(printf '%q ' "${cmd[@]}")"
         # nix-shell has no way to escape arguments
         exec nix-shell --run "$escapedCmd"
-    else
-        # just launch editor
-        exec "$EDITOR" "$@"
     fi
+    # just launch editor
+    echo "None found"
+    exec "$EDITOR" "$@"
+else
+    echo "In nix shell already, not adding anything"
+    exec "$EDITOR" "$@"
 fi

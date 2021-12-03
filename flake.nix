@@ -9,6 +9,10 @@
         neovim-nightly-overlay.url = github:nix-community/neovim-nightly-overlay;
         sops-nix.url = github:Mic92/sops-nix;
         flake-utils.url = github:numtide/flake-utils;
+
+        eww.url = github:virchau13/eww;
+
+        # nvim plugins
         coq_nvim = {
             url = github:ms-jpq/coq_nvim;
             flake = false;
@@ -19,6 +23,14 @@
         };
         coq_thirdparty = {
             url = github:ms-jpq/coq.thirdparty;
+            flake = false;
+        };
+        parinfer-rust = {
+            url = github:eraserhd/parinfer-rust;
+            flake = false;
+        };
+        yuck-vim = {
+            url = github:elkowar/yuck.vim;
             flake = false;
         };
     };

@@ -25,8 +25,8 @@
     # Without this my CPU defaults to 1.4GHz frequency when it should be running at 3.7GHz.
     powerManagement.cpuFreqGovernor = "performance";
 
-    boot = {
-        kernelPackages = pkgs.linuxPackages_zen;
+    boot = let kernel = "linux_xanmod"; in {
+        kernelPackages = pkgs.linuxKernel.packages."${kernel}";
         # Use the systemd-boot EFI boot loader.
         loader.systemd-boot = {
             enable = true;
@@ -35,7 +35,7 @@
         };
         loader.efi.canTouchEfiVariables = true;
         # To get lm_sensors to work
-        extraModulePackages = with pkgs.linuxPackages_zen; [ it87 ];
+        extraModulePackages = with pkgs.linuxKernel.packages."${kernel}"; [ it87 ];
         kernelModules = [ "coretemp" "it87" "lm92" "k10temp" ];
     };
 

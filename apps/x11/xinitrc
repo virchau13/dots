@@ -4,5 +4,19 @@ xbindkeys
 xset r rate 660 35
 setxkbmap -option compose:ralt
 
+MONITOR_COUNT="$(xrandr --listactivemonitors | head -n 1 | cut -d' ' -f2)"
+case "$MONITOR_COUNT" in
+    2)
+        # get the monitors set up correctly
+        xrandr --output DVI-D-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-0 --mode 1920x1080 --pos 1920x0 --rotate normal
+        ;;
+    *)
+        # no idea, just default to normal
+        ;;
+esac
+
+# Set microphone volume low
+pamixer --source "alsa_input.usb-Audio_Technica_Corp_ATR2500x-USB_Microphone-00.analog-stereo" --set-volume 50
+
 # exec awesome > ~/.cache/awesome/stdout 2> ~/.cache/awesome/stderr
 exec ~/.xmonad/xmonad-x86_64-linux > ~/.cache/xmonad/stdout 2> ~/.cache/xmonad/stderr

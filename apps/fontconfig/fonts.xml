@@ -2,6 +2,12 @@
 <!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
 
 <fontconfig>
+    <alias>
+        <family>Hex Mono</family>
+        <prefer>
+            <family>Input Mono</family>
+        </prefer>
+    </alias>
 	<match target="font">
 		<edit mode="assign" name="rgba">
 			<const>rgb</const>
@@ -25,42 +31,4 @@
 			<const>lcddefault</const>
 		</edit>
 	</match>
-		<!-- <match target="font">
-			<test name="fonthashint"><bool>true</bool></test>
-			<edit mode="assign" name="hintstyle">
-			<const>hintnone</const>
-			</edit>
-		</match> -->
-		<!-- doesn't work
-			<match target="font">
-			<test name="family"><string>Calibri</string></test>
-			<edit mode="assign" name="autohint">
-			<bool>true</bool>
-			</edit>
-			</match>
-		-->
-			<!-- <selectfont>
-		<rejectfont>
-			<pattern>
-				<patelt name="family">
-					<string>Calibri</string>
-				</patelt>
-			</pattern>
-		</rejectfont>
-		<rejectfont>
-			<pattern>
-				<patelt name="family">
-					<string>Cambria</string>
-				</patelt>
-			</pattern>
-		</rejectfont>
-	</selectfont>
-	<match target="font">
-		<test name="family">
-			<string>Hermit</string>
-		</test>
-		<edit mode="assign" name="rgb">
-			<const>none</const>
-		</edit>
-			</match> -->
 </fontconfig>

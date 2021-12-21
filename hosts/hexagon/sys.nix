@@ -1,19 +1,11 @@
 { inputs, config, pkgs, ... }:
 
 {
-    imports = [ ./hw.nix ];
-
-    nixpkgs.overlays = [
-        # Make the mute key work in ckb-next.
-        # This should only be necessary
-        # until my nixpkgs PR gets merged.
-        (self: super: {
-            ckb-next = super.ckb-next.overrideAttrs (old: {
-                buildInputs = old.buildInputs ++ [ self.libpulseaudio ];
-            });
-        })
+    imports = [ 
+        ./hw.nix 
+        ../../apps/fontconfig
     ];
-    
+
     sops = {
         defaultSopsFile = ./secrets.yaml;
         age.keyFile = "/home/hexular/.config/sops/age/keys.txt";
@@ -35,8 +27,10 @@
         };
         loader.efi.canTouchEfiVariables = true;
         # To get lm_sensors to work
-        extraModulePackages = with pkgs.linuxKernel.packages."${kernel}"; [ it87 ];
-        kernelModules = [ "coretemp" "it87" "lm92" "k10temp" ];
+        extraModulePackages = with pkgs.linuxKernel.packages."${kernel}"; [ it87 rtl8192eu ];
+        kernelModules = [ "coretemp" "it87" "lm92" "k10temp" "rtl8192eu" ];
+        # Enable WireGuard logs
+        kernelParams = [ "wireguard.dyndbg=\"module wireguard +p\"" ];
     };
 
     networking.hostName = "hexagon";
@@ -44,8 +38,16 @@
     # Set your time zone.
     time.timeZone = "Asia/Singapore";
 
-    networking.interfaces.enp5s0.useDHCP = true;
+    networking.interfaces = {
+        enp5s0 = {
+            useDHCP = true;
+        };
+        # wlp2s0f0u4 = {
+        #     useDHCP = true;
+        # };
+    };
 
+    networking.wireguard.enable = true;
     networking.wg-quick = {
         interfaces = {
             wg0 = {
@@ -57,7 +59,7 @@
                     {
                         publicKey = "ODEdIe46o4+tGe1biG2vCn+3wUk3pO5iFdvXDIGbGzo=";
                         allowedIPs = [ "0.0.0.0/0" ];
-                        endpoint = "conduit-sg.hexular.net:5298";
+                        endpoint = "io.hexular.net:5298";
                         persistentKeepalive = 25;
                     }
                 ];
@@ -106,6 +108,43 @@
         extraPackages = [ pkgs.vaapiVdpau ];
     };
 
+    # https://forums.developer.nvidia.com/t/bug-nvidia-v495-29-05-driver-spamming-dbus-enabled-applications-with-invalid-messages/192892/11
+    systemd.services.nvidia-fake-powerd = {
+        description = "NVIDIA fake powerd service";
+        wantedBy = [ "default.target" ];
+        aliases = ["dbus-nvidia.fake-powerd.service"];
+        serviceConfig = {
+            Type = "dbus";
+            User = "messagebus";
+            Group = "messagebus";
+            BusName = "nvidia.powerd.server";
+            LimitNPROC = 2;
+            ExecStart = "${pkgs.dbus}/bin/dbus-test-tool black-hole --system --name=nvidia.powerd.server";
+            ProtectHome = true;
+            ProtectSystem = "full";
+        };
+    };
+    services.dbus.packages = [
+        (pkgs.writeTextFile {
+            name = "nvidia-fake-powerd.conf";
+            destination = "/share/dbus-1/system.d/nvidia-fake-powerd.conf";
+            text = ''
+                <!DOCTYPE busconfig PUBLIC
+                 "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
+                 "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+                <busconfig>
+                        <policy user="messagebus">
+                                <allow own="nvidia.powerd.server"/>
+                        </policy>
+                        <policy context="default">
+                                <allow send_destination="nvidia.powerd.server"/>
+                                <allow receive_sender="nvidia.powerd.server"/>
+                        </policy>
+                </busconfig>
+            '';
+        })
+    ];
+
     # For Corsair keyboard control.
     hardware.ckb-next.enable = true;
 
@@ -126,7 +165,7 @@
             jupyter
         ];
         python = python3.withPackages pythonPackages;
-        in [
+    in [
         vim
         wget
         firefox
@@ -150,23 +189,8 @@
         nix-index
         gnome3.adwaita-icon-theme
         xclip
-        # breeze-icons
+        breeze-icons
     ];
-
-    fonts = {
-        enableDefaultFonts = true;
-        fonts = with pkgs; [
-            noto-fonts
-            noto-fonts-cjk
-            noto-fonts-emoji
-            liberation_ttf
-            fira-code
-            fira-code-symbols
-            nerdfonts
-        ];
-        # My custom fontconfig conf.
-        fontconfig.localConf = builtins.readFile ../../apps/fontconfig/fonts.xml;
-    };
 
     programs.gnupg.agent = {
         enable = true;

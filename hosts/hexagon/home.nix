@@ -84,6 +84,9 @@ in
 
     programs.alacritty = {
         enable = true;
+        settings = {
+            font.normal.family = "Hex Mono";
+        };
     };
 
     systemd.user.sessionVariables = {
@@ -158,6 +161,28 @@ in
     services.easyeffects = {
         enable = true;
     };
+
+    # GTK themes
+    gtk = {
+        enable = true;
+        # theme = {
+        #     name = "Breeze";
+        #     package = pkgs.gnome-breeze;
+        # };
+        iconTheme = {
+            name = "Adwaita";
+            package = pkgs.gnome.adwaita-icon-theme;
+        };
+    };
+
+    # programs.firefox = {
+    #     enable = true;
+    #     profiles.dexkf0au = {
+    #         id = 0;
+    #         isDefault = true;
+    #         userChrome = builtins.readFile ../../apps/firefox/userChrome.css;
+    #     };
+    # };
 
     home.file = {
         ".xinitrc".source = ../../apps/x11/xinitrc;

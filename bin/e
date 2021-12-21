@@ -7,8 +7,7 @@ common_prefix() {
 import sys, os
 def startswith(list, prefix):
     return len(prefix) <= len(list) and all(x[0] == x[1] for x in zip(list, prefix))
-paths = [os.path.abspath(p).split(os.path.sep) for p in sys.argv[1:]]
-print(paths)
+paths = [os.path.realpath(os.path.abspath(p)).split(os.path.sep) for p in sys.argv[1:]]
 prefix = paths[0]
 while len(prefix) > 0:
     all_have_prefix = all(startswith(path, prefix) for path in paths[1:])
@@ -19,13 +18,22 @@ print("".join(os.path.sep + part for part in prefix), end="")
     ' "$@"
 }
 
-# https://unix.stackexchange.com/questions/6463/find-searching-in-parent-directories-instead-of-subdirectories
 find-up() {
-    path="$(pwd)"
-    while [[ "$path" != "" && ! -e "$path/$1" ]]; do
-        path="''${path%/*}"
-    done
-    echo "$path"
+    python3 -c '
+import sys, os
+path = os.path.realpath(os.path.abspath(sys.argv[1]))
+fname = sys.argv[2]
+while True:
+    path_would_be = os.path.join(path, fname)
+    print(path_would_be, file=sys.stderr)
+    if os.path.exists(path_would_be):
+        print(path_would_be)
+        break
+    newpath = os.path.dirname(path)
+    if newpath == path:
+        break
+    path = newpath
+    ' "$@"
 }
 
 if [ -z "$@" ]; then
@@ -34,25 +42,31 @@ else
     PREFIX="$(common_prefix "$@")"
 fi
 
+echo "Looking in: $PREFIX"
+
 # don't recursively make nix shells
 if [ -z "$IN_NIX_SHELL" ]; then 
-    flake="$(find-up flake.nix)"
+    flake="$(find-up "$PREFIX" flake.nix)"
     if [ -f "$flake" ]; then
-        echo "Found at $flake"
         # this is a flake project, use flake develop
         # `nix develop` escapes args by default
-        exec nix develop --command "$EDITOR" "$@"
+        exec nix develop "$(dirname "$flake")" --command "$EDITOR" "$@"
     fi
-    default="$(find-up default.nix)"
-    shell="$(find-up shell.nix)"
+    default="$(find-up "$PREFIX" default.nix)"
+    shell="$(find-up "$PREFIX" shell.nix)"
     if [ -f "$default" -o -f "$shell" ]; then
-        echo "Found at $default or $shell"
+        if [ -f "$shell" ]; then
+            path="$shell"
+        else
+            path="$default"
+        fi
+        echo "Found at $path"
         # use nix-shell
         cmd=("$EDITOR" "$@")
         # https://unix.stackexchange.com/questions/475569/stringify-bash-command-from-array-of-arguments-for-use-in-bash-c
         escapedCmd="$(printf '%q ' "${cmd[@]}")"
         # nix-shell has no way to escape arguments
-        exec nix-shell --run "$escapedCmd"
+        exec nix-shell "$path" --run "$escapedCmd"
     fi
     # just launch editor
     echo "None found"

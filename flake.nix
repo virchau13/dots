@@ -1,5 +1,5 @@
 {
-    description = "A Home Manager flake";
+    description = "dots";
 
     inputs = {
         nixpkgs.url = github:nixos/nixpkgs/nixpkgs-unstable;
@@ -11,6 +11,11 @@
         flake-utils.url = github:numtide/flake-utils;
 
         eww.url = github:virchau13/eww;
+        nerd-font-patcher = {
+            url = github:ryanoasis/nerd-fonts;
+            flake = false;
+        };
+        # make-nerd-fonts.url = github:virchau13/make-nerd-fonts.nix;
 
         # nvim plugins
         coq_nvim = {

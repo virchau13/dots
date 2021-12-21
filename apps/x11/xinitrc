@@ -8,7 +8,15 @@ MONITOR_COUNT="$(xrandr --listactivemonitors | head -n 1 | cut -d' ' -f2)"
 case "$MONITOR_COUNT" in
     2)
         # get the monitors set up correctly
-        xrandr --output DVI-D-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-0 --mode 1920x1080 --pos 1920x0 --rotate normal
+        xrandr \
+            --output DVI-D-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal \
+            --output HDMI-0 --mode 1920x1080 --pos 1920x0 --rotate normal
+        ;;
+    3)
+        xrandr --dpi 96 \
+            --output DVI-D-0 --primary --mode 1920x1080 --pos 0x1080 --rotate normal \
+            --output HDMI-0 --mode 1920x1080 --pos 1920x1080 --rotate normal \
+            --output DP-2 --mode 1920x1080 --pos 960x0 --rotate normal
         ;;
     *)
         # no idea, just default to normal

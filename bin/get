@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Shortcut for `nix shell nixpkgs#$1`, plus some niceties.
+
+if [ -z "$1" ]; then echo "You must specify a package"; exit 1; fi
+
+if [ -z "$GOTTEN_NIX_PKGS" ]; then
+    export GOTTEN_NIX_PKGS="$1"
+else
+    export GOTTEN_NIX_PKGS="$GOTTEN_NIX_PKGS, $1"
+fi
+
+exec nix shell "nixpkgs#$1"

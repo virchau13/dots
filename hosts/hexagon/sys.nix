@@ -47,25 +47,25 @@
         # };
     };
 
-    networking.wireguard.enable = true;
-    networking.wg-quick = {
-        interfaces = {
-            wg0 = {
-                address = [ "10.200.200.13/24" ];
-                dns = [ "1.1.1.1" ];
-                listenPort = 5298;
-                privateKeyFile = "/run/secrets/wg/privkey";
-                peers = [
-                    {
-                        publicKey = "ODEdIe46o4+tGe1biG2vCn+3wUk3pO5iFdvXDIGbGzo=";
-                        allowedIPs = [ "0.0.0.0/0" ];
-                        endpoint = "io.hexular.net:5298";
-                        persistentKeepalive = 25;
-                    }
-                ];
-            };
-        };
-    };
+    # networking.wireguard.enable = true;
+    # networking.wg-quick = {
+    #     interfaces = {
+    #         wg0 = {
+    #             address = [ "10.200.200.13/24" ];
+    #             dns = [ "1.1.1.1" ];
+    #             listenPort = 5298;
+    #             privateKeyFile = "/run/secrets/wg/privkey";
+    #             peers = [
+    #                 {
+    #                     publicKey = "ODEdIe46o4+tGe1biG2vCn+3wUk3pO5iFdvXDIGbGzo=";
+    #                     allowedIPs = [ "0.0.0.0/0" ];
+    #                     endpoint = "io.hexular.net:5298";
+    #                     persistentKeepalive = 25;
+    #                 }
+    #             ];
+    #         };
+    #     };
+    # };
 
     # Select internationalisation properties.
     i18n.defaultLocale = "en_US.UTF-8";
@@ -217,8 +217,7 @@
         extraOptions = "--data-root /hdd/docker";
     };
 
-    # for steam
-    services.flatpak.enable = true;
+    programs.steam.enable = true;
 
     xdg.portal.enable = true;
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];

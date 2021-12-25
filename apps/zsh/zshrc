@@ -46,6 +46,9 @@ esac
 
 if [ ! -z "$HOST_COLOR" ]; then
     PROMPT="<%{%F{$HOST_COLOR}%}$HOSTNAME%{%f%}:%~>%# "
+    if [ ! -z "$GOTTEN_NIX_PKGS" ]; then
+        PROMPT="($GOTTEN_NIX_PKGS) $PROMPT"
+    fi
 else
     PROMPT="<%M:%~>%# "
 fi
@@ -54,3 +57,18 @@ bindkey -e
 
 HM_SESSION="$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 if [ -e "$HM_SESSION" ]; then source "$HM_SESSION"; fi
+
+# Too slow, commenting out for now
+# command_not_found_handler() {
+#     IFS=$'\n' candidates=($(nix-locate -w "bin/$1" --minimal | sed '/^(/d'))
+#     if [ "${#candidates[@]}" -eq 0 ]; then 
+#         echo "zsh: command not found: $1"
+#         exit 127
+#     else
+#         echo "the following packages contain the binary `$1`:"
+#         select opt in "${candidates[@]}"; do
+#             break
+#         done
+#         exec nix shell "nixpkgs#$opt"
+#     fi
+# }

@@ -61,13 +61,13 @@ main = do
     -- forM_ [".xmonad-workspace-log", ".xmonad-title-log"] $ \file -> safeSpawn "mkfifo" ["/tmp/" ++ file]
     -- Main config
     let modMask = mod4Mask in xmonad $
-        (ewmh . docks)
+        (ewmhFullscreen . ewmh . docks)
            def
              { modMask = modMask, -- Super key
                startupHook = startup,
                terminal = "alacritty",
                layoutHook = avoidStruts $ layoutHook def,
-               handleEventHook = handleEventHook def <+> fullscreenEventHook
+               handleEventHook = handleEventHook def
                -- logHook = eventLogHook
              }
            `removeKeys` [ (modMask .|. shiftMask, xK_slash) -- xmessage help
@@ -81,5 +81,6 @@ main = do
                               ),
                               ((modMask, xK_p), spawn "rofi -show run"),
                               ((modMask .|. shiftMask, xK_s), spawn "flameshot gui"),
-                              ((modMask, xK_c), spawn "notify-desktop \"$(xcolor)\"")
+                              ((modMask, xK_c), spawn "notify-desktop \"$(xcolor)\""),
+                              ((modMask .|. controlMask, xK_t), spawn "notify-desktop \"$(date)\"")
                             ]

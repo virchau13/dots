@@ -45,9 +45,12 @@ case "$HOSTNAME" in
 esac
 
 if [ ! -z "$HOST_COLOR" ]; then
+    ITALIC="$(tput sitm)"
+    RST="$(tput sgr0)"
+    NL=$'\n'
     PROMPT="<%{%F{$HOST_COLOR}%}$HOSTNAME%{%f%}:%~>%# "
     if [ ! -z "$GOTTEN_NIX_PKGS" ]; then
-        PROMPT="($GOTTEN_NIX_PKGS) $PROMPT"
+        PROMPT="%{$ITALIC%}($GOTTEN_NIX_PKGS)%{$RST%} $PROMPT"
     fi
 else
     PROMPT="<%M:%~>%# "

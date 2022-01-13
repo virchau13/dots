@@ -4,9 +4,9 @@ HOST="$(hostname)"
 
 case "$HOST" in
     hexagon)
-        exec sudo nixos-rebuild "$1" --flake ~/config
+        exec sudo nixos-rebuild "$1" --flake "$(realpath ~/config)"
         ;;
     hexamac)
-        exec darwin-rebuild "$1" --flake ~/config
+        exec darwin-rebuild "$1" --flake "$(realpath ~/config)"
         ;;
 esac

@@ -1,5 +1,10 @@
 (defvar iconsize 50)
 
+(defpoll time :interval "1s"
+              :initial "initial-value"  ; optional, defaults to poll at startup
+              :run-while true ; optional, defaults to 'true'
+  `date +%H:%M:%S`)
+
 (defwidget icon [path]
   (image
     :class "icon"
@@ -18,4 +23,5 @@
   :stacking "fg"
   :wm-ignore false
   :reserve  (struts :distance "50px" :side "left")
-  (icon :path "/home/hexular/Downloads/kitty.png"))
+  (box :orientation "v" :class "root"
+    time))

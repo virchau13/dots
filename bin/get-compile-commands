@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -e
+NAME="get-compile-commands"
+
+compilers=("cc" "gcc" "clang" "g++" "clang++")
+cmdfile="$(mktemp --suffix=get-compile-commands)"
+
+pathdir=~/.cache/$NAME
+
+if [ ! -d $pathdir ]; then
+    mkdir -p $pathdir
+fi
+for compiler in "${compilers[@]}"; do
+    if command -v "$compiler" &>/dev/null; then
+        if [ ! -f "$pathdir/$compiler" ]; then
+            cat ~/bin/compiler-wrapper | sed 's|#INSERT_ENV|\
+                COMPILE_COMMAND_COMPILER_PATH='"$(which "$compiler")"'\
+                COMPILE_COMMAND_COMPILER_NAME='"$compiler"'\
+            |' > "$pathdir/$compiler"
+            chmod +x "$pathdir/$compiler"
+        fi
+    fi
+done
+
+CC="$pathdir/gcc" CXX="$pathdir/g++" PATH="$pathdir:$PATH" COMPILE_COMMAND_FILE="$cmdfile" "$@"
+ 
+cat "$cmdfile" | jq -s '.' > compile_commands.json
+echo "get-compile-commands: compile_commands.json created"
+rm "$cmdfile"

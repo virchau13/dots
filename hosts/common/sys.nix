@@ -26,9 +26,6 @@
                jupyter
             ];
             python = python3.withPackages pythonPackages;
-            hls = pkgs.haskell-language-server.override { 
-                supportedGhcVersions = [ "901" ]; 
-            };
             packages = [
                 python
 
@@ -59,6 +56,8 @@
                 jq
                 bind
                 pv
+                yt-dlp
+                delta
 
                 # language servers
                 rnix-lsp
@@ -67,7 +66,6 @@
                 # cmake-language-server
                 # (for compatibility with MacOS, because LLVM 13 is marked as broken there)
                 (clang-tools.override { llvmPackages = pkgs.llvmPackages_12; })
-                hls
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

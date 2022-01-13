@@ -39,13 +39,18 @@ in {
             # displays gitsigns on the left bar
             gitsigns-nvim
             # autocomplete
-            extra.coq_nvim
-            extra.coq_artifacts
-            extra.coq_thirdparty
+            cmp-nvim-lsp
+            cmp-buffer
+            cmp-path
+            nvim-cmp
+            # snippets
+            luasnip 
             # lisp expression indents
             extra.parinfer-rust
             # yuck syntax highlighting
             extra.yuck-vim
+            # git operations
+            vim-fugitive
         ];
         extraConfig = "lua require 'init'";
     };

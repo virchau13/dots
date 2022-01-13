@@ -38,3 +38,6 @@ catopt("shortmess", "c")
 -- Make the screen start scrolling when the cursor is
 -- 5 lines from the top or bottom
 setopt('scrolloff', 5)
+
+-- Make selection not include cursor
+setopt('selection', 'exclusive')

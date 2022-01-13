@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+set -e
+
+#INSERT_ENV
+
+if [ -z "$COMPILE_COMMAND_FILE" ]; then
+    echo 'wrapper: no compile command file specified' >&2
+    exit 1
+fi
+
+if [ -z "$COMPILE_COMMAND_COMPILER_PATH" -o -z "$COMPILE_COMMAND_COMPILER_NAME"  ]; then
+    echo 'wrapper: no compiler specified' >&2
+    exit 2
+fi
+
+filecheck() {
+    case "$COMPILE_COMMAND_COMPILER_NAME" in
+        cc|gcc|clang)
+            # C
+            lang=C
+            ;;
+        g++|clang++)
+            lang=C++
+            ;;
+        *)
+            # what
+            echo "wrapper: no idea what to do for compiler $COMPILE_COMMAND_COMPILER_NAME" >&2
+            exit 3
+            ;;
+    esac
+    file "$1" | grep "$lang source" &>/dev/null
+}
+
+for arg in "$@"; do
+    if [[ "$arg" == -* ]]; then
+        if [ ! -z $double_dash ]; then
+            FILE_TO_CHECK="$arg"
+        fi
+    else
+        FILE_TO_CHECK="$arg"
+    fi
+    if [ ! -z "$FILE_TO_CHECK" ]; then
+        if filecheck "$FILE_TO_CHECK"; then
+            # this is probably the file, idk
+            FILE="$FILE_TO_CHECK"
+            break
+        fi
+    fi
+done
+
+jq -n '{ "directory": $pwd, "file": $file, "arguments": $ARGS.positional }' \
+    --arg pwd "$(pwd)" \
+    --arg file "$FILE" \
+    --args -- "$0" "$@" \
+    >> "$COMPILE_COMMAND_FILE"
+
+exec -a "$COMPILE_COMMAND_COMPILER_NAME" "$COMPILE_COMMAND_COMPILER_PATH" "$@"

@@ -14,8 +14,8 @@ in {
     ];
     
     home.file = {
-        ".zshrc".source = ../../apps/zsh/zshrc;
-        ".zshenv".source = ../../apps/zsh/zshenv;
+        ".zshrc".source = mkOutOfStoreSymlink "${configDir}/apps/zsh/zshrc";
+        ".zshenv".source = mkOutOfStoreSymlink "${configDir}/apps/zsh/zshenv";
         "bin".source = mkOutOfStoreSymlink "${configDir}/bin";
     };
 

@@ -12,7 +12,7 @@
 
         eww.url = github:virchau13/eww;
         nerd-font-patcher = {
-            url = github:ryanoasis/nerd-fonts;
+            url = github:ryanoasis/nerd-fonts/db026dd5c9f21b9e435c20b7627d4c27a6990420;
             flake = false;
         };
         # make-nerd-fonts.url = github:virchau13/make-nerd-fonts.nix;

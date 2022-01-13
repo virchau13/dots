@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 
 {
     imports = [ 
@@ -11,6 +11,10 @@
         age.keyFile = "/home/hexular/.config/sops/age/keys.txt";
         secrets = {
             "wg/privkey" = {};
+            "scripts/refresh-playlist" = {
+                mode = "0500";
+                owner = config.users.users.hexular.name;
+            };
         };
     };
 
@@ -47,25 +51,26 @@
         # };
     };
 
-    # networking.wireguard.enable = true;
-    # networking.wg-quick = {
-    #     interfaces = {
-    #         wg0 = {
-    #             address = [ "10.200.200.13/24" ];
-    #             dns = [ "1.1.1.1" ];
-    #             listenPort = 5298;
-    #             privateKeyFile = "/run/secrets/wg/privkey";
-    #             peers = [
-    #                 {
-    #                     publicKey = "ODEdIe46o4+tGe1biG2vCn+3wUk3pO5iFdvXDIGbGzo=";
-    #                     allowedIPs = [ "0.0.0.0/0" ];
-    #                     endpoint = "io.hexular.net:5298";
-    #                     persistentKeepalive = 25;
-    #                 }
-    #             ];
-    #         };
-    #     };
-    # };
+    networking.wireguard.enable = true;
+    networking.wg-quick = {
+        interfaces = {
+            wg0 = {
+                address = [ "10.200.200.13/24" ];
+                dns = [ "1.1.1.1" ];
+                listenPort = 5298;
+                privateKeyFile = "/run/secrets/wg/privkey";
+                peers = [
+                    {
+                        publicKey = "ODEdIe46o4+tGe1biG2vCn+3wUk3pO5iFdvXDIGbGzo=";
+                        # allowedIPs = [ "0.0.0.0/0" ];
+                        allowedIPs = [ "10.200.200.0/24" ];
+                        endpoint = "io.hexular.net:5298";
+                        persistentKeepalive = 25;
+                    }
+                ];
+            };
+        };
+    };
 
     # Select internationalisation properties.
     i18n.defaultLocale = "en_US.UTF-8";
@@ -152,7 +157,8 @@
         isNormalUser = true;
         extraGroups = [ 
             "wheel" # sudo
-            "docker" # docker
+            "docker"
+            "lxd"
         ];
         shell = pkgs.zsh;
     };
@@ -190,6 +196,9 @@
         gnome3.adwaita-icon-theme
         xclip
         breeze-icons
+        inkscape
+        cargo-flamegraph
+        gthumb
     ];
 
     programs.gnupg.agent = {
@@ -211,11 +220,6 @@
     # networking.firewall.allowedUDPPorts = [ ... ];
     # Or disable the firewall altogether.(TODO change this to true)
     networking.firewall.enable = false;
-
-    virtualisation.docker = {
-        enable = true;
-        extraOptions = "--data-root /hdd/docker";
-    };
 
     programs.steam.enable = true;
 

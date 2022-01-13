@@ -46,11 +46,15 @@ in
 
     home.packages = let 
         xmonadAlias = pkgs.writeShellScriptBin "xmonad" ''
-        #!${pkgs.bash}/bin/bash
-        # So that `xmonad` knows how to restart itself.
-        # The indirect `exec` rather than a symlink is required
-        # because otherwise XMonad complains about not being called 'xmonad-x86_64-linux'.
-        exec -a "$0" ~/.xmonad/xmonad-x86_64-linux "$@";
+            #!${pkgs.bash}/bin/bash
+            # So that `xmonad` knows how to restart itself.
+            # The indirect `exec` rather than a symlink is required
+            # because otherwise XMonad complains about not being called 'xmonad-x86_64-linux'.
+            exec -a "$0" ~/.xmonad/xmonad-x86_64-linux "$@";
+        '';
+        # Work around https://github.com/Mic92/sops-nix/issues/150
+        refresh-playlist = pkgs.writeShellScriptBin "refresh-playlist" ''
+            exec /run/secrets/scripts/refresh-playlist "$@"
         '';
         packages = with pkgs; [
             xfce.thunar xfce.xfconf xfce.tumbler xfce.exo
@@ -74,8 +78,10 @@ in
             mpv
             wine
             winetricks
+            transmission-qt
             multimc
             xmonadAlias
+            refresh-playlist
 
             # language servers
             sumneko-lua-language-server

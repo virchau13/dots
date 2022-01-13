@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
-if [ -f ./flake.nix ]; then
-    # flakes, use `nix develop`
-    exec nix develop
-elif [ -f ./shell.nix -o -f ./default.nix ]; then
-    # old nix, use `nix-shell`
-    exec nix-shell
+
+if [ -z "$1" ]; then 
+    # just normal develop
+    if [ -f ./flake.nix ]; then
+        # flakes, use `nix develop`
+        exec nix develop
+    elif [ -f ./shell.nix -o -f ./default.nix ]; then
+        # old nix, use `nix-shell`
+        exec nix-shell
+    else
+        # do nothing
+        echo "! No files detected, doing nothing"
+    fi
 else
-    # do nothing
-    echo "! No files detected, doing nothing"
+    # want to develop a specific lang
+    exec nix develop ~/prog/"$1"
 fi

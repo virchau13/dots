@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec yt-dlp -f bestaudio -o '%(title)s [%(id)s].%(ext)s' -x "$@"

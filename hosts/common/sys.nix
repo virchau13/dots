@@ -1,4 +1,9 @@
 { inputs, config, lib, pkgs, ... }: {
+
+    imports = [
+        ../../apps/fontconfig
+    ];
+
     # An unfortunate, but necessary, line.
     nixpkgs.config.allowUnfree = true;
 
@@ -16,7 +21,6 @@
         binaryCachePublicKeys = [
             "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
-        autoOptimiseStore = true;
         useSandbox = true;
     };
     
@@ -57,7 +61,11 @@
                 bind
                 pv
                 yt-dlp
+                exa
                 delta
+                nmap
+                tcptraceroute
+                kitty.terminfo
 
                 # language servers
                 rnix-lsp
@@ -80,4 +88,5 @@
             ];
        in packages ++ nodePackages;
 
+    programs.zsh.enable = true;
 }

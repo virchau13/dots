@@ -7,7 +7,6 @@
 
     # Auto upgrade nix package and the daemon service.
     services.nix-daemon.enable = true;
-    nix.package = pkgs.nixUnstable;
 
     # Create /etc/bashrc that loads the nix-darwin environment.
     programs.zsh.enable = true;  # default shell on catalina
@@ -17,20 +16,24 @@
     # $ darwin-rebuild changelog
     system.stateVersion = 4;
 
-    users.users.virchaudhury = {
-        home = "/Users/virchaudhury";
-        name = "virchaudhury";
+    users.users.hexular = {
+        home = "/Users/hexular";
+        name = "hexular";
     };
 
-    nix.trustedUsers = [ "virchaudhury" ];
+    nix.trustedUsers = [ "hexular" ];
+
+    environment.variables = {
+        TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
+    };
 
     home-manager.extraSpecialArgs = let 
-        homeDir = config.users.users.virchaudhury.home; 
+        homeDir = config.users.users.hexular.home; 
     in { 
         inherit inputs homeDir;
-        configDir = "${homeDir}/.config/nixpkgs";
+        configDir = "${homeDir}/config";
     };
-    home-manager.users.virchaudhury = { pkgs, ... }: {
+    home-manager.users.hexular = { pkgs, ... }: {
         imports = [ ../common/home.nix ];
     };
 }

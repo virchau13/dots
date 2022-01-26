@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+for arg in "$@"; do
+    if [ ! -f "$arg" ]; then
+        NOT_ALL_FILES=true
+    fi
+done
+
+if [ -z "$NOT_ALL_FILES" ]; then
+    # they're all regular files
+    exec bat -- "$@"
+else
+    # at least one is a special file / dir
+    exec exa -- "$@"
+fi

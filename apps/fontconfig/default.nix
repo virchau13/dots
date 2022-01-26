@@ -1,6 +1,5 @@
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, lib, ... }: {
     fonts = {
-        enableDefaultFonts = true;
         fonts = with pkgs; [
             noto-fonts
             noto-fonts-cjk
@@ -17,11 +16,15 @@
                 ];
                 postInstall = ''
                     export LANG=en_US.UTF-8
-                    find $out/ -type f -name '*.ttf' -exec fontforge ${inputs.nerd-font-patcher.outPath}/font-patcher {} \; 
+                    find $out/ -type f -name '*.ttf' -exec fontforge ${pkgs.nerd-font-patcher}/bin/font-patcher {} \; 
                 '';
             }))
         ];
+    } // (if pkgs.stdenv.isLinux then {
+        enableDefaultFonts = true;
         fontconfig.localConf = builtins.readFile ../../apps/fontconfig/fonts.xml;
-    };
+    } else if pkgs.stdenv.isDarwin then {
+        enableFontDir = true;
+    } else {});
     nixpkgs.config.input-fonts.acceptLicense = true;
 }

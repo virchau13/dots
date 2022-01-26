@@ -3,8 +3,9 @@
 {
     imports = [ 
         ./hw.nix 
-        ../../apps/fontconfig
     ];
+
+    nix.autoOptimiseStore = true;
 
     sops = {
         defaultSopsFile = ./secrets.yaml;
@@ -93,8 +94,6 @@
     };
 
     services.printing.enable = true;
-
-    programs.zsh.enable = true;
 
     # Enable sound.
     security.rtkit.enable = true;

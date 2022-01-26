@@ -264,23 +264,6 @@
         "type": "github"
       }
     },
-    "nerd-font-patcher": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1639970727,
-        "narHash": "sha256-ceNPcGtqD6ZtRjuTBLtNFxuBzbd6A0XMt/aS++2uAiE=",
-        "owner": "ryanoasis",
-        "repo": "nerd-fonts",
-        "rev": "db026dd5c9f21b9e435c20b7627d4c27a6990420",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ryanoasis",
-        "repo": "nerd-fonts",
-        "rev": "db026dd5c9f21b9e435c20b7627d4c27a6990420",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1641710811,
@@ -430,7 +413,6 @@
         "flake-utils": "flake-utils_2",
         "home-manager": "home-manager",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
-        "nerd-font-patcher": "nerd-font-patcher",
         "nixpkgs": "nixpkgs_7",
         "parinfer-rust": "parinfer-rust",
         "sops-nix": "sops-nix",

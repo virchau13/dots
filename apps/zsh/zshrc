@@ -37,12 +37,14 @@ case "$HOSTNAME" in
         ;;
     hexamac)
         HOST_COLOR="green"
-        if [ -e /Users/virchaudhury/.nix-profile/etc/profile.d/nix.sh ]; then 
-            source /Users/virchaudhury/.nix-profile/etc/profile.d/nix.sh; 
+        if [ -e /Users/hexular/.nix-profile/etc/profile.d/nix.sh ]; then 
+            source /Users/hexular/.nix-profile/etc/profile.d/nix.sh; 
         fi # added by Nix installer
         export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
         ;;
 esac
+
+alias tree='exa --tree'
 
 if [ ! -z "$HOST_COLOR" ]; then
     ITALIC="$(tput sitm)"
@@ -56,7 +58,31 @@ else
     PROMPT="<%M:%~>%# "
 fi
 
-bindkey -e
+bindkey -v
+
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] ||
+     [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'
+
+  elif [[ ${KEYMAP} == main ]] ||
+       [[ ${KEYMAP} == viins ]] ||
+       [[ ${KEYMAP} = '' ]] ||
+       [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'
+      fi
+}
+zle -N zle-keymap-select
+
+# Use beam shape cursor on startup.
+_fix_cursor() {
+   echo -ne '\e[5 q'
+}
+
+# reduce ESC timeout
+KEYTIMEOUT=5
+
+precmd_functions+=(_fix_cursor)
 
 HM_SESSION="$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 if [ -e "$HM_SESSION" ]; then source "$HM_SESSION"; fi

@@ -10,7 +10,7 @@
     nix = {
         package = pkgs.nixUnstable;
         extraOptions = ''
-            experimental-features = nix-command flakes
+            extra-experimental-features = nix-command flakes
             build-users-group = nixbld
         '';
         trustedUsers = [ "root" "hexular" ];
@@ -42,6 +42,10 @@
                 # js
                 nodejs
                 yarn
+
+                # elixir
+                elixir
+                elixir_ls
 
                 # misc
                 tmux

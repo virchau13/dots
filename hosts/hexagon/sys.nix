@@ -12,6 +12,7 @@
         age.keyFile = "/home/hexular/.config/sops/age/keys.txt";
         secrets = {
             "wg/privkey" = {};
+            "wifi/env" = {};
             "scripts/refresh-playlist" = {
                 mode = "0500";
                 owner = config.users.users.hexular.name;
@@ -47,9 +48,31 @@
         enp5s0 = {
             useDHCP = true;
         };
-        # wlp2s0f0u4 = {
-        #     useDHCP = true;
-        # };
+        wlp7s0f3u4 = {
+            useDHCP = true;
+        };
+    };
+
+    networking.wireless = {
+        enable = true;
+        environmentFile = "/run/secrets/wifi/env";
+        networks = {
+            # TODO make private
+            "Games@UWCSEA" = {
+                auth = ''
+                    ssid="Games@UWCSEA"
+                    scan_ssid=1
+                    key_mgmt=WPA-EAP
+                    eap=PEAP
+                    pairwise=CCMP TKIP
+                    group=CCMP TKIP
+                    phase1="peapver=0"
+                    identity="@IDENTITY@"
+                    password="@PASSWD@"
+                    phase2="auth=MSCHAPV2"
+                '';
+            };
+        };
     };
 
     networking.wireguard.enable = true;
@@ -63,9 +86,9 @@
                 peers = [
                     {
                         publicKey = "ODEdIe46o4+tGe1biG2vCn+3wUk3pO5iFdvXDIGbGzo=";
-                        # allowedIPs = [ "0.0.0.0/0" ];
-                        allowedIPs = [ "10.200.200.0/24" ];
-                        endpoint = "io.hexular.net:5298";
+                        allowedIPs = [ "0.0.0.0/0" ];
+                        # allowedIPs = [ "10.200.200.0/24" ];
+                        endpoint = "218.186.154.193:5298";
                         persistentKeepalive = 25;
                     }
                 ];
@@ -152,6 +175,10 @@
     # For Corsair keyboard control.
     hardware.ckb-next.enable = true;
 
+    hardware.opentabletdriver = {
+        enable = true;
+    };
+
     users.users.hexular = {
         isNormalUser = true;
         extraGroups = [ 
@@ -198,6 +225,8 @@
         inkscape
         cargo-flamegraph
         gthumb
+        krita
+        rr
     ];
 
     programs.gnupg.agent = {
@@ -224,6 +253,7 @@
 
     xdg.portal.enable = true;
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    xdg.autostart.enable = true;
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
@@ -244,6 +274,5 @@
             ./home.nix 
         ];
     };
-
 }
 

@@ -51,6 +51,10 @@ in {
             extra.yuck-vim
             # git operations
             vim-fugitive
+            # elixir syntax highlighting
+            vim-elixir
+            # lsp progress displayer
+            extra.fidget-nvim
         ];
         extraConfig = "lua require 'init'";
     };

@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 
+get-nix-system() {
+    nix show-config | grep '^system =' | sed 's/[^=]* = \(.*\)/\1/'
+}
+
 if [ -z "$1" ]; then 
     # just normal develop
     if [ -f ./flake.nix ]; then
         # flakes, use `nix develop`
-        exec nix develop
+        export IN_NIX_DEV_SHELL_NAME=$(nix eval --raw ".#defaultPackage.$(get-nix-system).pname" &>/dev/null)
+        if [ -z "$IN_NIX_DEV_SHELL_NAME" ]; then
+            export IN_NIX_DEV_SHELL_NAME="$(basename "$(pwd)")"
+        fi
+        exec nix develop --command "$SHELL"
     elif [ -f ./shell.nix -o -f ./default.nix ]; then
         # old nix, use `nix-shell`
         exec nix-shell
@@ -14,5 +22,6 @@ if [ -z "$1" ]; then
     fi
 else
     # want to develop a specific lang
-    exec nix develop ~/prog/"$1"
+    export IN_NIX_DEV_SHELL_NAME="$1"
+    exec nix develop ~/prog/"$1" --command "$SHELL"
 fi

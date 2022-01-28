@@ -51,8 +51,14 @@ if [ ! -z "$HOST_COLOR" ]; then
     RST="$(tput sgr0)"
     NL=$'\n'
     PROMPT="<%{%F{$HOST_COLOR}%}$HOSTNAME%{%f%}:%~>%# "
+    if [ ! -z "$IN_NIX_DEV_SHELL_NAME" ]; then
+        nixprompt+=("@$IN_NIX_DEV_SHELL_NAME")
+    fi
     if [ ! -z "$GOTTEN_NIX_PKGS" ]; then
-        PROMPT="%{$ITALIC%}($GOTTEN_NIX_PKGS)%{$RST%} $PROMPT"
+        nixprompt+=("+($GOTTEN_NIX_PKGS)")
+    fi
+    if [ "${#nixprompt[@]}" != 0 ]; then
+        PROMPT="%{$ITALIC%}$(printf '%s ' "${nixprompt[@]}")%{$RST%}$PROMPT"
     fi
 else
     PROMPT="<%M:%~>%# "
@@ -78,14 +84,26 @@ zle -N zle-keymap-select
 _fix_cursor() {
    echo -ne '\e[5 q'
 }
+precmd_functions+=(_fix_cursor)
 
 # reduce ESC timeout
 KEYTIMEOUT=5
 
-precmd_functions+=(_fix_cursor)
-
 HM_SESSION="$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 if [ -e "$HM_SESSION" ]; then source "$HM_SESSION"; fi
+
+edit-history() {
+    tempHistFile="$(mktemp)"
+    chmod 600 "$tempHistFile"
+    echo "putting history in $tempHistFile"
+    fc -W "$tempHistFile"
+    if "$EDITOR" "$tempHistFile"; then
+        fc -R /tmp/zsh_history
+        echo "history successfully edited"
+    else
+        echo "non-zero exit code, history not edited"
+    fi
+}
 
 # Too slow, commenting out for now
 # command_not_found_handler() {

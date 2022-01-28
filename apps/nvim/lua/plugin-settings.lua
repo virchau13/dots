@@ -20,6 +20,7 @@ require 'nvim-treesitter.configs'.setup {
     ensure_installed = "all",
     highlight = {
         enable = true,
+        -- disable = { 'elixir' }
     },
     indent = {
         enable = true
@@ -64,5 +65,7 @@ require'nvim-tree'.setup {
         hide_root_folder = true
     }
 }
+
+require('fidget').setup {}
 
 setgvar("tokyonight_style", "night")

@@ -1,5 +1,10 @@
 # Custom packaging for plugins that aren't already in Nixpkgs.
-{ inputs, config, pkgs, lib, ... }: {
+{ inputs, config, pkgs, lib, ... }: let
+    simplePlugin = input: name: pkgs.vimUtils.buildVimPlugin {
+        inherit name;
+        src = input;
+    };
+in {
     # coq_nvim
 
     # COQ plugins are updated every day, autogenerate the version
@@ -70,4 +75,6 @@
         name = "yuck.vim";
         src = inputs.yuck-vim;
     };
+
+    fidget-nvim = simplePlugin inputs.fidget-nvim "fidget.nvim";
 }

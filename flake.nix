@@ -33,6 +33,11 @@
             url = github:elkowar/yuck.vim;
             flake = false;
         };
+
+        fidget-nvim = {
+            url = github:j-hui/fidget.nvim;
+            flake = false;
+        };
     };
 
     outputs = inputs@{ self, nixpkgs, darwin, home-manager, neovim-nightly-overlay, sops-nix, flake-utils, ... }: {

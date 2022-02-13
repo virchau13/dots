@@ -8,42 +8,6 @@ in
         ../../apps/eww
     ];
 
-    nixpkgs.overlays = [
-        (self: super: {
-            # Enable GPU rasterization for Discord,
-            # as well as no seccomp sandbox
-            # (otherwise it lags too much.)
-            discord-canary = super.discord-canary.overrideAttrs (old: {
-                nativeBuildInputs = old.nativeBuildInputs ++ [
-                    pkgs.nodePackages.asar
-                ];
-                buildPhase = 
-                    let 
-                      # Sanitize for sed in single quotes in bash.
-                      replaceCode = builtins.replaceStrings 
-                          ["'" "/" "&" "\n"] 
-                          ["'\"'\"'" "\\/" "\\&" "\\n"] 
-                          ''
-                              for(let s of [
-                                  "no-sandbox",
-                                  "flag-switches-begin", 
-                                  "enable-gpu-rasterization", 
-                                  "flag-switches-end"
-                              ]) {
-                                  app.commandLine.appendSwitch(s);
-                                  console.log("--" + s);
-                              }
-                          ''; 
-                    in ''
-                    ASAR_FILE="resources/app.asar"
-                    asar extract "$ASAR_FILE" "$TMP/work"
-                    sed -i "s/require('electron');"'/require("electron"); ${replaceCode}/' "$TMP/work/app_bootstrap/index.js"
-                    asar pack "$TMP/work" "$ASAR_FILE"
-                    '';
-            });  
-        })
-    ];
-
     home.packages = let 
         xmonadAlias = pkgs.writeShellScriptBin "xmonad" ''
             #!${pkgs.bash}/bin/bash
@@ -79,10 +43,20 @@ in
             wine
             winetricks
             transmission-qt
-            multimc
+            polymc
             xmonadAlias
             refresh-playlist
-
+            # Make discord run faster
+            (pkgs.writeShellScriptBin "discord" ''
+                ${pkgs.discord}/bin/discord \
+                    --ignore-gpu-blocklist \
+                    --disable-features=UseOzonePlatform \
+                    --enable-features=VaapiVideoDecoder \
+                    --use-gl=desktop \
+                    --enable-gpu-rasterization \
+                    --enable-zero-copy \
+                    --no-sandbox
+            '')
             # language servers
             sumneko-lua-language-server
         ];

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Edits secrets files.
+# https://unix.stackexchange.com/questions/6463/find-searching-in-parent-directories-instead-of-subdirectories
+find-up(){
+  path="$(pwd)"
+  while [[ "$path" != "" && ! -e "$path/$1" ]]; do
+    path="''${path%/*}"
+  done
+  echo "$path"
+}
+# First eval `sops.nix` to generate `.sops.yaml`.
+# (Did you know that YAML is a superset of JSON?)
+path="$(find-up sops.nix)"
+echo "Found sops.nix at $path"
+nix eval --json -f "$path"/sops.nix | ${pkgs.jq}/bin/jq > "$path"/.sops.yaml
+# Now do the actual editing.
+exec sops "$@"

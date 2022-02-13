@@ -9,15 +9,19 @@ function noremap(mode, keys, bind, options)
     vim.api.nvim_set_keymap(mode, keys, bind, opts)
 end
 
+function telescope_bind(bind, builtin, opts)
+    noremap('n', bind, ':<C-u>Telescope ' .. builtin .. '<CR>', opts)
+end
+
 noremap('n', '<Leader>nt', ':<C-u>NvimTreeToggle<CR>', { silent = true })
 noremap('n', '<Leader>tn', ':<C-u>tabnew ')
 noremap('n', '<Leader>tl', ':<C-u>Telescope<CR>')
 -- Open files
-noremap('n', '<Leader>op', ':<C-u>Telescope find_files<CR>')
+telescope_bind('<Leader>op', 'find_files')
 -- Navigate buffers
-noremap('n', '<Leader>b', ':<C-u>Telescope buffers<CR>')
+telescope_bind('<Leader>b', 'buffers')
 -- Recursive grep
-noremap('n', '<Leader>rg', ':<C-u>Telescope live_grep<CR>')
--- Quickfix list navigation
-noremap('n', '<Leader>cn', ':<C-u>cnext<CR>')
-noremap('n', '<Leader>cp', ':<C-u>cprev<CR>')
+telescope_bind('<Leader>rg', 'live_grep')
+-- LSP symbols
+telescope_bind('<Leader>lws', 'lsp_workspace_symbols')
+telescope_bind('<Leader>lds', 'lsp_document_symbols')

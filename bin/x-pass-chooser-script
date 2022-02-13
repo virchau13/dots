@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+set -x pipefail
+if [ ! -t 1 ]; then
+    # redirect output to log file
+    exec &> ~/.cache/x-pass-chooser-log
+fi
+passfile="$(find ~/.password-store -name '*.gpg' -printf '%P\0' | awk 'BEGIN { RS="\0" } { printf "%s\0",substr($0,1,length($0)-4) }' | rofi -dmenu -sep '\0')"
+tmpfile="$(mktemp --suffix=primary-clip-buf)"
+xclip -o > "$tmpfile" \
+    && pass show "$passfile" | head -n 1 | xclip \
+    && xdotool click 2 \
+    || true
+xclip < "$tmpfile"
+rm "$tmpfile"

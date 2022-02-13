@@ -68,4 +68,6 @@ require'nvim-tree'.setup {
 
 require('fidget').setup {}
 
+require('virt-column').setup()
+
 setgvar("tokyonight_style", "night")

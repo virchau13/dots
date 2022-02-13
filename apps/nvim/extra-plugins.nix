@@ -71,10 +71,9 @@ in {
         '';
     });
 
-    yuck-vim = pkgs.vimUtils.buildVimPlugin {
-        name = "yuck.vim";
-        src = inputs.yuck-vim;
-    };
+    yuck-vim = simplePlugin inputs.yuck-vim "yuck.vim";
 
     fidget-nvim = simplePlugin inputs.fidget-nvim "fidget.nvim";
+
+    virt-column-nvim = simplePlugin inputs.virt-column-nvim "virt-column.nvim";
 }

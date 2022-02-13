@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ "$#" -lt 1 ]; then
+    # args are empty, use cwd
+    set -- "$@" "$(pwd)"
+fi
+
 for arg in "$@"; do
     if [ ! -f "$arg" ]; then
         NOT_ALL_FILES=true

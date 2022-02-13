@@ -5,7 +5,11 @@
         ./hw.nix 
     ];
 
-    nix.autoOptimiseStore = true;
+    nix.settings = {
+        auto-optimise-store = true;
+        # i don't want all my cores to be taken up
+        cores = 4; # cores per derivation built
+    };
 
     sops = {
         defaultSopsFile = ./secrets.yaml;
@@ -53,28 +57,7 @@
         };
     };
 
-    networking.wireless = {
-        enable = true;
-        environmentFile = "/run/secrets/wifi/env";
-        networks = {
-            # TODO make private
-            "Games@UWCSEA" = {
-                auth = ''
-                    ssid="Games@UWCSEA"
-                    scan_ssid=1
-                    key_mgmt=WPA-EAP
-                    eap=PEAP
-                    pairwise=CCMP TKIP
-                    group=CCMP TKIP
-                    phase1="peapver=0"
-                    identity="@IDENTITY@"
-                    password="@PASSWD@"
-                    phase2="auth=MSCHAPV2"
-                '';
-            };
-        };
-    };
-
+    networking.networkmanager.enable = true;
     networking.wireguard.enable = true;
     networking.wg-quick = {
         interfaces = {
@@ -86,8 +69,8 @@
                 peers = [
                     {
                         publicKey = "ODEdIe46o4+tGe1biG2vCn+3wUk3pO5iFdvXDIGbGzo=";
-                        allowedIPs = [ "0.0.0.0/0" ];
-                        # allowedIPs = [ "10.200.200.0/24" ];
+                        # Usage as an 'actual VPN' is managed by NetworkManager.
+                        allowedIPs = [ "10.200.200.0/24" ];
                         endpoint = "218.186.154.193:5298";
                         persistentKeepalive = 25;
                     }
@@ -183,8 +166,9 @@
         isNormalUser = true;
         extraGroups = [ 
             "wheel" # sudo
-            "docker"
-            "lxd"
+            "networkmanager"
+            # "docker"
+            # "lxd"
         ];
         shell = pkgs.zsh;
     };
@@ -227,12 +211,15 @@
         gthumb
         krita
         rr
+        wireshark
+        iw
+        xdotool
     ];
 
     programs.gnupg.agent = {
         enable = true;
         enableSSHSupport = true;
-        pinentryFlavor = "curses";
+        pinentryFlavor = "gtk2";
     };
 
     programs.dconf.enable = true;

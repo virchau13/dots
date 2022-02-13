@@ -55,8 +55,14 @@ in {
             vim-elixir
             # lsp progress displayer
             extra.fidget-nvim
+            # allows virtual text instead of a colorcolumn
+            extra.virt-column-nvim
+            # misc navigation bindings
+            vim-unimpaired
         ];
-        extraConfig = "lua require 'init'";
+        extraConfig = ''
+            lua require('init') { typescript = "${pkgs.nodePackages.typescript}" }
+        '';
     };
 
 }

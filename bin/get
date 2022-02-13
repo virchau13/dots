@@ -10,4 +10,11 @@ else
     export GOTTEN_NIX_PKGS="$GOTTEN_NIX_PKGS, $1"
 fi
 
-exec nix shell "nixpkgs#$1"
+args=()
+args+=("--impure") # https://discourse.nixos.org/t/nix-run-does-not-install-unfree-packages-nixpkgs-allow-unfree-doesnt-seem-to-help/12039
+if [ "$#" -gt 1 ]; then
+    shift
+    args+=("--command" "$0" "$@")
+fi
+
+exec nix shell "nixpkgs#$1" "${args[@]}"

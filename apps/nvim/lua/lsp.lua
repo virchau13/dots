@@ -86,7 +86,9 @@ end
 
 local settings = {
     clangd = {},
-    tsserver = {},
+    tsserver = {
+        cmd = { 'typescript-language-server', '--stdio', '--tsserver-path', deps.typescript .. "/lib/node_modules/typescript/lib" }
+    },
     pylsp = {
         settings = {
             pylsp = {

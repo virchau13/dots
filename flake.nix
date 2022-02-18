@@ -42,6 +42,11 @@
             url = github:lukas-reineke/virt-column.nvim;
             flake = false;
         };
+
+        ra-multiplex = {
+            url = github:pr2502/ra-multiplex;
+            flake = false;
+        };
     };
 
     outputs = inputs@{ self, nixpkgs, darwin, home-manager, neovim-nightly-overlay, sops-nix, flake-utils, ... }: {

@@ -3,32 +3,6 @@ require 'util'
 -- Load in custom language server configs for those that don't exist in nvim-lspconfig.
 require 'lsp-custom'
 
--- require('lspkind').init({
---     with_text = true,
---     symbol_map = {
---         Text = '',
---         Method = '',
---         Function = '',
---         Constructor = '',
---         Variable = '',
---         Class = '',
---         Interface = 'ﰮ',
---         Module = '',
---         Property = '',
---         Unit = '',
---         Value = '',
---         Enum = '',
---         Keyword = '',
---         Snippet = '﬌',
---         Color = '',
---         File = '',
---         Folder = '',
---         EnumMember = '',
---         Constant = '',
---         Struct = ''
---     }
--- })
-
 local on_attach = function(client, bufnr)
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
@@ -55,9 +29,9 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<Leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
     buf_set_keymap('n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    buf_set_keymap('n', '<Leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-    buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-    buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+    buf_set_keymap('n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float(0, { scope = "line", border = "single" })<CR>', opts)
+    buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev({ float =  { border = "single" }})<CR>', opts)
+    buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next({ float =  { border = "single" }})<CR>', opts)
     buf_set_keymap('n', '<Leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
     -- Set some keybinds conditional on server capabilities
@@ -73,7 +47,6 @@ local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
-
 
 
 -- cmp.setup.cmdline(':', {
@@ -175,7 +148,6 @@ local settings = {
     svelte = {},
 }
 
-vim.lsp.set_log_level('debug')
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 local nvim_lsp = require('lspconfig')
 for server, config in pairs(settings) do

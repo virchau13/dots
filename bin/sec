@@ -4,7 +4,7 @@
 find-up(){
   path="$(pwd)"
   while [[ "$path" != "" && ! -e "$path/$1" ]]; do
-    path="''${path%/*}"
+    path="${path%/*}"
   done
   echo "$path"
 }
@@ -12,6 +12,6 @@ find-up(){
 # (Did you know that YAML is a superset of JSON?)
 path="$(find-up sops.nix)"
 echo "Found sops.nix at $path"
-nix eval --json -f "$path"/sops.nix | ${pkgs.jq}/bin/jq > "$path"/.sops.yaml
+nix eval --json -f "$path"/sops.nix | jq > "$path"/.sops.yaml
 # Now do the actual editing.
 exec sops "$@"

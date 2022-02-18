@@ -4,6 +4,26 @@
 
 if [ -z "$1" ]; then echo "You must specify a package"; exit 1; fi
 
+
+case "$1" in
+    -l)
+        # Use the latest version of nixpkgs
+        nixpkgs="nixpkgs"
+        shift
+        ;;
+    -b)
+        # Use the branch/rev of nixpkgs specified
+        # (e.g. `get -b master discord`)
+        shift
+        nixpkgs="github:NixOS/nixpkgs/$1"
+        ;;
+    *)
+        # I put `nixpkgs` as the nixpkgs rev the system was built from in $NIX_PATH.
+        # This makes sure I don't have to download nixpkgs *every* *single* *time*.
+        nixpkgs="$(nix eval --impure --expr '<nixpkgs>')"
+        ;;
+esac
+
 if [ -z "$GOTTEN_NIX_PKGS" ]; then
     export GOTTEN_NIX_PKGS="$1"
 else
@@ -17,4 +37,4 @@ if [ "$#" -gt 1 ]; then
     args+=("--command" "$0" "$@")
 fi
 
-exec nix shell "nixpkgs#$1" "${args[@]}"
+exec nix shell "$nixpkgs#$1" "${args[@]}"

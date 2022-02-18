@@ -59,7 +59,8 @@ require'nvim-tree'.setup {
             custom_only = false,
             -- list of mappings to set on the tree manually
             list = {
-                { key = 't', cb = tree_cb("tabnew") }
+                -- (Bad practice apparently... I should be using buffers.)
+                -- { key = 't', cb = tree_cb("tabnew") }
             }
         },
         hide_root_folder = true

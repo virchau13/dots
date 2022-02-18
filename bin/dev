@@ -42,7 +42,7 @@ if [ -z "$devname" ]; then
     if [ -f ./flake.nix ]; then
         # flakes, use `nix develop`
         get-dev-shell-name
-        exec nix develop --command "$shellcmd"
+        exec nix develop --command env "SHELL=$SHELL" "$SHELL"
     elif [ -f ./shell.nix -o -f ./default.nix ]; then
         # old nix, use `nix-shell`
         get-dev-shell-name

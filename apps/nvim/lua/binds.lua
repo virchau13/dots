@@ -25,3 +25,5 @@ telescope_bind('<Leader>rg', 'live_grep')
 -- LSP symbols
 telescope_bind('<Leader>lws', 'lsp_workspace_symbols')
 telescope_bind('<Leader>lds', 'lsp_document_symbols')
+-- LSP diagnostics
+telescope_bind('<Leader>ae', 'diagnostics')

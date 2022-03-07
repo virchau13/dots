@@ -9,7 +9,7 @@ get-nix-system() {
     nix show-config | grep '^system =' | sed 's/[^=]* = \(.*\)/\1/'
 }
 
-get-dev-shell-name() {
+export-dev-shell-name() {
     export IN_NIX_DEV_SHELL_NAME=$(nix eval --raw ".#defaultPackage.$(get-nix-system).pname" &>/dev/null)
     if [ -z "$IN_NIX_DEV_SHELL_NAME" ]; then
         export IN_NIX_DEV_SHELL_NAME="$(basename "$(pwd)")"
@@ -26,12 +26,18 @@ while (($#)); do
             shellcmd="return"
             shift
             ;;
-        *)
+        -p)
+            shift
+            # use premade template in ~/prog/$1
             if [ -z "$devname" ]; then
                 devname="$1"
             else
-                error "Cannot take multiple arguments"
+                error "Cannot take multiple devnames"
             fi
+            shift
+            ;;
+        *)
+            devshellname="$1"
             shift
             ;;
     esac
@@ -41,11 +47,15 @@ if [ -z "$devname" ]; then
     # just normal develop
     if [ -f ./flake.nix ]; then
         # flakes, use `nix develop`
-        get-dev-shell-name
-        exec nix develop --command env "SHELL=$SHELL" "$SHELL"
+        export-dev-shell-name
+        args=()
+        if [ ! -z "$devshellname" ]; then
+            args+=(".#$devshellname")
+        fi
+        exec nix develop "${args[@]}" --command env "SHELL=$SHELL" "$SHELL"
     elif [ -f ./shell.nix -o -f ./default.nix ]; then
         # old nix, use `nix-shell`
-        get-dev-shell-name
+        export-dev-shell-name
         exec nix-shell --command "$shellcmd"
     else
         # do nothing
@@ -54,5 +64,5 @@ if [ -z "$devname" ]; then
 else
     # want to develop a specific lang
     export IN_NIX_DEV_SHELL_NAME="$devname"
-    exec nix develop ~/prog/"$devname" --command "$shellcmd"
+    exec nix develop ~/prog/"$devname" --command env "SHELL=$SHELL" "$SHELL"
 fi

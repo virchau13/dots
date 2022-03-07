@@ -57,6 +57,8 @@ in
                     --enable-zero-copy \
                     --no-sandbox
             '')
+            bspwm
+            sxhkd
             # language servers
             sumneko-lua-language-server
         ];
@@ -171,5 +173,11 @@ in
         ".xmonad".source = mkOutOfStoreSymlink "${configDir}/apps/xmonad";
         # More convenient link to ~/.config/nixpkgs.
         "config".source = mkOutOfStoreSymlink configDir;
+    };
+
+    xdg.configFile = {
+        "bspwm".source = mkOutOfStoreSymlink "${configDir}/apps/bspwm";
+        # 'pluggable' mi amigo
+        "sxhkd".source = mkOutOfStoreSymlink "${configDir}/apps/bspwm";
     };
 }

@@ -83,6 +83,7 @@
                 ghc
                 figlet
                 lolcat
+                tokei
 
                 # language servers
                 rnix-lsp

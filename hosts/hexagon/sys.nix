@@ -41,6 +41,9 @@
         kernelModules = [ "coretemp" "it87" "lm92" "k10temp" "rtl8192eu" ];
         # Enable WireGuard logs
         kernelParams = [ "wireguard.dyndbg=\"module wireguard +p\"" ];
+        kernel.sysctl = {
+            "net.ipv4.ip_forward" = 1;
+        };
     };
 
     networking.hostName = "hexagon";
@@ -57,7 +60,10 @@
         };
     };
 
-    networking.networkmanager.enable = true;
+    networking.networkmanager = {
+        enable = true;
+        unmanaged = [ "wg0" "from-ext" ];
+    };
     networking.wireguard.enable = true;
     networking.wg-quick = {
         interfaces = {
@@ -76,7 +82,32 @@
                     }
                 ];
             };
+            from-ext = {
+                address = [ "10.230.230.1/24" ];
+                listenPort = 5900;
+                privateKeyFile = "/run/secrets/wg/privkey";
+                peers = [
+                    {
+                        publicKey = "2zyyV2wZKA8T1UtmzJzRlTBGoa6/QMJ95bd7Q1GrC1g=";
+                        allowedIPs = [ "10.230.230.0/24" ];
+                    }
+                ];
+            };
         };
+    };
+    networking.nftables = {
+        enable = true;
+        ruleset = ''
+            table ip vpn {
+                chain postrouting {
+                    type nat hook postrouting priority filter; policy accept;
+                    ct state { established, related } accept
+                    ct state invalid drop
+                    ip saddr 10.230.230.0/24
+                    masquerade
+                }
+            }
+        '';
     };
 
     # Select internationalisation properties.

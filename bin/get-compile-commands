@@ -3,8 +3,14 @@
 set -e
 NAME="get-compile-commands"
 
+tmpfile() {
+    mktemp --suffix=get-compile-commands
+}
+
 compilers=("cc" "gcc" "clang" "g++" "clang++")
-cmdfile="$(mktemp --suffix=get-compile-commands)"
+cmdfile="$(tmpfile)"
+outfile="$(tmpfile)"
+ccmdprev="$(tmpfile)"
 
 pathdir=~/.cache/$NAME
 
@@ -25,6 +31,16 @@ done
 
 CC="$pathdir/gcc" CXX="$pathdir/g++" PATH="$pathdir:$PATH" COMPILE_COMMAND_FILE="$cmdfile" "$@"
  
-cat "$cmdfile" | jq -s '.' > compile_commands.json
-echo "get-compile-commands: compile_commands.json created"
+cat "$cmdfile" | jq -s '.' > "$outfile"
+if [ -f compile_commands.json ]; then
+    cat compile_commands.json > "$ccmdprev"
+    jq --slurpfile a "$ccmdprev" --slurpfile b "$outfile" -n '$a[] + $b[]' \
+        > compile_commands.json
+    echo "get-compile-commands: compile_commands.json modified"
+else
+    cat "$outfile" > compile_commands.json
+    echo "get-compile-commands: compile_commands.json created"
+fi
 rm "$cmdfile"
+rm "$outfile"
+rm "$ccmdprev"

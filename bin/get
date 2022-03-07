@@ -4,7 +4,6 @@
 
 if [ -z "$1" ]; then echo "You must specify a package"; exit 1; fi
 
-
 case "$1" in
     -l)
         # Use the latest version of nixpkgs
@@ -16,6 +15,7 @@ case "$1" in
         # (e.g. `get -b master discord`)
         shift
         nixpkgs="github:NixOS/nixpkgs/$1"
+        shift
         ;;
     *)
         # I put `nixpkgs` as the nixpkgs rev the system was built from in $NIX_PATH.

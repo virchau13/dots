@@ -3,6 +3,7 @@ return function(deps_)
     deps = deps_
     require 'options'
     require 'plugin-settings'
+    require 'tree-sitter-custom'
     require 'binds'
     require 'lsp'
 

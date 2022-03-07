@@ -146,6 +146,7 @@ local settings = {
     dockerls = {},
     jsonls = {},
     svelte = {},
+    astro = {},
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

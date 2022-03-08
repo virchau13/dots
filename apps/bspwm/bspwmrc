@@ -5,8 +5,9 @@ exec 2>>~/.cache/bspwm/stderr
 echo 'Launched bspwm' >&2
 
 pgrep -x sxhkd > /dev/null || sxhkd &
-
-bspc monitor -d I II III IV V VI VII VIII IX X
+pgrep -x picom > /dev/null || picom  --xrender-sync-fence --experimental-backends --backend glx \
+    --use-damage --vsync --config /dev/null --show-all-xerrors \
+    --glx-no-stencil --log-level INFO --log-file ~/.cache/picom.out &
 
 bspc config border_width         2
 bspc config window_gap          12

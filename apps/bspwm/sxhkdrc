@@ -3,7 +3,7 @@
 #
 
 # terminal emulator
-super + Return
+super + shift + Return
 	alacritty
 
 # program launcher
@@ -92,9 +92,21 @@ super + {o,i}
 	bspc node {older,newer} -f; \
 	bspc wm -h on
 
-# focus or send to the given desktop
-super + {_,shift + }{1-9,0}
-	bspc {desktop -f,node -d} '^{1-9,10}'
+# focus on desktop
+super + {1-9,0}
+	D={1-9,0}; 
+	M=$(bspc query –monitors –desktop $D); 
+	if [[ $(bspc query –desktops –monitor $M | wc -l) -gt 1 ]]; then 
+		if [[ $(bspc query –desktops –desktop focused) != $D ]]; then 
+			bspc desktop $D –to-monitor focused; 
+			bspc desktop $D –focus; 
+		fi; 
+	elif [[ $(bspc query –monitors –monitor focused) != $M ]]; then 
+		bspc desktop DVI-0:focused –swap DVI-1:focused; 
+	fi
+# move node to desktop
+super + shift + {1-9,0}
+	bspc node -d {1-9,0}
 
 #
 # preselect

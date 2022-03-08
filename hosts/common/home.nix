@@ -12,11 +12,15 @@ in {
     nixpkgs.overlays = [
         inputs.neovim-nightly-overlay.overlay
     ];
-    
+
     home.file = {
         ".zshrc".source = mkOutOfStoreSymlink "${configDir}/apps/zsh/zshrc";
         ".zshenv".source = mkOutOfStoreSymlink "${configDir}/apps/zsh/zshenv";
         "bin".source = mkOutOfStoreSymlink "${configDir}/bin";
+        ".cargo/config.toml".text = ''
+            [build]
+            rustc-wrapper = "${pkgs.sccache}/bin/sccache"
+        '';
     };
 
     # Extra $PATH directories

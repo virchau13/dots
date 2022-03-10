@@ -23,8 +23,21 @@
 
     nix.trustedUsers = [ "hexular" ];
 
+    nixpkgs.overlays = [
+        (self: super: {
+            python3 = super.python3.override {
+                self = self.python3;
+                packageOverrides = python-self: python-super: {
+                    responses = (python-super.responses.overridePythonAttrs (old: {
+                        doCheck = false;
+                    }));
+                };
+            };
+        })
+    ];
+
     environment.variables = {
-        TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
+        TERMINFO_DIRS = "/Applications/kitty.app/Contents/Resources/terminfo/share/terminfo";
     };
 
     home-manager.extraSpecialArgs = let 

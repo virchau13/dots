@@ -13,17 +13,15 @@
             extra-experimental-features = nix-command flakes
             build-users-group = nixbld
         '';
-        settings = {
-            trusted-users = [ "root" "hexular" ];
-            substituters = [
-                "https://cache.nixos.org/"
-                "https://nix-community.cachix.org"
-            ];
-            trusted-public-keys = [
-                "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-            ];
-            sandbox = true;
-        };
+        trustedUsers = [ "root" "hexular" ];
+        binaryCaches = [
+            "https://cache.nixos.org/"
+            "https://nix-community.cachix.org"
+        ];
+        binaryCachePublicKeys = [
+            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        ];
+        useSandbox = true;
         # to get nix-index to use flakes
         nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     };
@@ -79,7 +77,6 @@
                 nmap
                 tcptraceroute
                 bintools
-                kitty.terminfo
                 ghc
                 figlet
                 lolcat

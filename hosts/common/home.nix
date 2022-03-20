@@ -23,6 +23,10 @@ in {
         '';
     };
 
+    xdg.configFile = {
+        "wezterm".source = mkOutOfStoreSymlink "${configDir}/apps/wezterm";
+    };
+
     # Extra $PATH directories
     home.sessionPath = [ "${config.home.homeDirectory}/bin" ];
 

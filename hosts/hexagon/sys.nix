@@ -114,8 +114,6 @@
         enable = true;
         driSupport = true;
         driSupport32Bit = true;
-        # for VA-API support on Nvidia
-        extraPackages = [ pkgs.vaapiVdpau ];
     };
 
     # https://forums.developer.nvidia.com/t/bug-nvidia-v495-29-05-driver-spamming-dbus-enabled-applications-with-invalid-messages/192892/11

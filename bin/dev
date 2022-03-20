@@ -37,7 +37,13 @@ while (($#)); do
             shift
             ;;
         *)
-            devshellname="$1"
+            if [[ "$1" == *"#"* ]]; then
+                # it's a specific flake
+                devshellname="$1"
+            else
+                # it's not
+                devshellname=".#$1"
+            fi
             shift
             ;;
     esac
@@ -45,12 +51,12 @@ done
 
 if [ -z "$devname" ]; then 
     # just normal develop
-    if [ -f ./flake.nix ]; then
+    if [[ -f ./flake.nix || "$devshellname" == *#* ]]; then
         # flakes, use `nix develop`
         export-dev-shell-name
         args=()
         if [ ! -z "$devshellname" ]; then
-            args+=(".#$devshellname")
+            args+=("$devshellname")
         fi
         exec nix develop "${args[@]}" --command env "SHELL=$SHELL" "$SHELL"
     elif [ -f ./shell.nix -o -f ./default.nix ]; then

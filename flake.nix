@@ -8,7 +8,6 @@
         neovim-nightly-overlay.url = github:nix-community/neovim-nightly-overlay;
         sops-nix.url = github:Mic92/sops-nix;
         flake-utils.url = github:numtide/flake-utils;
-
         eww.url = github:virchau13/eww;
 
         # nvim plugins

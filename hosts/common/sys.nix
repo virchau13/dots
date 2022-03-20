@@ -81,6 +81,8 @@
                 ghc
                 figlet
                 lolcat
+                bash-completion
+                nix-index
                 tokei
 
                 # language servers

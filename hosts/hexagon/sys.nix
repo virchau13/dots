@@ -62,39 +62,8 @@
 
     networking.networkmanager = {
         enable = true;
-        unmanaged = [ "wg0" "from-ext" ];
     };
     networking.wireguard.enable = true;
-    networking.wg-quick = {
-        interfaces = {
-            wg0 = {
-                address = [ "10.200.200.13/24" ];
-                dns = [ "1.1.1.1" ];
-                listenPort = 5298;
-                privateKeyFile = "/run/secrets/wg/privkey";
-                peers = [
-                    {
-                        publicKey = "ODEdIe46o4+tGe1biG2vCn+3wUk3pO5iFdvXDIGbGzo=";
-                        # Usage as an 'actual VPN' is managed by NetworkManager.
-                        allowedIPs = [ "10.200.200.0/24" ];
-                        endpoint = "218.186.154.193:5298";
-                        persistentKeepalive = 25;
-                    }
-                ];
-            };
-            from-ext = {
-                address = [ "10.230.230.1/24" ];
-                listenPort = 5900;
-                privateKeyFile = "/run/secrets/wg/privkey";
-                peers = [
-                    {
-                        publicKey = "2zyyV2wZKA8T1UtmzJzRlTBGoa6/QMJ95bd7Q1GrC1g=";
-                        allowedIPs = [ "10.230.230.0/24" ];
-                    }
-                ];
-            };
-        };
-    };
     networking.nftables = {
         enable = true;
         ruleset = ''

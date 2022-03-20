@@ -7,7 +7,7 @@ super + shift + Return
 	alacritty
 
 # program launcher
-super + p
+super + space
 	rofi -show run
 
 # make sxhkd reload its configuration files:
@@ -92,21 +92,29 @@ super + {o,i}
 	bspc node {older,newer} -f; \
 	bspc wm -h on
 
-# focus on desktop
-super + {1-9,0}
-	D={1-9,0}; 
-	M=$(bspc query –monitors –desktop $D); 
-	if [[ $(bspc query –desktops –monitor $M | wc -l) -gt 1 ]]; then 
-		if [[ $(bspc query –desktops –desktop focused) != $D ]]; then 
-			bspc desktop $D –to-monitor focused; 
-			bspc desktop $D –focus; 
-		fi; 
-	elif [[ $(bspc query –monitors –monitor focused) != $M ]]; then 
-		bspc desktop DVI-0:focused –swap DVI-1:focused; 
-	fi
+# focus on desktop, xmonad style
+# we have to use a mutex to prevent races when spamming, lol
+super + {0-9}
+    D={0-9}; \
+    lock=/tmp/bspwm-desktop-switch-lock; \
+    : > $lock; \
+    \{ \
+    flock 3; \
+	M=$(bspc query --desktop $D --monitors); \
+    FM=$(bspc query --monitors -m focused); \
+    if [ "$FM" != "$M" ]; then; \
+        OD=$(bspc query -d "$M:focused" -D --names); \
+        if [ "$D" = "$OD" ]; then; \
+            FD=$(bspc query -d focused -D --names); \
+            bspc desktop "$FD" -m "$M" -f; \
+        fi; \
+        bspc desktop "$D" -m "$FM"; \
+    fi; \
+    bspc desktop "$D" -f; \
+    \} 3<$lock
 # move node to desktop
-super + shift + {1-9,0}
-	bspc node -d {1-9,0}
+super + shift + {0-9}
+	bspc node -d {0-9}
 
 #
 # preselect

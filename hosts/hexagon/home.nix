@@ -9,13 +9,6 @@ in
     ];
 
     home.packages = let 
-        xmonadAlias = pkgs.writeShellScriptBin "xmonad" ''
-            #!${pkgs.bash}/bin/bash
-            # So that `xmonad` knows how to restart itself.
-            # The indirect `exec` rather than a symlink is required
-            # because otherwise XMonad complains about not being called 'xmonad-x86_64-linux'.
-            exec -a "$0" ~/.xmonad/xmonad-x86_64-linux "$@";
-        '';
         # Work around https://github.com/Mic92/sops-nix/issues/150
         refresh-playlist = pkgs.writeShellScriptBin "refresh-playlist" ''
             exec /run/secrets/scripts/refresh-playlist "$@"
@@ -44,7 +37,6 @@ in
             winetricks
             transmission-qt
             polymc
-            xmonadAlias
             refresh-playlist
             # Make discord run faster
             (pkgs.writeShellScriptBin "discord" ''
@@ -170,7 +162,6 @@ in
         ".xinitrc".source = ../../apps/x11/xinitrc;
         ".xbindkeysrc".source = ../../apps/x11/xbindkeysrc;
         ".xprofile".source = ../../apps/x11/xprofile;
-        ".xmonad".source = mkOutOfStoreSymlink "${configDir}/apps/xmonad";
         # More convenient link to ~/.config/nixpkgs.
         "config".source = mkOutOfStoreSymlink configDir;
     };

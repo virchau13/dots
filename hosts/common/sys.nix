@@ -32,6 +32,7 @@
                jupyter
                python-lsp-server
                z3
+               fonttools
             ];
             python = python3.withPackages pythonPackages;
             packages = [

@@ -14,18 +14,23 @@ ccmdprev="$(tmpfile)"
 
 pathdir=~/.cache/$NAME
 
+make-compiler-wrapper() {
+    cat ~/bin/compiler-wrapper | sed 's|#INSERT_ENV|\
+        COMPILE_COMMAND_COMPILER_PATH='"$(which "$compiler")"'\
+        COMPILE_COMMAND_COMPILER_NAME='"$compiler"'\
+    |' > "$pathdir/$compiler"
+    chmod +x "$pathdir/$compiler"
+}
+
+# [ ! -z "$GET_COMPILE_COMMANDS_TEST_VARS_17421" ] && return
+
+
 if [ ! -d $pathdir ]; then
     mkdir -p $pathdir
 fi
 for compiler in "${compilers[@]}"; do
     if command -v "$compiler" &>/dev/null; then
-        if [ ! -f "$pathdir/$compiler" ]; then
-            cat ~/bin/compiler-wrapper | sed 's|#INSERT_ENV|\
-                COMPILE_COMMAND_COMPILER_PATH='"$(which "$compiler")"'\
-                COMPILE_COMMAND_COMPILER_NAME='"$compiler"'\
-            |' > "$pathdir/$compiler"
-            chmod +x "$pathdir/$compiler"
-        fi
+        make-compiler-wrapper
     fi
 done
 

@@ -4,6 +4,10 @@ set -e
 
 #INSERT_ENV
 
+# This should (hopefully) only be true if sourced.
+# We can't really trust the environment, just put a hard-to-guess name.
+[ ! -z "$GET_COMPILE_COMMANDS_TEST_VARS_17421" ] && return
+
 if [ -z "$COMPILE_COMMAND_FILE" ]; then
     echo 'wrapper: no compile command file specified' >&2
     exit 1

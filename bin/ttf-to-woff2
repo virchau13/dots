@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+import sys
+from fontTools.ttLib import TTFont
+for arg in sys.argv[1:]:
+    print(f'processing {arg}', file=sys.stderr)
+    font = TTFont(arg)
+    font.flavor = 'woff2'
+    if arg.endswith('.ttf'):
+        name = arg[:-4] + '.woff2'
+    else:
+        name = arg + '.woff2'
+    font.save(name)

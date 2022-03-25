@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-exec 2>>~/.cache/bspwm/stderr
+exec &>~/.cache/bspwm/configlog
 
-echo 'Launched bspwm' >&2
+set -x
+
+echo 'Launched bspwm'
+date 
 
 pgrep -x sxhkd > /dev/null || sxhkd &
 pgrep -x picom > /dev/null || picom  --xrender-sync-fence --experimental-backends --backend glx \

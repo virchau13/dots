@@ -53,7 +53,11 @@
                 elixir_ls
 
                 # rust
+                cargo
+                rustc
                 rustfmt
+                clippy
+                rust-analyzer
 
                 # misc
                 tmux
@@ -85,9 +89,7 @@
                 nix-index
                 tokei
 
-                # language servers
                 rnix-lsp
-                rust-analyzer
                 # sumneko-lua-language-server
                 # cmake-language-server
                 # (for compatibility with MacOS, because LLVM 13 is marked as broken there)

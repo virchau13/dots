@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+id=$(xdotool search --classname scratchpadterm)
+
+if [ "$id" != "" ]; then
+    bspc node "$id" --flag hidden -f
+else
+    launch alacritty --class 'scratchpadterm'
+    sleep .1
+    # restart script
+    exec "$(readlink -f "$0")"
+fi

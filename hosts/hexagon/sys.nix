@@ -27,8 +27,8 @@
     # Without this my CPU defaults to 1.4GHz frequency when it should be running at 3.7GHz.
     powerManagement.cpuFreqGovernor = "performance";
 
-    boot = let kernel = "linux_xanmod"; in {
-        kernelPackages = pkgs.linuxKernel.packages."${kernel}";
+    boot = let kernelPackages = pkgs.linuxPackages_latest; in {
+        inherit kernelPackages;
         # Use the systemd-boot EFI boot loader.
         loader.systemd-boot = {
             enable = true;
@@ -36,11 +36,11 @@
             consoleMode = "max";
         };
         loader.efi.canTouchEfiVariables = true;
-        # To get lm_sensors to work
-        extraModulePackages = with pkgs.linuxKernel.packages."${kernel}"; [ it87 rtl8192eu ];
-        kernelModules = [ "coretemp" "it87" "lm92" "k10temp" "rtl8192eu" ];
-        # Enable WireGuard logs
-        kernelParams = [ "wireguard.dyndbg=\"module wireguard +p\"" ];
+        extraModulePackages = with kernelPackages; [ 
+            # For lm_sensors
+            it87
+        ];
+        kernelModules = [ "coretemp" "it87" "lm92" "k10temp" ];
         kernel.sysctl = {
             "net.ipv4.ip_forward" = 1;
         };
@@ -51,32 +51,12 @@
     # Set your time zone.
     time.timeZone = "Asia/Singapore";
 
+    # set global useDHCP to false
+    networking.useDHCP = false;
     networking.interfaces = {
         enp5s0 = {
             useDHCP = true;
         };
-        wlp7s0f3u4 = {
-            useDHCP = true;
-        };
-    };
-
-    networking.networkmanager = {
-        enable = true;
-    };
-    networking.wireguard.enable = true;
-    networking.nftables = {
-        enable = true;
-        ruleset = ''
-            table ip vpn {
-                chain postrouting {
-                    type nat hook postrouting priority filter; policy accept;
-                    ct state { established, related } accept
-                    ct state invalid drop
-                    ip saddr 10.230.230.0/24
-                    masquerade
-                }
-            }
-        '';
     };
 
     # Select internationalisation properties.
@@ -172,6 +152,8 @@
         shell = pkgs.zsh;
     };
 
+    documentation.dev.enable = true;
+
     environment.systemPackages = with pkgs; let 
         pythonPackages = python-pkgs: with python-pkgs; [
             pandas
@@ -188,6 +170,10 @@
         kitty # for hexamac to have proper terminfo support
         git
         gcc
+        bcc # messing with ebpf
+        moreutils # errno, etc
+        man-pages
+        man-pages-posix
         gdb
         zsh
         p7zip
@@ -212,6 +198,7 @@
         wireshark
         iw
         xdotool
+        clang-tools
     ];
 
     programs.gnupg.agent = {

@@ -14,9 +14,9 @@ case "$MONITOR_COUNT" in
         ;;
     3)
         xrandr --dpi 96 \
-            --output DVI-D-0 --primary --mode 1920x1080 --pos 0x1080 --rotate normal \
-            --output HDMI-0 --mode 1920x1080 --pos 1920x1080 --rotate normal \
-            --output DP-2 --mode 1920x1080 --pos 960x0 --rotate normal
+            --output DVI-D-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal \
+            --output HDMI-0 --mode 1920x1080 --pos 3840x0 --rotate normal \
+            --output DP-4 --mode 1920x1080 --pos 1920x0 --rotate normal
         ;;
     *)
         # no idea, just default to normal

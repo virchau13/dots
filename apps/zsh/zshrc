@@ -1,3 +1,5 @@
+fpath=(~/bin/comps $fpath)
+
 zstyle :compinstall filename '/home/hexular/.zshrc'
 
 autoload -Uz colors && colors

@@ -30,6 +30,6 @@ def_conf('astro', {
             description = 'https://github.com/withastro/language-tools',
             root_dir = [[root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git")]],
         },
-        settings = {},
+        settings = { astro = {}, },
     }
 })

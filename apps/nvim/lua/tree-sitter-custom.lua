@@ -1,2 +1,1 @@
-local ft_to_parser = require('nvim-treesitter.parsers').filetype_to_parsername
-ft_to_parser.astro = "tsx"
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()

@@ -6,6 +6,8 @@ return function(deps_)
     require 'tree-sitter-custom'
     require 'binds'
     require 'lsp'
+    -- TODO remove
+    vim.lsp.set_log_level('debug')
 
     vim.cmd("colorscheme tokyonight")
 end

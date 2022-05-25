@@ -26,13 +26,23 @@ super + c
 super + shift + y
     x-pass-chooser-script
 
+# scratchpad term
+super + u
+    scratchpadtermtoggle
+
 #
 # bspwm hotkeys
 #
 
-# quit/restart bspwm
-super + {shift +,_} q
-	bspc {quit,wm -r}
+# quit bspwm
+super + shift + q
+	bspc quit
+
+# restart bspwm
+super + q
+    touch /tmp/bspwm-dont-setup-monitors \
+	bspc wm -r \
+    rm /tmp/bspwm-dont-setup-monitors
 
 # close and kill
 super + shift + {_,alt + } c

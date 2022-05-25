@@ -162,6 +162,7 @@ in
         ".xinitrc".source = ../../apps/x11/xinitrc;
         ".xbindkeysrc".source = ../../apps/x11/xbindkeysrc;
         ".xprofile".source = ../../apps/x11/xprofile;
+        ".xmonad".source = mkOutOfStoreSymlink "${configDir}/apps/xmonad";
         # More convenient link to ~/.config/nixpkgs.
         "config".source = mkOutOfStoreSymlink configDir;
     };

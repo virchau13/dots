@@ -20,11 +20,11 @@ require 'nvim-treesitter.configs'.setup {
     ensure_installed = "all",
     highlight = {
         enable = true,
-        -- disable = { 'elixir' }
     },
     indent = {
         enable = true
-    }
+    },
+    ignore_install = { 'go' },
 }
 
 require('numb').setup()
@@ -32,8 +32,6 @@ require('gitsigns').setup()
 
 local tree_cb = require'nvim-tree.config'.nvim_tree_callback
 require'nvim-tree'.setup {
-    -- closes neovim automatically when the tree is the last **WINDOW** in the view
-    auto_close          = true,
     -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
     open_on_tab         = true,
     -- show lsp diagnostics in the signcolumn
@@ -66,6 +64,16 @@ require'nvim-tree'.setup {
         hide_root_folder = true
     }
 }
+-- automatically close nvim-tree when it's the last window
+-- (https://github.com/kyazdani42/nvim-tree.lua/discussions/1115)
+vim.api.nvim_create_autocmd("BufEnter", {
+    nested = true,
+    callback = function()
+        if #vim.api.nvim_list_wins() == 1 and vim.api.nvim_buf_get_name(0):match("NvimTree_") ~= nil then
+            vim.cmd "quit"
+        end
+    end
+})
 
 require('fidget').setup {}
 

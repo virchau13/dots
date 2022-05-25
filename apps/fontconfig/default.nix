@@ -8,6 +8,7 @@
             fira-code
             fira-code-symbols
             nerdfonts
+            open-sans
             (input-fonts.overrideAttrs(old: {
                 pname = "${old.pname}-nerd-font";
                 buildInputs = [

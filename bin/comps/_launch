@@ -1,0 +1,6 @@
+#compdef launch
+
+# don't ask me how this works,
+# copied and modified from sudo
+
+_arguments '*:: :{ _normal }'

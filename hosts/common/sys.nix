@@ -42,7 +42,8 @@
                 lua
 
                 # haskell
-                stack
+                haskell-language-server
+                (haskellPackages.ghcWithPackages (pkgs: with pkgs; [ xmonad xmonad-contrib ]))
 
                 # js
                 nodejs
@@ -58,6 +59,10 @@
                 rustfmt
                 clippy
                 rust-analyzer
+
+                # go
+                go
+                gopls
 
                 # misc
                 tmux
@@ -92,12 +97,10 @@
                 rnix-lsp
                 # sumneko-lua-language-server
                 # cmake-language-server
-                # (for compatibility with MacOS, because LLVM 13 is marked as broken there)
-                (clang-tools.override { llvmPackages = pkgs.llvmPackages_12; })
-                haskell-language-server
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools
+                pnpm
                 ijavascript
 
                 # language servers

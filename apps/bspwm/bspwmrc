@@ -12,7 +12,9 @@ pgrep -x picom > /dev/null || picom  --xrender-sync-fence --experimental-backend
     --use-damage --vsync --config /dev/null --show-all-xerrors \
     --glx-no-stencil --log-level INFO --log-file ~/.cache/picom.out &
 
-bspc monitor -d 1 2 3 4 5 6 7 8 9 0
+if [ ! -f /tmp/bspwm-dont-setup-monitors ]; then
+    bspc monitor -d 1 2 3 4 5 6 7 8 9 0
+fi
 
 bspc config border_width         2
 bspc config window_gap          12
@@ -20,3 +22,5 @@ bspc config window_gap          12
 bspc config split_ratio          0.52
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
+
+bspc rule -a 'Alacritty:scratchpadterm' sticky=on state=floating hidden=on

@@ -8,6 +8,12 @@ in
         ../../apps/eww
     ];
 
+    nixpkgs.overlays = [
+        (self: super: {
+            discord = super.discord.override { nss = self.nss_latest; };
+        })
+    ];
+
     home.packages = let 
         # Work around https://github.com/Mic92/sops-nix/issues/150
         refresh-playlist = pkgs.writeShellScriptBin "refresh-playlist" ''
@@ -149,12 +155,11 @@ in
         };
     };
 
-    # programs.firefox = {
+    # xdg.mimeApps = {
     #     enable = true;
-    #     profiles.dexkf0au = {
-    #         id = 0;
-    #         isDefault = true;
-    #         userChrome = builtins.readFile ../../apps/firefox/userChrome.css;
+    #     defaultApplications = {
+    #         "x-scheme-handler/http" = "firefox.desktop";
+    #         "x-scheme-handler/https" = "firefox.desktop";
     #     };
     # };
 

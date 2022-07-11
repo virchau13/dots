@@ -139,7 +139,8 @@ local settings = {
     jsonls = {},
     svelte = {},
     astro = {
-        cmd = {'node', '/home/hexular/prog/repos/language-tools/packages/language-server/dist/node.js', '--stdio'}
+        -- cmd = { 'npx', 'astro-ls', '--stdio' },
+        cmd = {'bash', '-c', 'node /home/hexular/prog/repos/language-tools/packages/language-server/dist/node.js --stdio'}
     },
     gopls = {},
 }

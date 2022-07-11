@@ -107,8 +107,8 @@
                 bash-language-server
                 typescript-language-server
                 dockerfile-language-server-nodejs
-                vscode-json-languageserver
                 svelte-language-server
+                vscode-langservers-extracted
             ];
        in packages ++ nodePackages;
 

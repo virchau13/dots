@@ -5,11 +5,25 @@
         ./hw.nix 
     ];
 
-    nix.settings = {
-        auto-optimise-store = true;
-        # i don't want all my cores to be taken up
-        cores = 4; # cores per derivation built
+    nix = {
+        settings = {
+            auto-optimise-store = true;
+            # i don't want all my cores to be taken up
+            cores = 4; # cores per derivation built
+        };
+        # increase system responsiveness during nix-build
+        # https://github.com/NixOS/nixpkgs/pull/138741#issuecomment-979918607
+        daemonCPUSchedPolicy = "idle";
+        daemonIOSchedClass = "idle";
     };
+
+    nixpkgs.overlays = [
+        (self: super: {
+            steam-fhsenv = super.steam-fhsenv.override (old: {
+                extraPkgs = with pkgs.pkgsi686Linux; [ gperftools ];
+            });
+        })
+    ];
 
     sops = {
         defaultSopsFile = ./secrets.yaml;
@@ -41,9 +55,10 @@
             it87
         ];
         kernelModules = [ "coretemp" "it87" "lm92" "k10temp" ];
-        kernel.sysctl = {
-            "net.ipv4.ip_forward" = 1;
-        };
+        # why this is not enabled by default boggles me
+        # makes sure /tmp is mounted on tmpfs
+        tmpOnTmpfs = true;
+        kernelParams = [ "delayacct" ];
     };
 
     networking.hostName = "hexagon";
@@ -80,6 +95,10 @@
     };
 
     services.printing.enable = true;
+
+    services.netdata = {
+        enable = true;
+    };
 
     # Enable sound.
     sound.enable = false;
@@ -146,7 +165,7 @@
         extraGroups = [ 
             "wheel" # sudo
             "networkmanager"
-            # "docker"
+            "docker"
             # "lxd"
         ];
         shell = pkgs.zsh;
@@ -160,6 +179,8 @@
             xkcdpass
             ipython
             jupyter
+            flask
+            pyjwt
         ];
         python = python3.withPackages pythonPackages;
     in [
@@ -167,7 +188,7 @@
         wget
         firefox
         borgbackup
-        kitty # for hexamac to have proper terminfo support
+        kitty.terminfo # for hexamac to have proper terminfo support
         git
         gcc
         bcc # messing with ebpf
@@ -226,6 +247,8 @@
     xdg.portal.enable = true;
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     xdg.autostart.enable = true;
+
+    virtualisation.docker.enable = true;
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions

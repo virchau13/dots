@@ -1,1 +1,24 @@
-{"creation_rules":[{"key_groups":[{"age":["age12zlz6lvcdk6eqaewfylg35w0syh58sm7gh53q5vvn7hd7c6nngyseftjxl"]}],"path_regex":"hosts/hexagon/secrets.yaml$"},{"key_groups":[{"age":["age12zlz6lvcdk6eqaewfylg35w0syh58sm7gh53q5vvn7hd7c6nngyseftjxl"]}],"path_regex":"hosts/common/secrets.yaml$"}]}
+{
+  "creation_rules": [
+    {
+      "key_groups": [
+        {
+          "age": [
+            "age12zlz6lvcdk6eqaewfylg35w0syh58sm7gh53q5vvn7hd7c6nngyseftjxl"
+          ]
+        }
+      ],
+      "path_regex": "hosts/hexagon/secrets.yaml$"
+    },
+    {
+      "key_groups": [
+        {
+          "age": [
+            "age12zlz6lvcdk6eqaewfylg35w0syh58sm7gh53q5vvn7hd7c6nngyseftjxl"
+          ]
+        }
+      ],
+      "path_regex": "hosts/common/secrets.yaml$"
+    }
+  ]
+}

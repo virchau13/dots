@@ -32,7 +32,8 @@ in {
 
     programs.git = {
         enable = true;
-        userName = "virchau13";
+        delta.enable = true;
+        userName = "Vir Chaudhury";
         userEmail = "virchau13@hexular.net";
         signing = {
             signByDefault = true;

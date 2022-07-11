@@ -11,20 +11,8 @@
         eww.url = github:virchau13/eww;
 
         # nvim plugins
-        coq_nvim = {
-            url = github:ms-jpq/coq_nvim;
-            flake = false;
-        };
-        coq_artifacts = {
-            url = github:ms-jpq/coq.artifacts;
-            flake = false;
-        };
-        coq_thirdparty = {
-            url = github:ms-jpq/coq.thirdparty;
-            flake = false;
-        };
         parinfer-rust = {
-            url = github:eraserhd/parinfer-rust;
+            url = github:virchau13/parinfer-rust/replace-cargo-sha256;
             flake = false;
         };
         yuck-vim = {

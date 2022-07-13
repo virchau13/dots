@@ -41,7 +41,7 @@
     # Without this my CPU defaults to 1.4GHz frequency when it should be running at 3.7GHz.
     powerManagement.cpuFreqGovernor = "performance";
 
-    boot = let kernelPackages = pkgs.linuxPackages_latest; in {
+    boot = let kernelPackages = pkgs.linuxKernel.packages.linux_xanmod; in {
         inherit kernelPackages;
         # Use the systemd-boot EFI boot loader.
         loader.systemd-boot = {
@@ -116,43 +116,6 @@
         driSupport32Bit = true;
     };
 
-    # https://forums.developer.nvidia.com/t/bug-nvidia-v495-29-05-driver-spamming-dbus-enabled-applications-with-invalid-messages/192892/11
-    systemd.services.nvidia-fake-powerd = {
-        description = "NVIDIA fake powerd service";
-        wantedBy = [ "default.target" ];
-        aliases = ["dbus-nvidia.fake-powerd.service"];
-        serviceConfig = {
-            Type = "dbus";
-            User = "messagebus";
-            Group = "messagebus";
-            BusName = "nvidia.powerd.server";
-            LimitNPROC = 2;
-            ExecStart = "${pkgs.dbus}/bin/dbus-test-tool black-hole --system --name=nvidia.powerd.server";
-            ProtectHome = true;
-            ProtectSystem = "full";
-        };
-    };
-    services.dbus.packages = [
-        (pkgs.writeTextFile {
-            name = "nvidia-fake-powerd.conf";
-            destination = "/share/dbus-1/system.d/nvidia-fake-powerd.conf";
-            text = ''
-                <!DOCTYPE busconfig PUBLIC
-                 "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
-                 "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
-                <busconfig>
-                        <policy user="messagebus">
-                                <allow own="nvidia.powerd.server"/>
-                        </policy>
-                        <policy context="default">
-                                <allow send_destination="nvidia.powerd.server"/>
-                                <allow receive_sender="nvidia.powerd.server"/>
-                        </policy>
-                </busconfig>
-            '';
-        })
-    ];
-
     # For Corsair keyboard control.
     hardware.ckb-next.enable = true;
 
@@ -220,6 +183,7 @@
         iw
         xdotool
         clang-tools
+        lm_sensors
     ];
 
     programs.gnupg.agent = {

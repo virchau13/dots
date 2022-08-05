@@ -133,7 +133,6 @@ in
     };
 
     systemd.user.services.flameshot.Unit.Requires = lib.mkForce [];
-    systemd.user.services.xdg-desktop-portal-wlr.Service.ExecStart = "${pkgs.xdg-desktop-portal-wlr}/libexec/xdg-desktop-portal-wlr -l DEBUG";
     services.flameshot = {
         enable = true;
     };
@@ -176,11 +175,5 @@ in
         "bspwm".source = mkOutOfStoreSymlink "${configDir}/apps/bspwm";
         # 'pluggable' mi amigo
         "sxhkd".source = mkOutOfStoreSymlink "${configDir}/apps/bspwm";
-        "vivarium".source = mkOutOfStoreSymlink "${configDir}/apps/vivarium";
-        # "xdg-desktop-portal-wlr/config".text = ''
-        #     [screencast]
-        #     chooser_cmd=${pkgs.slurp}/bin/slurp -f %o -or
-        #     chooser_type=simple
-        # '';
     };
 }

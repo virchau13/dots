@@ -23,7 +23,6 @@
                 extraPkgs = with pkgs.pkgsi686Linux; [ gperftools ];
             });
         })
-        inputs.vivarium.overlay
     ];
 
     sops = {
@@ -205,9 +204,6 @@
 
     programs.dconf.enable = true;
 
-    programs.xwayland.enable = true;
-    programs.sway.enable = true;
-
     # Enable the OpenSSH daemon.
     services.openssh = {
         enable = true;
@@ -224,8 +220,7 @@
 
     xdg.portal = {
         enable = true;
-        wlr.enable = true;
-        # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+        extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
     };
     xdg.autostart.enable = true;
 

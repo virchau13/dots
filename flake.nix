@@ -9,7 +9,6 @@
         sops-nix.url = github:Mic92/sops-nix;
         flake-utils.url = github:numtide/flake-utils;
         eww.url = github:elkowar/eww;
-        vivarium.url = github:virchau13/vivarium;
 
         # nvim plugins
         parinfer-rust = {

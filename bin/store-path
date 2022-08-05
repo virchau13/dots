@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec nix eval --impure --raw --expr '(import <nixpkgs> {}).'"$1"

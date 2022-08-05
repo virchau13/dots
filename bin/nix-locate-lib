@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -e
+todo=()
+done=()
+libs=($(ldd "$1" | awk '{ print $1 }'))
+for lib in "${libs[@]}"; do
+    if [ "$lib" = "linux-vdso.so.1" ]; then continue; fi
+    pkgs=($(nix-locate --at-root -w "/lib/$lib" | grep -v '^(' | awk '{ print $1 }'))
+    printf "%s from what?\n" "$lib"
+    yes=0
+    if [ "${#pkgs[@]}" = "1" ]; then
+        # no need to choose
+        echo "from ${pkgs[0]}"
+        pkg="${pkgs[0]}"
+        yes=1
+    else
+        select pkg in "none" "${pkgs[@]}"; do
+            case "$pkg" in 
+                "none")
+                    todo+=("$lib")
+                    break
+                    ;;
+                ?*)
+                    yes=1
+                    break
+                    ;;
+            esac
+        done
+    fi
+    if [ "$yes" = "1" ]; then
+        pkg=${pkg%.out} 
+        done+=("$pkg")
+    fi
+done
+printf "%s\n" "${done[@]}" | sort | uniq
+if [ "${#todo[@]}" != 0 ]; then
+    printf "_TODO_:\n" >&2
+    printf "%s\n" "${todo[@]}" >&2
+fi

@@ -23,6 +23,7 @@
                 extraPkgs = with pkgs.pkgsi686Linux; [ gperftools ];
             });
         })
+        inputs.vivarium.overlay
     ];
 
     sops = {
@@ -59,6 +60,10 @@
         # makes sure /tmp is mounted on tmpfs
         tmpOnTmpfs = true;
         kernelParams = [ "delayacct" ];
+    };
+
+    hardware.nvidia = {
+        modesetting.enable = true;
     };
 
     networking.hostName = "hexagon";
@@ -100,6 +105,8 @@
         enable = true;
     };
 
+    services.udev.packages = with pkgs; [ yubikey-personalization ];
+
     # Enable sound.
     sound.enable = false;
     security.rtkit.enable = true;
@@ -117,18 +124,14 @@
     };
 
     # For Corsair keyboard control.
-    hardware.ckb-next.enable = true;
-
-    hardware.opentabletdriver = {
-        enable = true;
-    };
+    # hardware.ckb-next.enable = true;
 
     users.users.hexular = {
         isNormalUser = true;
         extraGroups = [ 
             "wheel" # sudo
             "networkmanager"
-            "docker"
+            # "docker"
             # "lxd"
         ];
         shell = pkgs.zsh;
@@ -184,7 +187,15 @@
         xdotool
         clang-tools
         lm_sensors
+        (libsForQt5.callPackage ../../apps/xp-pen-deco-01-v2-driver {})
+        yubikey-personalization
     ];
+
+    # get va-api working in firefox
+    environment.sessionVariables = {
+        LIBVA_DRIVER_NAME = "nvidia";
+        MOZ_DISABLE_RDD_SANDBOX = "1";
+    };
 
     programs.gnupg.agent = {
         enable = true;
@@ -193,6 +204,9 @@
     };
 
     programs.dconf.enable = true;
+
+    programs.xwayland.enable = true;
+    programs.sway.enable = true;
 
     # Enable the OpenSSH daemon.
     services.openssh = {
@@ -208,11 +222,16 @@
 
     programs.steam.enable = true;
 
-    xdg.portal.enable = true;
-    xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    xdg.portal = {
+        enable = true;
+        wlr.enable = true;
+        # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    };
     xdg.autostart.enable = true;
 
-    virtualisation.docker.enable = true;
+    virtualisation.virtualbox.host.enable = true;
+    virtualisation.virtualbox.host.enableExtensionPack = true;
+    users.extraGroups.vboxusers.members = [ "hexular" ];
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions

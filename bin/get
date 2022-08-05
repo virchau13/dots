@@ -4,30 +4,49 @@
 
 if [ -z "$1" ]; then echo "You must specify a package"; exit 1; fi
 
+nixargs=()
 case "$1" in
     -l)
         # Use the latest version of nixpkgs
-        nixpkgs="nixpkgs"
         shift
+        nixargs+=("nixpkgs#$1")
+        name="$1"
         ;;
     -b)
         # Use the branch/rev of nixpkgs specified
         # (e.g. `get -b master discord`)
         shift
-        nixpkgs="github:NixOS/nixpkgs/$1"
+        flakeref="github:NixOS/nixpkgs/$1"
         shift
+        nixargs+=("$flakeref#$1")
+        name="$flakeref"
+        ;;
+    -E)
+        # use an expr
+        shift
+        expr="$1"
+        shift
+        nixargs+=(--impure --expr "with import <nixpkgs> {}; $expr")
+        name="$SHLVL.expr"
         ;;
     *)
-        # I put `nixpkgs` as the nixpkgs rev the system was built from in $NIX_PATH.
-        # This makes sure I don't have to download nixpkgs *every* *single* *time*.
-        nixpkgs="$(nix eval --impure --expr '<nixpkgs>')"
+        if [[ "$1" == *"#"* ]]; then
+            # it's a specific flake
+            nixargs+=("$1")
+            name="$1"
+        else
+            # I put `nixpkgs` as the nixpkgs rev the system was built from in $NIX_PATH.
+            # This makes sure I don't have to download nixpkgs *every* *single* *time*.
+            nixargs+=("$(nix eval --impure --expr '<nixpkgs>')#$1")
+            name="$1"
+        fi
         ;;
 esac
 
 if [ -z "$GOTTEN_NIX_PKGS" ]; then
-    export GOTTEN_NIX_PKGS="$1"
+    export GOTTEN_NIX_PKGS="$name"
 else
-    export GOTTEN_NIX_PKGS="$GOTTEN_NIX_PKGS, $1"
+    export GOTTEN_NIX_PKGS="$GOTTEN_NIX_PKGS, $name"
 fi
 
 args=()
@@ -37,4 +56,4 @@ if [ "$#" -gt 1 ]; then
     args+=("--command" "$0" "$@")
 fi
 
-exec nix shell "$nixpkgs#$1" "${args[@]}"
+exec nix shell "${nixargs[@]}" "${args[@]}"

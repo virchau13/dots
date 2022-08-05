@@ -24,6 +24,8 @@ alias NR='awk '"'"'{ print NR " " $0 }'"'"
 alias ip='ip -color=auto'
 alias rs-clippy='cargo clippy --all-targets --all-features'
 alias rs-fmt='cargo fmt'
+alias ll='ls -lah'
+alias pbimgview='pbimgpaste | feh -'
 
 setopt HIST_IGNORE_SPACE
 
@@ -52,7 +54,7 @@ if [ ! -z "$HOST_COLOR" ]; then
     ITALIC="$(tput sitm)"
     RST="$(tput sgr0)"
     NL=$'\n'
-    PROMPT="<%{%F{$HOST_COLOR}%}$HOSTNAME%{%f%}:%~>%# "
+    PROMPT="<%{%F{$HOST_COLOR}%}$HOSTNAME%{%f%}:%~>$NL%# "
     if [ ! -z "$IN_NIX_DEV_SHELL_NAME" ]; then
         nixprompt+=("@$IN_NIX_DEV_SHELL_NAME")
     fi

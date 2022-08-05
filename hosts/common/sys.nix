@@ -93,6 +93,7 @@
                 bash-completion
                 nix-index
                 tokei
+                wezterm
 
                 rnix-lsp
                 # sumneko-lua-language-server

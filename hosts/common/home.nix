@@ -32,7 +32,13 @@ in {
 
     programs.git = {
         enable = true;
-        delta.enable = true;
+        delta = {
+            enable = true;
+            options = {
+                line-numbers = true;
+                side-by-side = true;
+            };
+        };
         userName = "Vir Chaudhury";
         userEmail = "virchau13@hexular.net";
         signing = {

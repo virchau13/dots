@@ -36,6 +36,12 @@ while (($#)); do
             fi
             shift
             ;;
+        -A)
+            shift
+            # use Nixpkgs package
+            export IN_NIX_DEV_SHELL_NAME="$1"
+            exec nix-shell '<nixpkgs>' -A "$1" --command "$shellcmd"
+            ;;
         *)
             if [[ "$1" == *"#"* ]]; then
                 # it's a specific flake

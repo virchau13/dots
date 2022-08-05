@@ -49,8 +49,6 @@ require'nvim-tree'.setup {
         width = 30,
         -- side of the tree, can be one of 'left' | 'right' | 'top' | 'bottom'
         side = 'left',
-        -- if true the tree will resize itself after opening a file
-        auto_resize = true,
         mappings = {
             -- custom only false will merge the list with the default mappings
             -- if true, it will only use your list to set the mappings
@@ -78,5 +76,31 @@ vim.api.nvim_create_autocmd("BufEnter", {
 require('fidget').setup {}
 
 require('virt-column').setup()
+
+require('formatter').setup {
+    filetype = {
+        -- apply to all filetypes
+        ["*"] = {
+            require('formatter.filetypes.any').remove_trailing_whitespace
+        },
+        rust = {
+            -- Rustfmt
+            function()
+                return {
+                    exe = "rustfmt",
+                    args = {"--emit=stdout", "--edition=2021"},
+                    stdin = true
+                }
+            end
+        }
+    }
+}
+
+require('lsp_lines').setup()
+vim.diagnostic.config({
+    -- turn it off by default
+    virtual_lines = false,
+})
+
 
 setgvar("tokyonight_style", "night")

@@ -59,6 +59,10 @@ in {
             extra.virt-column-nvim
             # misc navigation bindings
             vim-unimpaired
+            # easy formatting
+            formatter-nvim
+            # cool lines for diagnostics
+            extra.lsp_lines-nvim
         ];
         extraConfig = ''
             lua require('init') { typescript = "${pkgs.nodePackages.typescript}" }

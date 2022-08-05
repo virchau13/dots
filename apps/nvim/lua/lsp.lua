@@ -143,6 +143,9 @@ local settings = {
         cmd = {'bash', '-c', 'node /home/hexular/prog/repos/language-tools/packages/language-server/dist/node.js --stdio'}
     },
     gopls = {},
+    wgsl_analyzer = {
+        cmd = {'/home/hexular/prog/repos/wgsl-analyzer/target/release/wgsl_analyzer'}
+    },
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

@@ -5,7 +5,7 @@
     <alias>
         <family>Hex Mono</family>
         <prefer>
-            <family>Input Mono</family>
+            <family>JetBrains Mono NerdFont</family>
         </prefer>
     </alias>
 	<match target="font">

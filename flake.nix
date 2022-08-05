@@ -8,7 +8,8 @@
         neovim-nightly-overlay.url = github:nix-community/neovim-nightly-overlay;
         sops-nix.url = github:Mic92/sops-nix;
         flake-utils.url = github:numtide/flake-utils;
-        eww.url = github:virchau13/eww;
+        eww.url = github:elkowar/eww;
+        vivarium.url = github:virchau13/vivarium;
 
         # nvim plugins
         parinfer-rust = {
@@ -30,8 +31,9 @@
             flake = false;
         };
 
-        ra-multiplex = {
-            url = github:pr2502/ra-multiplex;
+        lsp_lines-nvim = {
+            # the sourcehut input just doesnt work for some reason (it fails to download it)
+            url = git+https://git.sr.ht/~whynothugo/lsp_lines.nvim?rev=22ef87c6b2039aac069bfba1c5be5cd26c27b752;
             flake = false;
         };
     };

@@ -2,13 +2,26 @@
     description = "dots";
 
     inputs = {
-        darwin.url = "github:lnl7/nix-darwin/master";
-        darwin.inputs.nixpkgs.follows = "nixpkgs";
-        home-manager.url = github:nix-community/home-manager;
-        neovim-nightly-overlay.url = github:nix-community/neovim-nightly-overlay;
-        sops-nix.url = github:Mic92/sops-nix;
+        darwin = {
+            url = "github:lnl7/nix-darwin/master";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+        home-manager = {
+            url = github:nix-community/home-manager;
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+        neovim-nightly-overlay = {
+            url = github:nix-community/neovim-nightly-overlay;
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+        sops-nix = {
+            url = github:Mic92/sops-nix;
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
         flake-utils.url = github:numtide/flake-utils;
-        eww.url = github:elkowar/eww;
+        eww = {
+            url = github:elkowar/eww;
+        };
 
         # nvim plugins
         parinfer-rust = {

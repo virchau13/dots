@@ -5,43 +5,58 @@
 if [ -z "$1" ]; then echo "You must specify a package"; exit 1; fi
 
 nixargs=()
-case "$1" in
-    -l)
-        # Use the latest version of nixpkgs
-        shift
-        nixargs+=("nixpkgs#$1")
-        name="$1"
-        ;;
-    -b)
-        # Use the branch/rev of nixpkgs specified
-        # (e.g. `get -b master discord`)
-        shift
-        flakeref="github:NixOS/nixpkgs/$1"
-        shift
-        nixargs+=("$flakeref#$1")
-        name="$flakeref"
-        ;;
-    -E)
-        # use an expr
-        shift
-        expr="$1"
-        shift
-        nixargs+=(--impure --expr "with import <nixpkgs> {}; $expr")
-        name="$SHLVL.expr"
-        ;;
-    *)
-        if [[ "$1" == *"#"* ]]; then
-            # it's a specific flake
-            nixargs+=("$1")
+while [ -z "$done" ]; do
+    case "$1" in
+        -l)
+            # Use the latest version of nixpkgs
+            shift
+            nixargs+=("nixpkgs#$1")
             name="$1"
-        else
-            # I put `nixpkgs` as the nixpkgs rev the system was built from in $NIX_PATH.
-            # This makes sure I don't have to download nixpkgs *every* *single* *time*.
-            nixargs+=("$(nix eval --impure --expr '<nixpkgs>')#$1")
-            name="$1"
-        fi
-        ;;
-esac
+            done=1
+            ;;
+        -b)
+            # Use the branch/rev of nixpkgs specified
+            # (e.g. `get -b master discord`)
+            shift
+            branch="$1"
+            shift
+            ;;
+        -E)
+            # use an expr
+            shift
+            expr="$1"
+            shift
+            if [ -z "$branch" ]; then
+                nixpkgs="<nixpkgs>"
+                name="$SHLVL.expr"
+            else
+                nixpkgs="(builtins.getFlake \"github:NixOS/nixpkgs/$branch\")"
+                name="$branch/$SHLVL.expr"
+            fi
+            nixargs+=(--impure --expr "with import $nixpkgs {}; $expr")
+            done=1
+            ;;
+        *)
+            if [[ "$1" == *"#"* || "$1" == *":"* ]]; then
+                # it's a specific flake
+                nixargs+=("$1")
+                name="$1"
+            else
+                if [ -z "$branch" ]; then
+                    # I put `nixpkgs` as the nixpkgs rev the system was built from in $NIX_PATH.
+                    # This makes sure I don't have to download nixpkgs *every* *single* *time*.
+                    nixpkgs="$(nix eval --impure --expr '<nixpkgs>')"
+                    name="$1"
+                else
+                    nixpkgs="github:NixOS/nixpkgs/$branch"
+                    name="$branch/$1"
+                fi
+                nixargs+=("$nixpkgs#$1")
+            fi
+            done=1
+            ;;
+    esac
+done
 
 if [ -z "$GOTTEN_NIX_PKGS" ]; then
     export GOTTEN_NIX_PKGS="$name"

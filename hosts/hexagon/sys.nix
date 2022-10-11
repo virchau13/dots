@@ -55,10 +55,7 @@
             it87
         ];
         kernelModules = [ "coretemp" "it87" "lm92" "k10temp" ];
-        # why this is not enabled by default boggles me
-        # makes sure /tmp is mounted on tmpfs
-        tmpOnTmpfs = true;
-        kernelParams = [ "delayacct" ];
+        kernelParams = [ "delayacct" "boot.shell_on_fail" ];
     };
 
     hardware.nvidia = {
@@ -123,7 +120,7 @@
     };
 
     # For Corsair keyboard control.
-    # hardware.ckb-next.enable = true;
+    hardware.ckb-next.enable = true;
 
     users.users.hexular = {
         isNormalUser = true;
@@ -188,6 +185,7 @@
         lm_sensors
         (libsForQt5.callPackage ../../apps/xp-pen-deco-01-v2-driver {})
         yubikey-personalization
+        ungoogled-chromium
     ];
 
     # get va-api working in firefox
@@ -216,6 +214,8 @@
     # Or disable the firewall altogether.(TODO change this to true)
     networking.firewall.enable = false;
 
+    networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+
     programs.steam.enable = true;
 
     xdg.portal = {
@@ -224,9 +224,12 @@
     };
     xdg.autostart.enable = true;
 
-    virtualisation.virtualbox.host.enable = true;
-    virtualisation.virtualbox.host.enableExtensionPack = true;
-    users.extraGroups.vboxusers.members = [ "hexular" ];
+    # virtualisation.virtualbox.host.enable = true;
+    # virtualisation.virtualbox.host.enableExtensionPack = true;
+    # users.extraGroups.vboxusers.members = [ "hexular" ];
+    virtualisation.podman = {
+        enable = true;
+    };
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions

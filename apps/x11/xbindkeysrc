@@ -13,5 +13,5 @@
    XF86AudioPrev
 "mpc next"
    XF86AudioNext
-"mpc pause"
+"mpc del $(mpc -f '%position%' | head -n 1)"
    XF86AudioStop

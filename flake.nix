@@ -2,6 +2,7 @@
     description = "dots";
 
     inputs = {
+        nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
         darwin = {
             url = "github:lnl7/nix-darwin/master";
             inputs.nixpkgs.follows = "nixpkgs";
@@ -19,9 +20,9 @@
             inputs.nixpkgs.follows = "nixpkgs";
         };
         flake-utils.url = github:numtide/flake-utils;
-        eww = {
-            url = github:elkowar/eww;
-        };
+        # eww = {
+        #     url = github:elkowar/eww;
+        # };
 
         # nvim plugins
         parinfer-rust = {
@@ -32,20 +33,20 @@
             url = github:elkowar/yuck.vim;
             flake = false;
         };
-
         fidget-nvim = {
             url = github:j-hui/fidget.nvim;
             flake = false;
         };
-
         virt-column-nvim = {
             url = github:lukas-reineke/virt-column.nvim;
             flake = false;
         };
-
-        lsp_lines-nvim = {
-            # the sourcehut input just doesnt work for some reason (it fails to download it)
-            url = git+https://git.sr.ht/~whynothugo/lsp_lines.nvim?rev=22ef87c6b2039aac069bfba1c5be5cd26c27b752;
+        # lsp_lines-nvim = {
+        #     url = sourcehut:~whynothugo/lsp_lines.nvim;
+        #     flake = false;
+        # };
+        sexy_scroller-vim = {
+            url = github:joeytwiddle/sexy_scroller.vim;
             flake = false;
         };
     };

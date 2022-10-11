@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+C_USER_DATA_DIR=~/.cache/soundcloud-chromium
+
+if [ ! -d "$C_USER_DATA_DIR/Default" ]; then
+    mkdir -p "$C_USER_DATA_DIR"/Default
+    echo '{ "profile": { "default_content_setting_values": { "cookies": 1 } } }' > "$C_USER_DATA_DIR"/Default/Preferences
+fi
+
+chromium --user-data-dir="$C_USER_DATA_DIR" --kiosk 'https://soundcloud.com'

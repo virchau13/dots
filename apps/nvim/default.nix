@@ -29,7 +29,9 @@ in {
             # lsp pictograms
             lspkind-nvim
             # treesitter highlighting
-            nvim-treesitter
+            nvim-treesitter 
+            # easy way to view tree-sitter syntax trees
+            playground
             # snippets
             luasnip
             # fzf alternative
@@ -37,7 +39,15 @@ in {
             # peeks lines when you :<line number>
             numb-nvim
             # displays gitsigns on the left bar
-            gitsigns-nvim
+            (gitsigns-nvim.overrideAttrs(old: {
+                # https://github.com/lewis6991/gitsigns.nvim/issues/604#issuecomment-1225896490
+                src = pkgs.fetchFromGitHub {
+                    owner = "lewis6991";
+                    repo = "gitsigns.nvim";
+                    rev = "1e107c91c0c5e3ae72c37df8ffdd50f87fb3ebfa";
+                    sha256 = "sha256-d5kSdbqQBFdpu/Be+q6OqNNlGrgkL7OU13HOatLx4mE=";
+                };
+            }))
             # autocomplete
             cmp-nvim-lsp
             cmp-buffer
@@ -62,7 +72,16 @@ in {
             # easy formatting
             formatter-nvim
             # cool lines for diagnostics
-            extra.lsp_lines-nvim
+            # extra.lsp_lines-nvim
+            # smooth scrolling
+            extra.sexy_scroller-vim
+            # for proper indentation
+            # i really hate the fact i have to install this >:(
+            { 
+                plugin = vim-polyglot;
+                # vim-polyglot sets tabstop/shiftwidth to 2 unless set otherwise
+                config = "set ts=4 sw=4";
+            }
         ];
         extraConfig = ''
             lua require('init') { typescript = "${pkgs.nodePackages.typescript}" }

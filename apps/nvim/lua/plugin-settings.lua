@@ -17,12 +17,15 @@ setgvar("lightline", {
 -- vim.fn["lightline#update"]()
 
 require 'nvim-treesitter.configs'.setup {
-    ensure_installed = "all",
+    -- ensure_installed = "all",
+    -- auto_install = false,
+    parser_install_dir = '~/.local/share/nvim/site',
     highlight = {
         enable = true,
+        additional_vim_regex_highlighting = true -- to get vim-polyglot indentation to work
     },
     indent = {
-        enable = true
+        enable = false
     },
     ignore_install = { 'go' },
 }
@@ -96,11 +99,8 @@ require('formatter').setup {
     }
 }
 
-require('lsp_lines').setup()
-vim.diagnostic.config({
-    -- turn it off by default
-    virtual_lines = false,
-})
-
-
-setgvar("tokyonight_style", "night")
+-- require('lsp_lines').setup()
+-- vim.diagnostic.config({
+--     -- turn it off by default
+--     virtual_lines = false,
+-- })

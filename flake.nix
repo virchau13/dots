@@ -23,6 +23,7 @@
         # eww = {
         #     url = github:elkowar/eww;
         # };
+        nix-gaming.url = github:fufexan/nix-gaming;
 
         # nvim plugins
         parinfer-rust = {
@@ -47,6 +48,14 @@
         # };
         sexy_scroller-vim = {
             url = github:joeytwiddle/sexy_scroller.vim;
+            flake = false;
+        };
+        everblush = {
+            url = github:everblush/nvim;
+            flake = false;
+        };
+        architext-nvim = {
+            url = github:vigoux/architext.nvim;
             flake = false;
         };
     };

@@ -12,18 +12,18 @@ in {
         plugins = with pkgs.vimPlugins; let 
             extra = import ./extra-plugins.nix args;
         in [
-            # fs icons
-            nvim-web-devicons
+            # fs icons (commented out due to ttyd)
+            # nvim-web-devicons
             # popups
             popup-nvim
             # async lua (required for telescope)
             plenary-nvim
             # colorscheme
-            tokyonight-nvim
+            extra.everblush
             # file browser (alternative to nerdtree)
             nvim-tree-lua
             # bar
-            lightline-vim
+            lualine-nvim
             # lsp configuration
             nvim-lspconfig
             # lsp pictograms
@@ -32,6 +32,8 @@ in {
             nvim-treesitter 
             # easy way to view tree-sitter syntax trees
             playground
+            # easy way to play with tree-sitter queries
+            extra.architext-nvim
             # snippets
             luasnip
             # fzf alternative
@@ -39,15 +41,7 @@ in {
             # peeks lines when you :<line number>
             numb-nvim
             # displays gitsigns on the left bar
-            (gitsigns-nvim.overrideAttrs(old: {
-                # https://github.com/lewis6991/gitsigns.nvim/issues/604#issuecomment-1225896490
-                src = pkgs.fetchFromGitHub {
-                    owner = "lewis6991";
-                    repo = "gitsigns.nvim";
-                    rev = "1e107c91c0c5e3ae72c37df8ffdd50f87fb3ebfa";
-                    sha256 = "sha256-d5kSdbqQBFdpu/Be+q6OqNNlGrgkL7OU13HOatLx4mE=";
-                };
-            }))
+            gitsigns-nvim
             # autocomplete
             cmp-nvim-lsp
             cmp-buffer
@@ -61,8 +55,6 @@ in {
             extra.yuck-vim
             # git operations
             vim-fugitive
-            # elixir syntax highlighting
-            vim-elixir
             # lsp progress displayer
             extra.fidget-nvim
             # allows virtual text instead of a colorcolumn
@@ -80,7 +72,11 @@ in {
             { 
                 plugin = vim-polyglot;
                 # vim-polyglot sets tabstop/shiftwidth to 2 unless set otherwise
-                config = "set ts=4 sw=4";
+                # and the nix plugin included also sets it to 2 so like don't thanks
+                config = ''
+                    set ts=4 sw=4
+                    let g:polyglot_disabled = ['nix']
+                '';
             }
         ];
         extraConfig = ''

@@ -18,6 +18,7 @@ noremap('n', '<Leader>tn', ':<C-u>tabnew ')
 noremap('n', '<Leader>tl', ':<C-u>Telescope<CR>')
 -- noremap('n', '<Leader>f', ':<C-u>Format<CR>')
 noremap('n', '<Leader>f', ':<C-u>FormatWrite<CR>')
+noremap('n', '<Leader>w', '<C-w>') -- get around ttyd limitation
 
 -- Open files
 telescope_bind('<Leader>op', 'find_files')

@@ -22,4 +22,8 @@ in {
     lsp_lines-nvim = simplePlugin inputs.lsp_lines-nvim "lsp_lines.nvim";
 
     sexy_scroller-vim = simplePlugin inputs.sexy_scroller-vim "sexy_scroller.vim";
+
+    everblush = simplePlugin inputs.everblush "everblush";
+
+    architext-nvim = simplePlugin inputs.architext-nvim "architext.nvim";
 }

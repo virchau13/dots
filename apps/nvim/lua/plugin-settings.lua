@@ -1,20 +1,23 @@
 require 'util'
 
--- Uses nerd-fonts extra symbols.
-setgvar("lightline", {
-    separator = {
-        left = "\u{e0bc}",
-        right = "\u{e0ba}"
-    },
-    subseparator = {
-        left = "\u{e0bb}",
-        right = "\u{e0bb}"
-    },
-    colorscheme = "tokyonight"
-})
--- vim.fn["lightline#init"]()
--- vim.fn["lightline#colorscheme"]()
--- vim.fn["lightline#update"]()
+-- setgvar("lightline", {
+-- -- Nerd Font symbols removed because of annoyances with ttyd.
+--      separator = {
+--          left = "▛",
+--          right = "▗"
+--      },
+--      subseparator = {
+--          left = "▞",
+--          right = "▞"
+--      },
+--      colorscheme = "tokyonight"
+-- })
+require('lualine').setup {
+    options = {
+        icons_enabled = false,
+        theme = 'everblush'
+    }
+}
 
 require 'nvim-treesitter.configs'.setup {
     -- ensure_installed = "all",
@@ -25,7 +28,7 @@ require 'nvim-treesitter.configs'.setup {
         additional_vim_regex_highlighting = true -- to get vim-polyglot indentation to work
     },
     indent = {
-        enable = false
+        enable = false,
     },
     ignore_install = { 'go' },
 }
@@ -63,6 +66,28 @@ require'nvim-tree'.setup {
             }
         },
         hide_root_folder = true
+    },
+    renderer = {
+        icons = {
+            glyphs = {
+                default = "f",
+                symlink = "s",
+                bookmark = "B",
+                folder = {
+                    arrow_closed = "+",
+                    arrow_open = "-",
+                    default = "d",
+                    open = "d-",
+                    empty = "d_",
+                    empty_open = "d=",
+                    symlink = "ds",
+                    symlink_open = "ds+",
+                },
+                git = {
+                    deleted = "␡",
+                }
+            }
+        }
     }
 }
 -- automatically close nvim-tree when it's the last window
@@ -82,10 +107,6 @@ require('virt-column').setup()
 
 require('formatter').setup {
     filetype = {
-        -- apply to all filetypes
-        ["*"] = {
-            require('formatter.filetypes.any').remove_trailing_whitespace
-        },
         rust = {
             -- Rustfmt
             function()
@@ -95,7 +116,14 @@ require('formatter').setup {
                     stdin = true
                 }
             end
-        }
+        },
+        cpp = {
+            require('formatter.filetypes.cpp').clangformat
+        },
+        -- apply to all filetypes
+        ["*"] = {
+            require('formatter.filetypes.any').remove_trailing_whitespace
+        },
     }
 }
 

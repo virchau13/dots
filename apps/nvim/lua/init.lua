@@ -8,5 +8,5 @@ return function(deps_)
     require 'binds'
     require 'lsp'
 
-    vim.cmd("colorscheme tokyonight-night")
+    vim.cmd("colorscheme everblush")
 end

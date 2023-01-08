@@ -4,6 +4,8 @@
 
 if [ -z "$1" ]; then echo "You must specify a package"; exit 1; fi
 
+nixcmd="shell"
+
 nixargs=()
 while [ -z "$done" ]; do
     case "$1" in
@@ -36,6 +38,11 @@ while [ -z "$done" ]; do
             nixargs+=(--impure --expr "with import $nixpkgs {}; $expr")
             done=1
             ;;
+        -r)
+            # run the package
+            shift
+            nixcmd="run"
+            ;;
         *)
             if [[ "$1" == *"#"* || "$1" == *":"* ]]; then
                 # it's a specific flake
@@ -66,9 +73,15 @@ fi
 
 args=()
 args+=("--impure") # https://discourse.nixos.org/t/nix-run-does-not-install-unfree-packages-nixpkgs-allow-unfree-doesnt-seem-to-help/12039
-if [ "$#" -gt 1 ]; then
+if [ "$nixcmd" = "shell" ]; then
+    if [ "$#" -gt 1 ]; then
+        shift
+        args+=("--command" "$0" "$@")
+    fi
+elif [ "$nixcmd" = "run" ]; then
+    args+=("--")
     shift
-    args+=("--command" "$0" "$@")
+    args+=("$@")
 fi
 
-exec nix shell "${nixargs[@]}" "${args[@]}"
+exec nix "$nixcmd" "${nixargs[@]}" "${args[@]}"

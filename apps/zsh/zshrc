@@ -118,6 +118,14 @@ edit-history() {
     fi
 }
 
+# Just displays information about a video given in $1
+videoinfo() { 
+    for arg in "$@"; do
+        echo "$arg:"
+        ffprobe -i "$arg" 2>&1 | grep -Po '((?<=^  )Stream.*$)|(Duration: [^,]*)' | sed 's/^/\t/' 
+    done
+}
+
 # Too slow, commenting out for now
 # command_not_found_handler() {
 #     IFS=$'\n' candidates=($(nix-locate -w "bin/$1" --minimal | sed '/^(/d'))

@@ -19,10 +19,11 @@
         fsType = "vfat";
     };
 
-    fileSystems."/hdd" = {
-        device = "/dev/disk/by-uuid/6494f0d3-4b3e-4d06-8080-8446a302ad93";
-        fsType = "ext4";
-    };
+    # just died on me for no reason lmfao
+    # fileSystems."/hdd" = {
+    #     device = "/dev/disk/by-uuid/6494f0d3-4b3e-4d06-8080-8446a302ad93";
+    #     fsType = "ext4";
+    # };
 
     swapDevices = [ 
         { device = "/dev/disk/by-uuid/1691f745-a841-4ac6-a3cf-d03397cf3b21"; }

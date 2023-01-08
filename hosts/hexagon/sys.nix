@@ -10,6 +10,14 @@
             auto-optimise-store = true;
             # i don't want all my cores to be taken up
             cores = 4; # cores per derivation built
+            substituters = [
+                "https://nix-gaming.cachix.org"
+                "https://cuda-maintainers.cachix.org"
+            ];
+            trusted-public-keys = [ 
+                "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+                "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+            ];
         };
         # increase system responsiveness during nix-build
         # https://github.com/NixOS/nixpkgs/pull/138741#issuecomment-979918607
@@ -34,6 +42,15 @@
             "scripts/refresh-playlist" = {
                 mode = "0500";
                 owner = config.users.users.hexular.name;
+            };
+            "ttyd/ca.pem" = {
+                owner = "hexular";
+            };
+            "ttyd/ca-key.pem" = {
+                owner = "hexular";
+            };
+            "ttyd/http-auth" = {
+                owner = "hexular";
             };
         };
     };
@@ -68,7 +85,7 @@
     time.timeZone = "Asia/Singapore";
 
     # set global useDHCP to false
-    networking.useDHCP = false;
+    networking.useDHCP = true;
     networking.interfaces = {
         enp5s0 = {
             useDHCP = true;
@@ -127,7 +144,7 @@
         extraGroups = [ 
             "wheel" # sudo
             "networkmanager"
-            # "docker"
+            "docker"
             # "lxd"
         ];
         shell = pkgs.zsh;
@@ -162,7 +179,7 @@
         p7zip
         glxinfo
         wl-clipboard
-        alsaUtils
+        alsa-utils
         htop
         cmake
         gnumake
@@ -170,7 +187,7 @@
         feh
         xcolor
         python
-        gnome3.adwaita-icon-theme
+        gnome.adwaita-icon-theme
         xclip
         breeze-icons
         inkscape
@@ -183,9 +200,10 @@
         xdotool
         clang-tools
         lm_sensors
-        (libsForQt5.callPackage ../../apps/xp-pen-deco-01-v2-driver {})
+        xp-pen-deco-01-v2-driver
         yubikey-personalization
         ungoogled-chromium
+        inputs.nix-gaming.packages.${pkgs.system}.wine-ge
     ];
 
     # get va-api working in firefox
@@ -205,7 +223,31 @@
     # Enable the OpenSSH daemon.
     services.openssh = {
         enable = true;
-        ports = [ 22 25565 ];
+        ports = [ 22 25565 22000 ];
+    };
+
+    programs.mosh.enable = true;
+
+    systemd.services.ttyd = {
+        serviceConfig = {
+            User = "hexular";
+            WorkingDirectory = "/home/hexular";
+        };
+        requires = [ "network-online.target" ];
+        wantedBy = [ "multi-user.target" ];
+        script = ''
+            ${pkgs.ttyd}/bin/ttyd \
+                --port 1051 \
+                --credential "$(cat /run/secrets/ttyd/http-auth)" \
+                --base-path /tty \
+                --index /home/hexular/prog/repos/ttyd/html/dist/inline.html \
+                --ipv6 \
+                --ssl \
+                --ssl-cert /run/secrets/ttyd/ca.pem \
+                --ssl-key /run/secrets/ttyd/ca-key.pem \
+                --ssl-ca /run/secrets/ttyd/ca.pem \
+                ${pkgs.zsh}/bin/zsh
+        '';
     };
 
     # Open ports in the firewall.
@@ -231,13 +273,25 @@
         enable = true;
     };
 
+    virtualisation.docker = {
+        enable = true;
+        enableNvidia = true;
+    };
+
+    # virtualisation.oci-containers = {
+    #     backend = "docker";
+    #     containers.neko = {
+    #         image = "m1k1o/neko:xfce";
+    #     };
+    # };
+
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
     # on your system were taken. It‘s perfectly fine and recommended to leave
     # this value at the release version of the first install of this system.
     # Before changing this value read the documentation for this option
     # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-    system.stateVersion = "21.05"; # Did you read the comment?
+    system.stateVersion = "22.05"; # Did you read the comment?
 
     home-manager.extraSpecialArgs = let 
         homeDir = config.users.users.hexular.home; 

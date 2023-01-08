@@ -42,7 +42,7 @@ in
             wine
             winetricks
             transmission-qt
-            polymc
+            prismlauncher
             refresh-playlist
             # Make discord run faster
             (writeShellScriptBin "discord" ''
@@ -65,6 +65,7 @@ in
         enable = true;
         settings = {
             font.normal.family = "Hex Mono";
+            font.size = 10.0;
         };
     };
 

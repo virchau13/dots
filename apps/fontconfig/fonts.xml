@@ -1,13 +1,25 @@
 <?xml version='1.0'?>
-<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
+<!DOCTYPE fontconfig SYSTEM 'fonts.dtd' [
+	<!-- Macro to avoid having to define my monospace font in multiple places -->
+	<!-- <!ENTITY hexmono "JetBrains Mono NerdFont"> -->
+	<!ENTITY hexmono "Input Mono">
+]>
 
 <fontconfig>
     <alias>
         <family>Hex Mono</family>
         <prefer>
-            <family>JetBrains Mono NerdFont</family>
+			<family>&hexmono;</family>
         </prefer>
     </alias>
+	<alias>
+		<!-- GitHub is nice and uses `ui-monospace` as its default code font.
+			So override it, of course! -->
+		<family>ui-monospace</family>
+		<prefer>
+			<family>&hexmono;</family>
+		</prefer>
+	</alias>
 	<match target="font">
 		<edit mode="assign" name="rgba">
 			<const>rgb</const>

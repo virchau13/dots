@@ -13,15 +13,17 @@
             extra-experimental-features = nix-command flakes
             build-users-group = nixbld
         '';
-        trustedUsers = [ "root" "hexular" ];
-        binaryCaches = [
-            "https://cache.nixos.org/"
-            "https://nix-community.cachix.org"
-        ];
-        binaryCachePublicKeys = [
-            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        ];
-        useSandbox = true;
+        settings = {
+          trusted-users = [ "root" "hexular" ];
+          substituters = [
+              "https://cache.nixos.org/"
+              "https://nix-community.cachix.org"
+          ];
+          trusted-public-keys = [
+              "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          ];
+          sandbox = true;
+        };
         # to get nix-index to use flakes
         nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     };
@@ -43,7 +45,7 @@
 
                 # haskell
                 haskell-language-server
-                (haskellPackages.ghcWithPackages (pkgs: with pkgs; [ xmonad xmonad-contrib ]))
+                (haskellPackages.ghcWithPackages (pkgs: with pkgs; [ lens ]))
 
                 # js
                 nodejs
@@ -74,6 +76,7 @@
                 ripgrep
                 htop
                 unzip
+                unar
                 imagemagick
                 fd
                 pass
@@ -87,13 +90,13 @@
                 nmap
                 tcptraceroute
                 bintools
-                ghc
                 figlet
                 lolcat
                 bash-completion
                 nix-index
                 tokei
                 wezterm
+                ffmpeg
 
                 rnix-lsp
                 # sumneko-lua-language-server

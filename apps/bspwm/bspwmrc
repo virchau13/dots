@@ -8,7 +8,7 @@ echo 'Launched bspwm'
 date 
 
 pgrep -x sxhkd > /dev/null || sxhkd &
-pgrep -x picom > /dev/null || picom  --xrender-sync-fence --experimental-backends --backend glx \
+pgrep -x picom > /dev/null || picom  --xrender-sync-fence --backend glx \
     --use-damage --vsync --config /dev/null --show-all-xerrors \
     --glx-no-stencil --log-level INFO --log-file ~/.cache/picom.out &
 
@@ -24,3 +24,5 @@ bspc config borderless_monocle   true
 bspc config gapless_monocle      true
 
 bspc rule -a 'Alacritty:scratchpadterm' sticky=on state=floating hidden=on
+
+bspc config external_rules_command ~/.config/bspwm/external_rules

@@ -30,6 +30,22 @@ super + shift + y
 super + u
     scratchpadtermtoggle
 
+# pause/resume window (send SIGSTOP/SIGCONT)
+super + p
+    wid=$(bspc query -n focused -T | jq '.id'); \
+    pid=$(xprop -id "$wid" _NET_WM_PID | sed 's/_NET_WM_PID(CARDINAL) = //'); \
+    if [ ! -z "$pid" ]; then \ 
+        if [ "$(ps -o s= -p "$pid")" = "T" ]; then \
+            kill -SIGCONT "$pid"; \
+            notify-desktop "Continuing $pid"; \
+        else; \
+            kill -SIGSTOP "$pid"; \
+            notify-desktop "Pausing $pid"; \
+        fi; \
+    else; \
+        notify-desktop "Could not find any PID matches"; \
+    fi
+
 #
 # bspwm hotkeys
 #
@@ -40,8 +56,10 @@ super + shift + q
 
 # restart bspwm
 super + q
-    touch /tmp/bspwm-dont-setup-monitors \
-	bspc wm -r \
+    touch /tmp/bspwm-dont-setup-monitors; \
+    sleep 0.1; \
+	bspc wm -r; \
+    sleep 0.1; \
     rm /tmp/bspwm-dont-setup-monitors
 
 # close and kill

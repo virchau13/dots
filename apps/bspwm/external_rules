@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+class="$2"
+
+echo "$@" >~/f
+
+if [[ "$class" == *.exe ]]; then
+    echo "state=floating"
+fi

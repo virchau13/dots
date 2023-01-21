@@ -14,7 +14,7 @@
                 pname = "${old.pname}-nerd-font";
                 buildInputs = [
                     fontforge
-                    (python2.withPackages (pypkgs: [pypkgs.configparser]))
+                    (python3.withPackages (pypkgs: [pypkgs.configparser]))
                 ];
                 postInstall = ''
                     export LANG=en_US.UTF-8

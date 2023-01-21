@@ -12,6 +12,10 @@ require 'nvim-treesitter.configs'.setup {
     parser_install_dir = '~/.local/share/nvim/site',
     highlight = {
         enable = true,
+        disable = function(lang, bufnr)
+            -- disable in long buffers
+            return vim.api.nvim_buf_line_count(bufnr) > 2000
+        end,
         additional_vim_regex_highlighting = true -- to get vim-polyglot indentation to work
     },
     indent = {
@@ -21,7 +25,7 @@ require 'nvim-treesitter.configs'.setup {
 }
 
 require('numb').setup()
-require('gitsigns').setup()
+-- TODO check performance: require('gitsigns').setup()
 
 local tree_cb = require'nvim-tree.config'.nvim_tree_callback
 require'nvim-tree'.setup {

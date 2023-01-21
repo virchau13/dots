@@ -32,21 +32,19 @@ in {
             nvim-treesitter 
             # easy way to view tree-sitter syntax trees
             playground
+            # tree-sitter structural search replace
+            ssr-nvim
             # easy way to play with tree-sitter queries
             extra.architext-nvim
-            # snippets
-            luasnip
             # fzf alternative
             telescope-nvim
             # peeks lines when you :<line number>
             numb-nvim
             # displays gitsigns on the left bar
-            gitsigns-nvim
+            # (TODO check performance) gitsigns-nvim
             # autocomplete
-            cmp-nvim-lsp
-            cmp-buffer
-            cmp-path
-            nvim-cmp
+            coq_nvim
+            coq-artifacts
             # snippets
             luasnip 
             # lisp expression indents
@@ -73,9 +71,10 @@ in {
                 plugin = vim-polyglot;
                 # vim-polyglot sets tabstop/shiftwidth to 2 unless set otherwise
                 # and the nix plugin included also sets it to 2 so like don't thanks
+                # ftdetect breaks filetype.lua so disable it
                 config = ''
                     set ts=4 sw=4
-                    let g:polyglot_disabled = ['nix']
+                    let g:polyglot_disabled = ['nix', 'ftdetect']
                 '';
             }
         ];

@@ -4,6 +4,9 @@ require 'util'
 require 'lsp-custom'
 
 local on_attach = function(client, bufnr)
+    -- turn off lsp highlighting
+    client.server_capabilities.semanticTokensProvider = nil
+
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
     end
@@ -160,64 +163,7 @@ for server, config in pairs(settings) do
     nvim_lsp[server].setup(setup_obj)
 end
 
-local cmp = require 'cmp'
-local luasnip = require 'luasnip'
-cmp.setup {
-    snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end
-    },
-    mapping = {
-        ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
-            elseif has_words_before() then
-                cmp.complete()
-            else
-                fallback()
-            end
-        end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
-            else
-                fallback()
-            end
-        end, { "i", "s" }),
-        -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    },
-    sources = cmp.config.sources({
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' }
-    }, {
-        { name = 'buffer' }
-    }),
-    sorting = {
-        comparators = {
-            cmp.config.compare.offset,
-            cmp.config.compare.exact,
-            cmp.config.compare.score,
-            cmp.config.compare.recently_used,
-            -- prioritizes snippets, we don't want that
-            function (a, b)
-                local res = cmp.config.compare.kind
-                if kind == nil then
-                    return kind
-                else
-                    return not kind
-                end
-            end,
-            cmp.config.compare.sort_text,
-            cmp.config.compare.length,
-            cmp.config.compare.order,
-        }
-    },
-    formatting = {
-        format = require('lspkind').cmp_format({with_text = false, maxwidth = 50})
-    }
+vim.g.coq_settings = {
+    auto_start = 'shut-up',
+    xdg = true,
 }

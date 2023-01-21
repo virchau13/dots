@@ -1,20 +1,7 @@
 require 'util'
 
--- setgvar("lightline", {
--- -- Nerd Font symbols removed because of annoyances with ttyd.
---      separator = {
---          left = "▛",
---          right = "▗"
---      },
---      subseparator = {
---          left = "▞",
---          right = "▞"
---      },
---      colorscheme = "tokyonight"
--- })
 require('lualine').setup {
     options = {
-        icons_enabled = false,
         theme = 'everblush'
     }
 }
@@ -62,33 +49,12 @@ require'nvim-tree'.setup {
             -- list of mappings to set on the tree manually
             list = {
                 -- (Bad practice apparently... I should be using buffers.)
-                -- { key = 't', cb = tree_cb("tabnew") }
+                -- (But I just keep the keybind, just in case, you know?)
+                { key = 't', cb = tree_cb("tabnew") }
             }
         },
         hide_root_folder = true
     },
-    renderer = {
-        icons = {
-            glyphs = {
-                default = "f",
-                symlink = "s",
-                bookmark = "B",
-                folder = {
-                    arrow_closed = "+",
-                    arrow_open = "-",
-                    default = "d",
-                    open = "d-",
-                    empty = "d_",
-                    empty_open = "d=",
-                    symlink = "ds",
-                    symlink_open = "ds+",
-                },
-                git = {
-                    deleted = "␡",
-                }
-            }
-        }
-    }
 }
 -- automatically close nvim-tree when it's the last window
 -- (https://github.com/kyazdani42/nvim-tree.lua/discussions/1115)

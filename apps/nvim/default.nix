@@ -12,8 +12,8 @@ in {
         plugins = with pkgs.vimPlugins; let 
             extra = import ./extra-plugins.nix args;
         in [
-            # fs icons (commented out due to ttyd)
-            # nvim-web-devicons
+            # fs icons
+            nvim-web-devicons
             # popups
             popup-nvim
             # async lua (required for telescope)

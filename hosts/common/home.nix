@@ -9,10 +9,6 @@ in {
     # An unfortunate, but necessary, line.
     nixpkgs.config.allowUnfree = true;
 
-    nixpkgs.overlays = [
-        inputs.neovim-nightly-overlay.overlay
-    ];
-
     home.file = {
         ".zshrc".source = mkOutOfStoreSymlink "${configDir}/apps/zsh/zshrc";
         ".zshenv".source = mkOutOfStoreSymlink "${configDir}/apps/zsh/zshenv";
@@ -37,6 +33,7 @@ in {
             options = {
                 line-numbers = true;
                 side-by-side = true;
+                wrap-max-lines = "unlimited";
             };
         };
         userName = "Vir Chaudhury";

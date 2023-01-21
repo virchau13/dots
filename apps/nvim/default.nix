@@ -8,7 +8,7 @@ in {
 
     programs.neovim = {
         enable = true;
-        package = pkgs.neovim-nightly;
+        package = inputs.neovim-nightly.packages."${pkgs.system}".default;
         plugins = with pkgs.vimPlugins; let 
             extra = import ./extra-plugins.nix args;
         in [

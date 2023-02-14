@@ -6,9 +6,9 @@ HOST="$(hostname -s)"
 case "$HOST" in
     hexagon)
         # Don't burn through all my cores
-        exec sudo nixos-rebuild "$1" --flake "$(realpath ~/config)" --option cores 1 --option max-jobs 4
+        exec sudo nixos-rebuild --flake "$(realpath ~/config)" --option cores 1 --option max-jobs 4 "$@"
         ;;
     hexamac)
-        exec darwin-rebuild "$1" --flake "$(realpath ~/config)"
+        exec darwin-rebuild --flake "$(realpath ~/config)" "$@"
         ;;
 esac

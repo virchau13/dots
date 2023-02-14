@@ -79,6 +79,8 @@ in {
                     let g:polyglot_disabled = ['nix', 'ftdetect']
                 '';
             }
+            # profiler
+            extra.profile-nvim
         ];
         extraConfig = ''
             lua require('init') { typescript = "${pkgs.nodePackages.typescript}" }

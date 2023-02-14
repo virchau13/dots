@@ -2,27 +2,29 @@ require 'util'
 
 require('lualine').setup {
     options = {
-        theme = 'everblush'
+        theme = 'one_monokai'
     }
 }
 
-require 'nvim-treesitter.configs'.setup {
-    -- ensure_installed = "all",
-    -- auto_install = false,
-    parser_install_dir = '~/.local/share/nvim/site',
-    highlight = {
-        enable = true,
-        disable = function(lang, bufnr)
-            -- disable in long buffers
-            return vim.api.nvim_buf_line_count(bufnr) > 2000
-        end,
-        additional_vim_regex_highlighting = true -- to get vim-polyglot indentation to work
-    },
-    indent = {
-        enable = false,
-    },
-    ignore_install = { 'go' },
-}
+if not os.getenv('NVIM_DISABLE_TS') then
+    require 'nvim-treesitter.configs'.setup {
+        -- ensure_installed = "all",
+        -- auto_install = false,
+        parser_install_dir = '~/.local/share/nvim/site',
+        highlight = {
+            enable = true,
+            disable = function(lang, bufnr)
+                -- disable in long buffers
+                return vim.api.nvim_buf_line_count(bufnr) > 2000
+            end,
+            additional_vim_regex_highlighting = true -- to get vim-polyglot indentation to work
+        },
+        indent = {
+            enable = false,
+        },
+        ignore_install = { 'go' },
+    }
+end
 
 require('numb').setup()
 -- TODO check performance: require('gitsigns').setup()

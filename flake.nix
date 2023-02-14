@@ -58,6 +58,10 @@
             url = github:vigoux/architext.nvim;
             flake = false;
         };
+        profile-nvim = {
+            url = github:stevearc/profile.nvim;
+            flake = false;
+        };
     };
 
     outputs = inputs@{ self, nixpkgs, darwin, home-manager, neovim-nightly, sops-nix, flake-utils, ... }: {

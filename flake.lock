@@ -240,18 +240,35 @@
         "type": "github"
       }
     },
+    "profile-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1672815429,
+        "narHash": "sha256-2csPHBvqI9HqVNudLkeD8Dbw47VI3tV+dPvM1mTtyTY=",
+        "owner": "stevearc",
+        "repo": "profile.nvim",
+        "rev": "d0d74adabb90830bd96e5cdfc8064829ed88b1bb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "stevearc",
+        "repo": "profile.nvim",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "architext-nvim": "architext-nvim",
         "darwin": "darwin",
-        "everblush": "everblush",
         "fidget-nvim": "fidget-nvim",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "neovim-nightly": "neovim-nightly",
         "nix-gaming": "nix-gaming",
         "nixpkgs": "nixpkgs_3",
+        "nvim-colorscheme": "nvim-colorscheme",
         "parinfer-rust": "parinfer-rust",
+        "profile-nvim": "profile-nvim",
         "sexy_scroller-vim": "sexy_scroller-vim",
         "sops-nix": "sops-nix",
         "virt-column-nvim": "virt-column-nvim",

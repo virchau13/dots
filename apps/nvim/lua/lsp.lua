@@ -59,6 +59,7 @@ local settings = {
         cmd = { 'typescript-language-server', '--stdio', '--tsserver-path', deps.typescript .. "/lib/node_modules/typescript/lib" }
     },
     pylsp = {
+        cmd = { 'pylsp', '-vvv', '--log-file', '/home/hexular/.local/state/pylsp.log' },
         settings = {
             pylsp = {
                 configurationSources = {"flake8"},

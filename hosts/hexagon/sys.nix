@@ -153,15 +153,6 @@
     documentation.dev.enable = true;
 
     environment.systemPackages = with pkgs; let 
-        pythonPackages = python-pkgs: with python-pkgs; [
-            pandas
-            xkcdpass
-            ipython
-            jupyter
-            flask
-            pyjwt
-        ];
-        python = python3.withPackages pythonPackages;
     in [
         vim
         wget
@@ -186,7 +177,6 @@
         killall
         feh
         xcolor
-        python
         gnome.adwaita-icon-theme
         xclip
         breeze-icons

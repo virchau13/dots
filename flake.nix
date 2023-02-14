@@ -50,8 +50,8 @@
             url = github:joeytwiddle/sexy_scroller.vim;
             flake = false;
         };
-        everblush = {
-            url = github:everblush/nvim;
+        nvim-colorscheme = {
+            url = github:cpea2506/one_monokai.nvim;
             flake = false;
         };
         architext-nvim = {

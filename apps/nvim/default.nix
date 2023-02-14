@@ -19,7 +19,7 @@ in {
             # async lua (required for telescope)
             plenary-nvim
             # colorscheme
-            extra.everblush
+            extra.colorscheme
             # file browser (alternative to nerdtree)
             nvim-tree-lua
             # bar

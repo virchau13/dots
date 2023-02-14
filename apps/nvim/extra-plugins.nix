@@ -1,6 +1,6 @@
 # Custom packaging for plugins that aren't already in Nixpkgs.
-{ inputs, config, pkgs, lib, ... }: let
-    simplePlugin = input: name: pkgs.vimUtils.buildVimPlugin {
+{ inputs, pkgs, ... }: let
+    simplePlugin = input: name: pkgs.vimUtils.buildVimPluginFrom2Nix {
         inherit name;
         src = input;
     };
@@ -23,7 +23,9 @@ in {
 
     sexy_scroller-vim = simplePlugin inputs.sexy_scroller-vim "sexy_scroller.vim";
 
-    everblush = simplePlugin inputs.everblush "everblush";
+    colorscheme = simplePlugin inputs.nvim-colorscheme "nvim_colorscheme";
 
     architext-nvim = simplePlugin inputs.architext-nvim "architext.nvim";
+
+    profile-nvim = simplePlugin inputs.profile-nvim "profile.nvim";
 }

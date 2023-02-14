@@ -37,22 +37,6 @@
         "type": "github"
       }
     },
-    "everblush": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1674184537,
-        "narHash": "sha256-wLZfhDTYqE6/z4ASnkq3Md9/0tSgTESkUhdiC2W2jO0=",
-        "owner": "everblush",
-        "repo": "nvim",
-        "rev": "b72bd2af94aa7fb7c840aa014e7a291488461ef2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "everblush",
-        "repo": "nvim",
-        "type": "github"
-      }
-    },
     "fidget-nvim": {
       "flake": false,
       "locked": {
@@ -220,6 +204,22 @@
         "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nvim-colorscheme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1675878495,
+        "narHash": "sha256-ebicGjCmowebnQPW9vCzaAk9N3AG5r2hz7aSh56+tZ4=",
+        "owner": "cpea2506",
+        "repo": "one_monokai.nvim",
+        "rev": "fec253c3449c32069dc645f783444e0183b10fcc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cpea2506",
+        "repo": "one_monokai.nvim",
         "type": "github"
       }
     },

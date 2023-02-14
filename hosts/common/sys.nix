@@ -74,8 +74,8 @@
                 yarn
 
                 # elixir
-                elixir
-                elixir_ls
+                # elixir
+                # elixir_ls
 
                 # rust
                 cargo

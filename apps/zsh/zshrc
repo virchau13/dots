@@ -126,6 +126,22 @@ videoinfo() {
     done
 }
 
+# Dumps the environment in a shell-friendly format.
+dumpenv() {
+    env -0 | awk '
+        BEGIN { 
+            RS="\0"; 
+            apo="'"'"'"; 
+        } 
+        { 
+            eq=index($0,"="); 
+            left=substr($0,1,eq-1); 
+            right=substr($0,eq+1); 
+            gsub(/'"'"'/, apo + "\"" + apo + "\"" + apo, right); 
+            print left "=" apo right apo; 
+        }'
+}
+
 # Too slow, commenting out for now
 # command_not_found_handler() {
 #     IFS=$'\n' candidates=($(nix-locate -w "bin/$1" --minimal | sed '/^(/d'))

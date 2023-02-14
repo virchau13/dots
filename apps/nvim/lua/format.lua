@@ -14,6 +14,28 @@ require('formatter').setup {
         javascript = prettier,
         html = prettier,
         typescript = prettier,
-        css = prettier
+        css = prettier,
+        rust = {
+            -- Rustfmt
+            function()
+                return {
+                    exe = "rustfmt",
+                    args = {"--emit=stdout", "--edition=2021"},
+                    stdin = true
+                }
+            end
+        },
+        cpp = {
+            require('formatter.filetypes.cpp').clangformat
+        },
+        python = {
+            require('formatter.filetypes.python').black,
+        },
+        -- apply to all filetypes
+        ["*"] = {
+            require('formatter.filetypes.any').remove_trailing_whitespace
+        },
     }
 }
+
+

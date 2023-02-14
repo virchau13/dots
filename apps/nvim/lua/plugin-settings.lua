@@ -75,28 +75,6 @@ require('fidget').setup {}
 
 require('virt-column').setup()
 
-require('formatter').setup {
-    filetype = {
-        rust = {
-            -- Rustfmt
-            function()
-                return {
-                    exe = "rustfmt",
-                    args = {"--emit=stdout", "--edition=2021"},
-                    stdin = true
-                }
-            end
-        },
-        cpp = {
-            require('formatter.filetypes.cpp').clangformat
-        },
-        -- apply to all filetypes
-        ["*"] = {
-            require('formatter.filetypes.any').remove_trailing_whitespace
-        },
-    }
-}
-
 -- require('lsp_lines').setup()
 -- vim.diagnostic.config({
 --     -- turn it off by default

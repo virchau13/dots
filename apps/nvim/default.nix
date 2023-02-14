@@ -30,6 +30,8 @@ in {
             lspkind-nvim
             # treesitter highlighting
             nvim-treesitter 
+            # text objects that allow you to play with treesitter nodes
+            nvim-treesitter-textobjects
             # easy way to view tree-sitter syntax trees
             playground
             # tree-sitter structural search replace

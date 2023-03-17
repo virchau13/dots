@@ -11,13 +11,15 @@ setopt interactive_comments
 export HISTSIZE=500000
 export HISTFILESIZE=500000
 export SAVEHIST=500000
-HISTFILE=~/.zsh_history
+HISTFILE="${HISTFILE:-/home/hexular/.zsh_history}"
 toggle-history() {
     if [ "/dev/null" = "$HISTFILE" ]; then
+        unset HISTFILE # remove environment variable
         HISTFILE=~/.zsh_history
         echo 'turned on history'
     else
-        HISTFILE=/dev/null
+        # hidden history should also work in nested shells
+        export HISTFILE=/dev/null
         echo 'turned off history'
     fi
 }
@@ -35,6 +37,7 @@ alias rs-clippy='cargo clippy --all-targets --all-features'
 alias rs-fmt='cargo fmt'
 alias ll='ls -lah'
 alias pbimgview='pbimgpaste | feh -'
+alias gs='git status'
 
 setopt HIST_IGNORE_SPACE
 

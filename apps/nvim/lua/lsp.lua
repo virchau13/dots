@@ -53,8 +53,17 @@ end
 --     })
 -- })
 
+local clangd_cmd = { 'clangd' }
+-- detect custom $CC/$CXX and add that, so clangd doesn't error in a devshell
+if vim.env.CC ~= nil or vim.env.CXX ~= nil then
+    local path = vim.fn.exepath(vim.env.CC or vim.env.CXX)
+    clangd_cmd = { 'clangd', '--query-driver', path }
+end
+
 local settings = {
-    clangd = {},
+    clangd = {
+        cmd = clangd_cmd,
+    },
     tsserver = {
         cmd = { 'typescript-language-server', '--stdio', '--tsserver-path', deps.typescript .. "/lib/node_modules/typescript/lib" }
     },
@@ -105,7 +114,7 @@ local settings = {
     haxe_language_server = {
         cmd = {'node', '~/prog/repos/haxe-language-server/bin/server.js'}
     },
-    sumneko_lua = {
+    lua_ls = {
         cmd = {"lua-language-server"},
         settings = {
             Lua = {

@@ -10,6 +10,12 @@ exec_or_echo() {
     exec "$@"
 }
 
+markdone() {
+    if [[ "$1" != "-c" ]]; then
+        done=1
+    fi
+}
+
 nixargs=()
 while [ -z "$done" ]; do
     case "$1" in
@@ -18,7 +24,8 @@ while [ -z "$done" ]; do
             shift
             nixargs+=("nixpkgs#$1")
             name="$1"
-            done=1
+            shift
+            markdone "$@"
             ;;
         -b)
             # Use the branch/rev of nixpkgs specified
@@ -47,9 +54,7 @@ while [ -z "$done" ]; do
                 name="$branch/$SHLVL.expr"
             fi
             nixargs+=(--impure --expr "with import $nixpkgs {}; $expr")
-            if [[ "$1" != "-c" ]]; then
-                done=1
-            fi
+            markdone "$@"
             ;;
         -r)
             # run the package
@@ -86,9 +91,7 @@ while [ -z "$done" ]; do
                 nixargs+=("$nixpkgs#$1")
             fi
             shift
-            if [[ "$1" != "-c" ]]; then
-                done=1
-            fi
+            markdone "$@"
             ;;
     esac
 done

@@ -84,11 +84,35 @@
     # Set your time zone.
     time.timeZone = "Asia/Singapore";
 
-    # set global useDHCP to false
-    networking.useDHCP = true;
-    networking.interfaces = {
-        enp5s0 = {
-            useDHCP = true;
+    # use systemd-networkd
+    networking.useDHCP = false;
+    systemd.network = {
+        enable = true;
+        networks = {
+            "20-enp5s0" = {
+                matchConfig.Name = "enp5s0";
+                networkConfig = {
+                    DHCP = "ipv6";
+                    Address = "192.168.0.211/24";
+                    Gateway = "192.168.0.1";
+                    DNS = "1.1.1.1";
+                    IPv6AcceptRA = "yes";
+                    LinkLocalAddressing = "yes";
+                    MulticastDNS = "yes"; # resolves .local addresses
+                    # for docker
+                    IPMasquerade = "yes";
+                    IPForward = "yes";
+                };
+            };
+        };
+        links = {
+            "30-docker-unmanaged" = {
+                matchConfig.OriginalName = "docker0";
+                extraConfig = ''
+                    [Link]
+                    Unmanaged=yes
+                '';
+            };
         };
     };
 
@@ -188,12 +212,21 @@
         wireshark
         iw
         xdotool
-        clang-tools
+        # switch to 15 because of https://github.com/clangd/clangd/issues/1188
+        clang-tools_15
         lm_sensors
-        xp-pen-deco-01-v2-driver
+        (xp-pen-deco-01-v2-driver.overrideAttrs(old: {
+          src = fetchzip {
+              url = "https://www.xp-pen.com/download/file/id/1936/pid/440/ext/gz.html#.tar.gz";
+              name = "xp-pen-deco-01-v2-driver-3.2.3.220323-1.tar.gz";
+              sha256 = "sha256-CV4ZaGCFFcfy2J0O8leYgcyzFVwJQFQJsShOv9B7jfI=";
+          };
+        }))
         yubikey-personalization
         ungoogled-chromium
         inputs.nix-gaming.packages.${pkgs.system}.wine-ge
+        # i know right?
+        powershell
     ];
 
     # get va-api working in firefox
@@ -246,8 +279,6 @@
     # Or disable the firewall altogether.(TODO change this to true)
     networking.firewall.enable = false;
 
-    networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
-
     programs.steam.enable = true;
 
     xdg.portal = {
@@ -274,6 +305,17 @@
     #         image = "m1k1o/neko:xfce";
     #     };
     # };
+
+    i18n.inputMethod = {
+        enabled = "fcitx";
+        fcitx.engines = with pkgs.fcitx-engines; [ libpinyin ];
+    };
+
+    # for m1k1o/neko
+    servies.nginx = {
+        enable = true;
+        config = builtins.readFile ./nginx.conf;
+    };
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions

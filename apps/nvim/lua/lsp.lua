@@ -151,6 +151,9 @@ local settings = {
     wgsl_analyzer = {
         cmd = {'/home/hexular/prog/repos/wgsl-analyzer/target/release/wgsl_analyzer'}
     },
+    powershell_es = {
+        bundle_path = deps.powershellEditorServices
+    },
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

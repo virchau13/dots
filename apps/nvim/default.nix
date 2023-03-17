@@ -1,6 +1,11 @@
 { inputs, configDir, config, pkgs, lib, ... }@args:
 let
     utils = import ../../util.nix { inherit config pkgs configDir; };
+    powershellLangBundle = pkgs.fetchzip {
+        url = "https://github.com/PowerShell/PowerShellEditorServices/releases/download/v3.8.1/PowerShellEditorServices.zip";
+        stripRoot = false;
+        hash = "sha256-joHOXQ5sHfg6oR8IYYU9X2lIrxK20UrpsfAY5qwENqo=";
+    };
 in {
 
     xdg.configFile = {
@@ -83,7 +88,7 @@ in {
             extra.profile-nvim
         ];
         extraConfig = ''
-            lua require('init') { typescript = "${pkgs.nodePackages.typescript}" }
+            lua require('init') { typescript = "${pkgs.nodePackages.typescript}", powershellEditorServices = "${powershellLangBundle}" }
         '';
     };
 

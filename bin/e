@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-exec "$EDITOR" "$@"
+# we want this to work in all cases,
+# so ignore $VIMRUNTIME
+VIMRUNTIME="" exec "$EDITOR" "$@"

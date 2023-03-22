@@ -30,6 +30,18 @@
             steam-fhsenv = super.steam-fhsenv.override (old: {
                 extraPkgs = with pkgs.pkgsi686Linux; [ gperftools ];
             });
+            omnisharp-rosyln = (super.omnisharp-roslyn.override(old: {
+                dotnetCorePackages = with self.dotnetCorePackages; {
+                    sdk_6_0 = sdk_7_0;
+                    runtime_6_0 = runtime_7_0;
+                };
+            }));
+            msbuild = (super.msbuild.override(old: {
+                dotnetCorePackages = with self.dotnetCorePackages; {
+                    sdk_6_0 = sdk_7_0;
+                    runtime_6_0 = runtime_7_0;
+                };
+            }));
         })
     ];
 
@@ -52,6 +64,9 @@
             "ttyd/http-auth" = {
                 owner = "hexular";
             };
+            "guac/ca.key" = { owner = "nginx"; };
+            "guac/ca.cert" = { owner = "nginx"; };
+            "guac/client.cert" = { owner = "nginx"; };
         };
     };
 
@@ -226,7 +241,12 @@
         ungoogled-chromium
         inputs.nix-gaming.packages.${pkgs.system}.wine-ge
         # i know right?
-        powershell
+        omnisharp-roslyn
+        dotnet-sdk_7
+        msbuild
+        pipx
+        turbovnc
+        docker-credential-helpers
     ];
 
     # get va-api working in firefox
@@ -312,7 +332,7 @@
     };
 
     # for m1k1o/neko
-    servies.nginx = {
+    services.nginx = {
         enable = true;
         config = builtins.readFile ./nginx.conf;
     };

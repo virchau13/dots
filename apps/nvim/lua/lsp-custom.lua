@@ -18,3 +18,12 @@ def_conf('glsl', {
         settings = {}
     }
 })
+
+def_conf('nginx', {
+    default_config = {
+        cmd = {'pipx', 'run', 'nginx-language-server'},
+        filetypes = { 'nginx' },
+        root_dir = util.root_pattern('nginx.conf', '.git'),
+        settings = {}
+    }
+})

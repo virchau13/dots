@@ -90,7 +90,7 @@ local settings = {
         }
     },
     omnisharp = {
-        cmd = {'omnisharp', '--languageserver'}
+        cmd = {'OmniSharp', '--languageserver'}
     },
     cmake = {},
     texlab = {
@@ -163,6 +163,7 @@ local settings = {
     powershell_es = {
         bundle_path = deps.powershellEditorServices
     },
+    nginx = {},
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

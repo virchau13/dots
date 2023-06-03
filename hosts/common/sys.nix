@@ -29,7 +29,7 @@
     };
     
     environment.systemPackages = with pkgs; let 
-            pythonPackages = python-pkgs: with python-pkgs; [
+            pythonPackages = pypkgs: with pypkgs; [
                ipython
                jupyter
                python-lsp-server
@@ -45,29 +45,21 @@
                flask
                pyjwt
                pillow
-               (buildPythonPackage rec {
-                    pname = "types-Pillow";
-                    version = "9.4.0.10";
-                    src = fetchPypi {
-                        inherit pname version;
-                        sha256 = "sha256-NBwjRWELukUtFyR1fHuZemD1k88APBAbojnbADoK44k=";
-                    };
-                    meta = with lib; {
-                        description = "Typing stubs for Pillow";
-                        homepage = "https://github.com/python/typeshed";
-                    };
-               })
+               aiohttp
+               scipy
+               setuptools
+               graphviz
+               bcc
             ];
-            python = python3.withPackages pythonPackages;
             packages = [
-                python
+                (python3.withPackages pythonPackages)
 
                 # lua
                 lua
 
                 # haskell
                 haskell-language-server
-                (haskellPackages.ghcWithPackages (pkgs: with pkgs; [ lens ]))
+                (haskellPackages.ghcWithPackages (pkgs: with pkgs; [ lens xmonad xmonad-contrib ]))
 
                 # js
                 nodejs
@@ -120,9 +112,12 @@
                 wezterm
                 ffmpeg
 
-                rnix-lsp
+                nil
                 # sumneko-lua-language-server
                 # cmake-language-server
+                openjdk
+                java-language-server
+                kotlin-language-server
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

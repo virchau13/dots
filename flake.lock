@@ -147,11 +147,11 @@
       },
       "locked": {
         "dir": "contrib",
-        "lastModified": 1685786770,
-        "narHash": "sha256-DG6O548U0k3aHXs+MlK0mL5thvij8h6tm5dXwVX+hGU=",
+        "lastModified": 1685789048,
+        "narHash": "sha256-+F0r2e8P+NYuAukW9EJ1XYj64UJzlun6v9tvVQUqnPY=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "40db569014471deb5bd17860be00d6833387be79",
+        "rev": "0e01e815520ead73b13277b68306cf03a2196ca5",
         "type": "github"
       },
       "original": {
@@ -298,16 +298,15 @@
     "profile-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1685680822,
+        "lastModified": 1685719099,
         "narHash": "sha256-mMr6DagAWGfSYNGArgJJXh50RGIBV481nhkjITdYn+c=",
-        "owner": "virchau13",
+        "owner": "stevearc",
         "repo": "profile.nvim",
-        "rev": "814dba1700623634ee2fdb2b12e927c7d17772db",
+        "rev": "50fa2fe105e264d621977841eec07bbbcca1e220",
         "type": "github"
       },
       "original": {
-        "owner": "virchau13",
-        "ref": "fix-tbl-isarray",
+        "owner": "stevearc",
         "repo": "profile.nvim",
         "type": "github"
       }

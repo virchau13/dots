@@ -58,8 +58,16 @@ in
             sxhkd
             # language servers
             sumneko-lua-language-server
+            pinentry.tty
         ];
         in packages;
+
+    home.sessionVariables = {
+        # enable fcitx
+        GTK_IM_MODULE = "fcitx";
+        QT_IM_MODULE = "fcitx";
+        XMODIFIERS = "@im=fcitx";
+    };
 
     programs.alacritty = {
         enable = true;
@@ -153,6 +161,20 @@ in
             name = "Adwaita";
             package = pkgs.gnome.adwaita-icon-theme;
         };
+    };
+
+    services.gpg-agent = {
+        enable = true;
+        pinentryFlavor = "tty";
+    };
+
+    programs.tmux = {
+        enable = true;
+        clock24 = true;
+        mouse = true;
+        extraConfig = ''
+            set-option -sa terminal-overrides ",xterm*:Tc"
+        '';
     };
 
     # xdg.mimeApps = {

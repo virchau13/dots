@@ -2,6 +2,8 @@
     description = "dots";
 
     inputs = {
+        # TODO REMOVE
+        xp-pen-nixpkgs.url = github:bertof/nixpkgs/6ad253649458680e9444524e9c488fed9b449354;
         nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
         darwin = {
             url = "github:lnl7/nix-darwin/master";
@@ -60,6 +62,10 @@
         };
         profile-nvim = {
             url = github:stevearc/profile.nvim;
+            flake = false;
+        };
+        lsp-inlayhints-nvim = {
+            url = github:lvimuser/lsp-inlayhints.nvim;
             flake = false;
         };
     };

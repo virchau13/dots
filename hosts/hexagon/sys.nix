@@ -1,8 +1,8 @@
 { inputs, config, lib, pkgs, ... }:
 
 {
-    imports = [ 
-        ./hw.nix 
+    imports = [
+        ./hw.nix
     ];
 
     nix = {
@@ -14,7 +14,7 @@
                 "https://nix-gaming.cachix.org"
                 "https://cuda-maintainers.cachix.org"
             ];
-            trusted-public-keys = [ 
+            trusted-public-keys = [
                 "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
                 "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
             ];
@@ -30,18 +30,6 @@
             steam-fhsenv = super.steam-fhsenv.override (old: {
                 extraPkgs = with pkgs.pkgsi686Linux; [ gperftools ];
             });
-            omnisharp-rosyln = (super.omnisharp-roslyn.override(old: {
-                dotnetCorePackages = with self.dotnetCorePackages; {
-                    sdk_6_0 = sdk_7_0;
-                    runtime_6_0 = runtime_7_0;
-                };
-            }));
-            msbuild = (super.msbuild.override(old: {
-                dotnetCorePackages = with self.dotnetCorePackages; {
-                    sdk_6_0 = sdk_7_0;
-                    runtime_6_0 = runtime_7_0;
-                };
-            }));
         })
     ];
 
@@ -82,15 +70,18 @@
             consoleMode = "max";
         };
         loader.efi.canTouchEfiVariables = true;
-        extraModulePackages = with kernelPackages; [ 
+        extraModulePackages = with kernelPackages; [
             # For lm_sensors
             it87
         ];
         kernelModules = [ "coretemp" "it87" "lm92" "k10temp" ];
         kernelParams = [ "delayacct" "boot.shell_on_fail" ];
+        # enable sysrq (https://github.com/NixOS/nixpkgs/issues/83694)
+        kernel.sysctl."kernel.sysrq" = 1;
     };
 
     hardware.nvidia = {
+        package = config.boot.kernelPackages.nvidiaPackages.production;
         modesetting.enable = true;
     };
 
@@ -108,8 +99,8 @@
                 matchConfig.Name = "enp5s0";
                 networkConfig = {
                     DHCP = "ipv6";
-                    Address = "192.168.0.211/24";
-                    Gateway = "192.168.0.1";
+                    Address = "192.168.18.211/24";
+                    Gateway = "192.168.18.1";
                     DNS = "1.1.1.1";
                     IPv6AcceptRA = "yes";
                     LinkLocalAddressing = "yes";
@@ -180,10 +171,11 @@
 
     users.users.hexular = {
         isNormalUser = true;
-        extraGroups = [ 
+        extraGroups = [
             "wheel" # sudo
             "networkmanager"
             "docker"
+            "libvirtd"
             # "lxd"
         ];
         shell = pkgs.zsh;
@@ -191,7 +183,7 @@
 
     documentation.dev.enable = true;
 
-    environment.systemPackages = with pkgs; let 
+    environment.systemPackages = with pkgs; let
     in [
         vim
         wget
@@ -201,6 +193,7 @@
         git
         gcc
         bcc # messing with ebpf
+        bpftrace
         moreutils # errno, etc
         man-pages
         man-pages-posix
@@ -230,23 +223,20 @@
         # switch to 15 because of https://github.com/clangd/clangd/issues/1188
         clang-tools_15
         lm_sensors
-        (xp-pen-deco-01-v2-driver.overrideAttrs(old: {
-          src = fetchzip {
-              url = "https://www.xp-pen.com/download/file/id/1936/pid/440/ext/gz.html#.tar.gz";
-              name = "xp-pen-deco-01-v2-driver-3.2.3.220323-1.tar.gz";
-              sha256 = "sha256-CV4ZaGCFFcfy2J0O8leYgcyzFVwJQFQJsShOv9B7jfI=";
-          };
-        }))
+        ((import inputs.xp-pen-nixpkgs { system = pkgs.system; config.allowUnfree = true; }).xp-pen-deco-01-v2-driver)
         yubikey-personalization
         ungoogled-chromium
         inputs.nix-gaming.packages.${pkgs.system}.wine-ge
         # i know right?
         omnisharp-roslyn
         dotnet-sdk_7
-        msbuild
         pipx
         turbovnc
         docker-credential-helpers
+        terraform
+        terraform-ls
+        qemu
+        virt-manager
     ];
 
     # get va-api working in firefox
@@ -271,26 +261,48 @@
 
     programs.mosh.enable = true;
 
-    systemd.services.ttyd = {
-        serviceConfig = {
-            User = "hexular";
-            WorkingDirectory = "/home/hexular";
+    systemd.services = { 
+        ttyd = {
+            serviceConfig = {
+                User = "hexular";
+                WorkingDirectory = "/home/hexular";
+            };
+            requires = [ "network-online.target" ];
+            wantedBy = [ "multi-user.target" ];
+            script = ''
+                ${pkgs.ttyd}/bin/ttyd \
+                    --port 1051 \
+                    --credential "$(cat /run/secrets/ttyd/http-auth)" \
+                    --base-path /tty \
+                    --index /home/hexular/prog/repos/ttyd/html/dist/inline.html \
+                    --ipv6 \
+                    --ssl \
+                    --ssl-cert /run/secrets/ttyd/ca.pem \
+                    --ssl-key /run/secrets/ttyd/ca-key.pem \
+                    --ssl-ca /run/secrets/ttyd/ca.pem \
+                    ${pkgs.zsh}/bin/zsh
+            '';
         };
-        requires = [ "network-online.target" ];
-        wantedBy = [ "multi-user.target" ];
-        script = ''
-            ${pkgs.ttyd}/bin/ttyd \
-                --port 1051 \
-                --credential "$(cat /run/secrets/ttyd/http-auth)" \
-                --base-path /tty \
-                --index /home/hexular/prog/repos/ttyd/html/dist/inline.html \
-                --ipv6 \
-                --ssl \
-                --ssl-cert /run/secrets/ttyd/ca.pem \
-                --ssl-key /run/secrets/ttyd/ca-key.pem \
-                --ssl-ca /run/secrets/ttyd/ca.pem \
-                ${pkgs.zsh}/bin/zsh
-        '';
+        aquila-dns-updater = {
+            requires = [ "network-online.target" ];
+            serviceConfig = {
+                User = "hexular";
+                WorkingDirectory = "/home/hexular";
+            };
+            # update my IP on libertas
+            script = ''
+                ${pkgs.dig}/bin/dig @resolver4.opendns.com myip.opendns.com +short | ${pkgs.openssh}/bin/ssh libertas 'cat > /var/lib/dnscontrol/ip'
+            '';
+        };
+    };
+
+    systemd.timers.aquila-dns-updater = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+            OnBootSec = "2m"; # 2 minutes after boot
+            OnUnitActiveSec = "10m"; # every 10 minutes
+            Unit = "aquila-dns-updater.service";
+        };
     };
 
     # Open ports in the firewall.
@@ -314,6 +326,8 @@
         enable = true;
     };
 
+    virtualisation.libvirtd.enable = true;
+
     virtualisation.docker = {
         enable = true;
         enableNvidia = true;
@@ -327,8 +341,8 @@
     # };
 
     i18n.inputMethod = {
-        enabled = "fcitx";
-        fcitx.engines = with pkgs.fcitx-engines; [ libpinyin ];
+        enabled = "fcitx5";
+        fcitx5.addons = with pkgs; [ fcitx5-chinese-addons ];
     };
 
     # for m1k1o/neko
@@ -336,6 +350,10 @@
         enable = true;
         config = builtins.readFile ./nginx.conf;
     };
+
+    programs.kdeconnect.enable = true;
+
+    programs.sysdig.enable = true;
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
@@ -345,16 +363,15 @@
     # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
     system.stateVersion = "22.05"; # Did you read the comment?
 
-    home-manager.extraSpecialArgs = let 
-        homeDir = config.users.users.hexular.home; 
-    in { 
+    home-manager.extraSpecialArgs = let
+        homeDir = config.users.users.hexular.home;
+    in {
         inherit inputs homeDir;
         configDir = "${homeDir}/.config/nixpkgs";
     };
     home-manager.users.hexular = { pkgs, ... }: {
-        imports = [ 
-            ./home.nix 
+        imports = [
+            ./home.nix
         ];
     };
 }
-

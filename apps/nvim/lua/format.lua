@@ -15,6 +15,7 @@ require('formatter').setup {
         html = prettier,
         typescript = prettier,
         css = prettier,
+        astro = prettier,
         rust = {
             -- Rustfmt
             function()

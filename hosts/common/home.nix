@@ -16,6 +16,9 @@ in {
         ".cargo/config.toml".text = ''
             [build]
             rustc-wrapper = "${pkgs.sccache}/bin/sccache"
+
+            [registries.crates-io]
+            protocol = "sparse"
         '';
     };
 

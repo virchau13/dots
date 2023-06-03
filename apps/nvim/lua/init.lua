@@ -1,5 +1,6 @@
 deps = {}
 return function(deps_)
+    require 'profile-by-env'
     deps = deps_
     require 'options'
     require 'plugin-settings'
@@ -7,7 +8,7 @@ return function(deps_)
     require 'tree-sitter-custom'
     require 'binds'
     require 'lsp'
-    require 'profile-by-env'
+    require 'hydra-modes'
 
     require('one_monokai').setup {
         colors = {

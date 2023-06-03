@@ -28,4 +28,6 @@ in {
     architext-nvim = simplePlugin inputs.architext-nvim "architext.nvim";
 
     profile-nvim = simplePlugin inputs.profile-nvim "profile.nvim";
+
+    lsp-inlayhints-nvim = simplePlugin inputs.lsp-inlayhints-nvim "lsp-inlayhints.nvim";
 }

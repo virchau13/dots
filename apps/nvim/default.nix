@@ -86,6 +86,13 @@ in {
             }
             # profiler
             extra.profile-nvim
+            # LSP inlay hints
+            extra.lsp-inlayhints-nvim
+
+            # extra modes library
+            hydra-nvim
+            # box-drawing mode
+            venn-nvim
         ];
         extraConfig = ''
             lua require('init') { typescript = "${pkgs.nodePackages.typescript}", powershellEditorServices = "${powershellLangBundle}", dotnet = "${pkgs.dotnetCorePackages.sdk_7_0}" }

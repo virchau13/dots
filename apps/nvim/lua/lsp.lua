@@ -5,7 +5,9 @@ require 'lsp-custom'
 
 local on_attach = function(client, bufnr)
     -- turn off lsp highlighting
-    client.server_capabilities.semanticTokensProvider = nil
+    -- client.server_capabilities.semanticTokensProvider = nil
+
+    require('lsp-inlayhints').on_attach(client, bufnr)
 
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)

@@ -173,9 +173,11 @@ local settings = {
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- https://github.com/neovim/neovim/issues/23291
+capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 local nvim_lsp = require('lspconfig')
 for server, config in pairs(settings) do
-    setup_obj = {
+    local setup_obj = {
         on_attach = on_attach,
         capabilities = capabilities
     }
@@ -186,6 +188,10 @@ end
 vim.g.coq_settings = {
     auto_start = 'shut-up',
     xdg = true,
+    limits = {
+        -- 250 ms
+        completion_auto_timeout = 0.250,
+    },
     clients = {
         tree_sitter = { enabled = false, },
     },

@@ -42,6 +42,16 @@ while (($#)); do
             export IN_NIX_DEV_SHELL_NAME="$1"
             exec nix-shell '<nixpkgs>' -A "$1" --command "$shellcmd"
             ;;
+        -c)
+            shift
+            # execute command instead of shell
+            if [ -z "$cmd" ]; then
+                cmd="$1"
+            else
+                error "Cannot take multiple commands"
+            fi
+            shift
+            ;;
         *)
             if [[ "$1" == *"#"* ]]; then
                 # it's a specific flake
@@ -64,11 +74,19 @@ if [ -z "$devname" ]; then
         if [ ! -z "$devshellname" ]; then
             args+=("$devshellname")
         fi
-        exec nix develop "${args[@]}" --command env "SHELL=$SHELL" "$SHELL"
+        if [ -z "$cmd" ]; then
+            exec nix develop "${args[@]}" --command env "SHELL=$SHELL" "$SHELL"
+        else
+            exec nix develop "${args[@]}" --command env "SHELL=$SHELL" "$SHELL" "-c" "$cmd"
+        fi
     elif [ -f ./shell.nix -o -f ./default.nix ]; then
         # old nix, use `nix-shell`
         export-dev-shell-name
-        exec nix-shell --command "$shellcmd"
+        if [ -z "$cmd" ]; then
+            exec nix-shell --command "$shellcmd"
+        else
+            exec nix-shell --command "SHELL=$SHELL $cmd"
+        fi
     else
         # do nothing
         echo "! No files detected, doing nothing"
@@ -76,5 +94,9 @@ if [ -z "$devname" ]; then
 else
     # want to develop a specific lang
     export IN_NIX_DEV_SHELL_NAME="$devname"
-    exec nix develop ~/prog/"$devname" --command env "SHELL=$SHELL" "$SHELL"
+    if [ -z "$cmd" ]; then
+        exec nix develop ~/prog/"$devname" --command env "SHELL=$SHELL" "$SHELL"
+    else
+        exec nix develop ~/prog/"$devname" --command env "SHELL=$SHELL" "$SHELL" "-c" "$cmd"
+    fi
 fi

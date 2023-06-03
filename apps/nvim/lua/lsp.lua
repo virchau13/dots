@@ -84,13 +84,15 @@ local settings = {
     rust_analyzer = {
         settings = {
             ["rust-analyzer"] = {
-                cargo = {loadOutDirsFromCheck = true},
-                procMacro = {enable = true}
+                cargo = {loadOutDirsFromCheck = true, features = 'full'},
+                procMacro = {enable = true},
+                expressionAdjustmentHints = { enable = true },
+                lifetimeElisionHints = { enable = true },
             }
         }
     },
     omnisharp = {
-        cmd = {'OmniSharp', '--languageserver'}
+        cmd = {'bash', '-c', 'DOTNET_ROOT=' .. deps.dotnet .. ' exec OmniSharp --languageserver'}
     },
     cmake = {},
     texlab = {
@@ -106,8 +108,8 @@ local settings = {
             }
         }
     },
-    jdtls = {
-        cmd = { 'bash', '-c', 'exec jdtls' }
+    java_language_server = {
+        cmd = { 'java-language-server' }
     },
     bashls = {},
     html = {},
@@ -148,7 +150,6 @@ local settings = {
         }
     },
     cssls = {},
-    rnix = {},
     dockerls = {},
     jsonls = {},
     svelte = {},
@@ -164,6 +165,9 @@ local settings = {
         bundle_path = deps.powershellEditorServices
     },
     nginx = {},
+    terraformls = {},
+    nil_ls = {},
+    kotlin_language_server = {},
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

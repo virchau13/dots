@@ -88,7 +88,7 @@ in {
             extra.profile-nvim
         ];
         extraConfig = ''
-            lua require('init') { typescript = "${pkgs.nodePackages.typescript}", powershellEditorServices = "${powershellLangBundle}" }
+            lua require('init') { typescript = "${pkgs.nodePackages.typescript}", powershellEditorServices = "${powershellLangBundle}", dotnet = "${pkgs.dotnetCorePackages.sdk_7_0}" }
         '';
     };
 

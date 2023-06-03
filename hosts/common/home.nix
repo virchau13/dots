@@ -45,6 +45,7 @@ in {
             signByDefault = true;
             key = "AA1BA03FFF02700DFD836BD325B242ED74B61B15";
         };
+        extraConfig.http.cookiefile = "/home/hexular/.gitcookies";
     };
 
     # This value determines the Home Manager release that your

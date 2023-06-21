@@ -6,6 +6,8 @@ require('lualine').setup {
     }
 }
 
+require('bufferline').setup {}
+
 if not os.getenv('NVIM_DISABLE_TS') then
     require 'nvim-treesitter.configs'.setup {
         -- ensure_installed = "all",
@@ -158,11 +160,11 @@ local NtEvent = nt_api.events.Event
 nt_api.events.subscribe(NtEvent.TreeOpen, function()
     vim.g.nvim_tree_is_open = true
     vim.keymap.set('n', '[f', function()
-        nt_api.node.navigate.git.prev()
+        nt_api.node.navigate.opened.prev()
         nt_api.node.open.edit()
     end)
     vim.keymap.set('n', ']f', function()
-        nt_api.node.navigate.git.next()
+        nt_api.node.navigate.opened.next()
         nt_api.node.open.edit()
     end)
 end)

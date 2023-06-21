@@ -117,6 +117,10 @@ elif [ "$nixcmd" = "run" ]; then
     fi
     args+=("--")
     args+=("$@")
+elif [ "$nixcmd" = "path-info" ]; then
+    # note: path-info doesn't install if it doesn't already exist
+    # so get it first
+    nix build --no-link "${nixargs[@]}"
 fi
 
 exec_or_echo nix "$nixcmd" "${nixargs[@]}" "${args[@]}"

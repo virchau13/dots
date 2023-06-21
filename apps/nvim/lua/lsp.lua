@@ -169,7 +169,8 @@ local settings = {
     nginx = {},
     terraformls = {},
     nil_ls = {},
-    kotlin_language_server = {},
+    -- this can take 6GB+ RAM, i don't have enough RAM for that
+    -- kotlin_language_server = {},
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -195,4 +196,37 @@ vim.g.coq_settings = {
     clients = {
         tree_sitter = { enabled = false, },
     },
+    keymap = {
+        -- this is set later, so it works with autopairs
+        recommended = false
+    }
 }
+
+local npairs = require('nvim-autopairs')
+-- this has to be set up here to make sure the order is correct
+npairs.setup({ map_bs = false, map_cr = false })
+
+-- get autopairs working properly with coq autocomplete
+-- for SOME REASON autopairs doesn't support `vim.keymap.set` (because autopairs_cr() returns an already-evaluated escape), so i have to do this instead
+_G.annoying_lua_functions = {}
+_G.annoying_lua_functions.autopairsCR = function()
+    if vim.fn.pumvisible() ~= 0 then
+        if vim.fn.complete_info({ 'selected' }).selected ~= -1 then
+            return npairs.esc('<c-y>')
+        else
+            return npairs.esc('<c-e>') .. npairs.autopairs_cr()
+        end
+    else
+        return npairs.autopairs_cr()
+    end
+end
+vim.api.nvim_set_keymap('i', '<CR>', 'v:lua.annoying_lua_functions.autopairsCR()', { expr = true, noremap = true })
+
+_G.annoying_lua_functions.autopairsBS = function()
+    if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
+        return npairs.esc('<c-e>') .. npairs.autopairs_bs()
+    else
+        return npairs.autopairs_bs()
+    end
+end
+vim.api.nvim_set_keymap('i', '<BS>', 'v:lua.annoying_lua_functions.autopairsBS()', { expr = true, noremap = true })

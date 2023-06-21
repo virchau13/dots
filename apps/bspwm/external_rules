@@ -4,6 +4,7 @@ class="$2"
 
 echo "$@" >~/f
 
-if [[ "$class" == *.exe ]]; then
+# Android Emulator has an empty window class. I have no clue why.
+if [[ "$class" == *.exe ]] || [[ "$class" == "" ]]; then
     echo "state=floating"
 fi

@@ -20,6 +20,12 @@ noremap('n', '<Leader>tl', ':<C-u>Telescope<CR>')
 noremap('n', '<Leader>f', ':<C-u>FormatWrite<CR>')
 noremap('n', '<Leader>w', '<C-w>') -- get around ttyd limitation
 
+-- Coq autocomplete mappings
+noremap('i', '<esc>', [[pumvisible() ? "<c-e><esc>" : "<esc>"]], { expr = true })
+noremap('i', '<c-c>', [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]], { expr = true })
+noremap('i', '<tab>', [[pumvisible() ? "<c-n>" : "<tab>"]], { expr = true })
+noremap('i', '<s-tab>', [[pumvisible() ? "<c-p>" : "<bs>"]], { expr = true })
+
 -- Open files
 telescope_bind('<Leader>op', 'find_files')
 -- Navigate buffers

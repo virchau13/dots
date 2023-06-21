@@ -93,6 +93,10 @@ in {
             hydra-nvim
             # box-drawing mode
             venn-nvim
+            # auto insertion of closing braces { }
+            nvim-autopairs
+            # tab line, but for buffers
+            bufferline-nvim
         ];
         extraConfig = ''
             lua require('init') { typescript = "${pkgs.nodePackages.typescript}", powershellEditorServices = "${powershellLangBundle}", dotnet = "${pkgs.dotnetCorePackages.sdk_7_0}" }

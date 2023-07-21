@@ -237,6 +237,7 @@
         terraform-ls
         qemu
         virt-manager
+        framesh
     ];
 
     # get va-api working in firefox

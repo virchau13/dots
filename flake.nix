@@ -37,7 +37,7 @@
             flake = false;
         };
         fidget-nvim = {
-            url = github:j-hui/fidget.nvim;
+            url = github:j-hui/fidget.nvim/legacy;
             flake = false;
         };
         virt-column-nvim = {

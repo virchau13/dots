@@ -74,15 +74,10 @@
             # For lm_sensors
             it87
         ];
-        kernelModules = [ "coretemp" "it87" "lm92" "k10temp" ];
-        kernelParams = [ "delayacct" "boot.shell_on_fail" ];
+        kernelModules = [ "coretemp" "it87" "lm92" "k10temp" "amdgpu" ];
+        kernelParams = [ "delayacct" "boot.shell_on_fail" "wireguard.dyndbg=\"module wireguard +p\""];
         # enable sysrq (https://github.com/NixOS/nixpkgs/issues/83694)
         kernel.sysctl."kernel.sysrq" = 1;
-    };
-
-    hardware.nvidia = {
-        package = config.boot.kernelPackages.nvidiaPackages.production;
-        modesetting.enable = true;
     };
 
     networking.hostName = "hexagon";
@@ -122,6 +117,25 @@
         };
     };
 
+    networking.wireguard.enable = true;
+    networking.wg-quick = {
+        interfaces = {
+            wg0 = {
+                address = [ "10.200.200.13/24" ];
+                listenPort = 5298;
+                privateKeyFile = "/run/secrets/wg/privkey";
+                peers = [
+                    {
+                        publicKey = "ODEdIe46o4+tGe1biG2vCn+3wUk3pO5iFdvXDIGbGzo=";
+                        allowedIPs = [ "10.200.200.0/24" ];
+                        endpoint = "wg.hexular.net:5298";
+                        persistentKeepalive = 25;
+                    }
+                ];
+            };
+        };
+    };
+
     # Select internationalisation properties.
     i18n.defaultLocale = "en_US.UTF-8";
     console = {
@@ -139,7 +153,7 @@
                 middleEmulation = false;
             };
         };
-        videoDrivers = [ "nvidia" ];
+        videoDrivers = [ "amdgpu" ];
     };
 
     services.printing.enable = true;
@@ -238,13 +252,8 @@
         qemu
         virt-manager
         framesh
+        gamescope # for steam
     ];
-
-    # get va-api working in firefox
-    environment.sessionVariables = {
-        LIBVA_DRIVER_NAME = "nvidia";
-        MOZ_DISABLE_RDD_SANDBOX = "1";
-    };
 
     programs.gnupg.agent = {
         enable = true;
@@ -331,7 +340,6 @@
 
     virtualisation.docker = {
         enable = true;
-        enableNvidia = true;
     };
 
     # virtualisation.oci-containers = {
@@ -357,6 +365,11 @@
     programs.sysdig.enable = true;
 
     programs.nbd.enable = true;
+
+    # HACK: get hard-coded HIP GPU acceleration to work
+    systemd.tmpfiles.rules = [
+        "L+	/opt/rocm/hip	-	-	-	-	${pkgs.rocmPackages.clr}"
+    ];
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions

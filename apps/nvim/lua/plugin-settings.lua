@@ -106,7 +106,6 @@ end
 -- }}}
 
 
-local tree_cb = require'nvim-tree.config'.nvim_tree_callback
 require'nvim-tree'.setup {
     -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
     open_on_tab         = true,
@@ -129,24 +128,24 @@ require'nvim-tree'.setup {
     on_attach = on_attach,
 }
 local nt_api = require('nvim-tree.api')
-vim.api.nvim_create_autocmd("BufEnter", {
-    nested = true,
-    callback = function()
-        if vim.api.nvim_buf_get_name(0):match("NvimTree_") ~= nil then
-            if #vim.api.nvim_list_wins() == 1 then
-                -- automatically close nvim-tree when it's the last window
-                -- (https://github.com/kyazdani42/nvim-tree.lua/discussions/1115)
-                vim.cmd "quit"
-            end
-        else
-            -- We entered a new buffer, find it in the tree
-            -- (only if nt is actually open, of course)
-            if vim.g.nvim_tree_is_open then
-                nt_api.tree.find_file { open = true, update_root = false }
-            end
-        end
-    end
-})
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--     nested = true,
+--     callback = function()
+--         if vim.api.nvim_buf_get_name(0):match("NvimTree_") ~= nil then
+--             if #vim.api.nvim_list_wins() == 1 then
+--                 -- automatically close nvim-tree when it's the last window
+--                 -- (https://github.com/kyazdani42/nvim-tree.lua/discussions/1115)
+--                 vim.cmd "quit"
+--             end
+--         else
+--             -- We entered a new buffer, find it in the tree
+--             -- (only if nt is actually open, of course)
+--             if vim.g.nvim_tree_is_open then
+--                 nt_api.tree.find_file { open = true, update_root = false }
+--             end
+--         end
+--     end
+-- })
 -- vim.api.nvim_create_autocmd("BufLeave", {
 --     nested = true,
 --     callback = function()

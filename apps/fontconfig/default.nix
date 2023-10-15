@@ -1,6 +1,6 @@
 { inputs, pkgs, lib, ... }: {
     fonts = {
-        fonts = with pkgs; [
+        packages = with pkgs; [
             noto-fonts
             noto-fonts-cjk
             noto-fonts-emoji
@@ -23,7 +23,7 @@
             }))
         ];
     } // (if pkgs.stdenv.isLinux then {
-        enableDefaultFonts = true;
+        enableDefaultPackages = true;
         fontconfig.localConf = builtins.readFile ../../apps/fontconfig/fonts.xml;
     } else if pkgs.stdenv.isDarwin then {
         enableFontDir = true;

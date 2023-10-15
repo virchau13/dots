@@ -99,7 +99,7 @@
                 bind
                 pv
                 yt-dlp
-                exa
+                eza
                 delta
                 nmap
                 tcptraceroute
@@ -116,8 +116,8 @@
                 # sumneko-lua-language-server
                 # cmake-language-server
                 openjdk
-                java-language-server
                 kotlin-language-server
+                jdt-language-server
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

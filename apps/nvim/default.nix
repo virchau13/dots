@@ -34,11 +34,9 @@ in {
             # lsp pictograms
             lspkind-nvim
             # treesitter highlighting
-            nvim-treesitter 
+            nvim-treesitter.withAllGrammars
             # text objects that allow you to play with treesitter nodes
             nvim-treesitter-textobjects
-            # easy way to view tree-sitter syntax trees
-            playground
             # tree-sitter structural search replace
             ssr-nvim
             # easy way to play with tree-sitter queries
@@ -97,9 +95,11 @@ in {
             nvim-autopairs
             # tab line, but for buffers
             bufferline-nvim
+            # make jdtls language server extensions work with nvim
+            nvim-jdtls
         ];
         extraConfig = ''
-            lua require('init') { typescript = "${pkgs.nodePackages.typescript}", powershellEditorServices = "${powershellLangBundle}", dotnet = "${pkgs.dotnetCorePackages.sdk_7_0}" }
+            lua require('init') { typescript = "${pkgs.nodePackages.typescript}", powershellEditorServices = "${powershellLangBundle}", dotnet = "${pkgs.dotnetCorePackages.sdk_7_0}", openjdk8 = "${pkgs.openjdk8}" }
         '';
     };
 

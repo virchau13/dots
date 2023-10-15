@@ -36,7 +36,6 @@ in
             obs-studio
             i3lock
             easyeffects
-            peek
             lutris
             mpv
             wine

@@ -1,6 +1,6 @@
 # Custom packaging for plugins that aren't already in Nixpkgs.
 { inputs, pkgs, ... }: let
-    simplePlugin = input: name: pkgs.vimUtils.buildVimPluginFrom2Nix {
+    simplePlugin = input: name: pkgs.vimUtils.buildVimPlugin {
         inherit name;
         src = input;
     };

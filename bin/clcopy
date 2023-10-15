@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if [ -n "$SSH_CLIENT" ]; then
+    printf "\033]52;c;"
+    base64 | tr -d '\n'
+    printf "\a"
+else
+    exec xclip -selection c
+fi

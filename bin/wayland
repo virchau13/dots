@@ -2,11 +2,6 @@
 
 export NIXOS_OZONE_WL=1
 
-# Source: https://github.com/cole-mickens/nixcfg/blob/707b2db0a5f69ffda027f8008835f01d03954dcb/mixins/nvidia.nix#L7-L13
-export GBM_BACKEND=nvidia-drm
-export __GLX_VENDOR_LIBRARY_NAME=nvidia
-export WLR_NO_HARDWARE_CURSORS=1
-
 # https://gist.github.com/zimbatm/b82817b7feb5b58a8003d6afced62065#file-sway-nix-L56-L69
 export SDL_VIDEODRIVER=wayland
 # needs qt5.qtwayland in systemPackages
@@ -21,7 +16,6 @@ export LD_LIBRARY_PATH=/run/opengl-driver/lib
 export XDG_CURRENT_DESKTOP=sway
 export XDG_SESSION_TYPE=wayland
 export MOZ_ENABLE_WAYLAND=1
-export __GL_MaxFramesAllowed=1
 
 # sway!
 exec dbus-run-session sway --unsupported-gpu "$@"

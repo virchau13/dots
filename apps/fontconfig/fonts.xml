@@ -2,7 +2,7 @@
 <!DOCTYPE fontconfig SYSTEM 'fonts.dtd' [
 	<!-- Macro to avoid having to define my monospace font in multiple places -->
 	<!-- <!ENTITY hexmono "JetBrains Mono NerdFont"> -->
-	<!ENTITY hexmono "Input Mono">
+	<!ENTITY hexmono "NotoSansM Nerd Font Mono">
 ]>
 
 <fontconfig>
@@ -20,6 +20,16 @@
 			<family>&hexmono;</family>
 		</prefer>
 	</alias>
+	<match target="font">
+		<!-- come on, why does this have "fi" ligatures?! -->
+		<test name="family" compare="eq" ignore-blanks="true">
+			<string>NotoSansM Nerd Font Mono</string>
+		</test>
+		<edit name="fontfeatures" mode="append">
+			<string>liga off</string>
+			<string>dlig off</string>
+		</edit>
+	</match>
 	<match target="font">
 		<edit mode="assign" name="rgba">
 			<const>rgb</const>

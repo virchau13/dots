@@ -6,16 +6,16 @@ export NIXOS_OZONE_WL=1
 export SDL_VIDEODRIVER=wayland
 # needs qt5.qtwayland in systemPackages
 export QT_QPA_PLATFORM=wayland
-export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+#export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
 # Fix for some Java AWT applications (e.g. Android Studio),
 # use this if they aren't displayed properly:
 export _JAVA_AWT_WM_NONREPARENTING=1
 # Fix krita and other Egl-using apps
 export LD_LIBRARY_PATH=/run/opengl-driver/lib
 # For xdg-desktop-portal
-export XDG_CURRENT_DESKTOP=sway
+export XDG_CURRENT_DESKTOP=qtile
 export XDG_SESSION_TYPE=wayland
 export MOZ_ENABLE_WAYLAND=1
 
-# sway!
-exec dbus-run-session sway --unsupported-gpu "$@"
+# qtile!
+qtile start -b wayland "$@"

@@ -3,16 +3,19 @@
 
 local data_dir = vim.fn.getenv("HOME") .. '/.local/state/jdtls/' .. vim.fn.getcwd()
 
+local jdtls_path = vim.fn.resolve(vim.fn.exepath('jdt-language-server'))
+local config_path = string.gsub(jdtls_path, '/bin/[^/]*$', '') .. '/share/config/config.ini'
+
 local config = {
   -- The command that starts the language server
   -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   cmd = {
     'jdt-language-server',
+    '-configuration', config_path,
     -- per-project unique workspace folder
-    '-data', data_dir
+    '-data', data_dir,
   },
 
-  -- 💀
   -- This is the default if not provided, you can remove it. Or adjust as needed.
   -- One dedicated LSP server & client will be started per unique root_dir
   root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'}),
@@ -40,12 +43,13 @@ local config = {
   -- See https://github.com/mfussenegger/nvim-jdtls#java-debug-installation
   --
   -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
-  init_options = {
-    bundles = {}
-  },
+  -- init_options = {
+  --   bundles = {}
+  -- },
 
   on_attach = require 'lsp-on-attach',
 }
 -- This starts a new client & server,
 -- or attaches to an existing client & server depending on the `root_dir`.
-require('jdtls').start_or_attach(config)
+-- TODO check java-language-server
+-- require('jdtls').start_or_attach(config)

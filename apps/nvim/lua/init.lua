@@ -1,4 +1,5 @@
 deps = {}
+hextmp={}
 return function(deps_)
     require 'profile-by-env'
     deps = deps_

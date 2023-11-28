@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-xbindkeys
 xset r rate 660 35
 setxkbmap -option compose:ralt
 
@@ -25,4 +24,5 @@ esac
 
 # exec awesome > ~/.cache/awesome/stdout 2> ~/.cache/awesome/stderr
 # exec ~/.xmonad/xmonad-x86_64-linux > ~/.cache/xmonad/stdout 2> ~/.cache/xmonad/stderr
-exec bspwm &> ~/.cache/bspwm/wmlog
+mkdir -p ~/.cache/qtile
+exec qtile start -b x11 &>~/.cache/qtile/log

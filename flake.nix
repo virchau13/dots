@@ -15,7 +15,7 @@
         };
         neovim-nightly = {
             url = github:neovim/neovim?dir=contrib;
-            # inputs.nixpkgs.follows = "nixpkgs";
+            inputs.nixpkgs.follows = "nixpkgs";
         };
         sops-nix = {
             url = github:Mic92/sops-nix;

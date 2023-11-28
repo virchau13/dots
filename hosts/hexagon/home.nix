@@ -5,6 +5,7 @@ in
 {
     imports = [
         ../common/home.nix
+        ../../apps/qtile
         # ../../apps/eww
     ];
 
@@ -24,7 +25,6 @@ in
             pavucontrol
             pass
             google-chrome
-            discord-canary
             xbindkeys
             pamixer
             picom
@@ -38,7 +38,6 @@ in
             easyeffects
             lutris
             mpv
-            wine
             winetricks
             transmission-qt
             prismlauncher
@@ -47,8 +46,6 @@ in
             (writeShellScriptBin "discord" ''
                 ${(discord)}/bin/discord \
                     --ignore-gpu-blocklist \
-                    --enable-features=VaapiVideoDecoder \
-                    --use-gl=desktop \
                     --enable-gpu-rasterization \
                     --enable-zero-copy \
                     --no-sandbox
@@ -58,6 +55,24 @@ in
             # language servers
             sumneko-lua-language-server
             pinentry.tty
+            flameshot
+            # (let flameshot = pkgs.flameshot.overrideAttrs(old: {
+            #     version = "12.1.0-alpha";
+            #     src = pkgs.fetchFromGitHub {
+            #         owner = "flameshot-org";
+            #         repo = "flameshot";
+            #         rev = "0bbb9528615c1d3697e0538c4a53d8d0e00ade0a";
+            #         sha256 = "sha256-5rckIuxtB4niCpxslZ6pQkTNwLeH3wcBImWmUa1KtZg=";
+            #     };
+            #     buildInputs = old.buildInputs ++ [ pkgs.libsForQt5.kguiaddons ];
+            #     patches = [ ./flameshot-fix-clipboard.patch ];
+            #     cmakeFlags = [ "-DUSE_WAYLAND_GRIM=1" "-DUSE_WAYLAND_CLIPBOARD=true"];
+            # }); in pkgs.writeShellScriptBin "flameshot" ''
+            #     export XDG_CURRENT_DESKTOP=sway 
+            #     export PATH="${pkgs.grim}/bin:$PATH"
+            #     exec ${flameshot}/bin/flameshot "$@"
+            # '')
+            java-language-server
         ];
         in packages;
 
@@ -72,7 +87,7 @@ in
         enable = true;
         settings = {
             font.normal.family = "Hex Mono";
-            font.size = 10.0;
+            font.size = 10.5;
         };
     };
 
@@ -138,11 +153,6 @@ in
 
             };
         };
-    };
-
-    systemd.user.services.flameshot.Unit.Requires = lib.mkForce [];
-    services.flameshot = {
-        enable = true;
     };
 
     services.easyeffects = {

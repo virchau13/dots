@@ -27,8 +27,7 @@ if vim.env.CC ~= nil or vim.env.CXX ~= nil then
 end
 
 local function get_python_path(workspace)
-    local path = require('lspconfig/util').path
-    -- Use activated virtualenv.
+    local path = require('lspconfig/util').path -- Use activated virtualenv.
     if vim.env.VIRTUAL_ENV then
         return path.join(vim.env.VIRTUAL_ENV, 'bin', 'python')
     end
@@ -142,6 +141,9 @@ local settings = {
     nginx = {},
     terraformls = {},
     nil_ls = {},
+    java_language_server = {
+        cmd = {'/nix/store/klca0c3i4ad3jvd2ymv743nw2fs9zd4l-java-language-server-0.2.46/bin/java-language-server'}
+    },
     -- this can take 6GB+ RAM, i don't have enough RAM for that
     -- kotlin_language_server = {},
 }
@@ -160,8 +162,7 @@ for server, config in pairs(settings) do
 end
 
 vim.g.coq_settings = {
-    auto_start = 'shut-up',
-    xdg = true,
+    -- auto_start = 'shut-up',
     limits = {
         -- 250 ms
         completion_auto_timeout = 0.250,

@@ -50,6 +50,8 @@
                setuptools
                graphviz
                bcc
+               transformers
+               pytorch
             ];
             packages = [
                 (python3.withPackages pythonPackages)

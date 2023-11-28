@@ -253,6 +253,14 @@
         virt-manager
         framesh
         gamescope # for steam
+        gamemode
+
+        ckan
+
+        # wayland
+        qtile
+        xwayland
+        arc-theme
     ];
 
     programs.gnupg.agent = {
@@ -323,9 +331,12 @@
 
     programs.steam.enable = true;
 
+    services.dbus.enable = true;
     xdg.portal = {
         enable = true;
+        wlr.enable = true;
         extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+        config.common.default = "*"; # TODO change this
     };
     xdg.autostart.enable = true;
 

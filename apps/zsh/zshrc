@@ -60,7 +60,7 @@ case "$HOSTNAME" in
         ;;
 esac
 
-alias tree='eza --tree'
+alias tree='eza --tree -A'
 
 if [ ! -z "$HOST_COLOR" ]; then
     ITALIC="$(tput sitm)"

@@ -47,6 +47,24 @@ def new_client(client):
             total_width = max(s.x + s.width for s in screens)
             total_height = max(s.y + s.height for s in screens)
             client.static(0, 0, 0, total_width, total_height)
+    if client.name == "Pilka":
+        w,h = 512,512
+        sw,sh = 1920,1080
+        x,y = (sw-w)//2, (sh-h)//2
+        client.enable_floating()
+        client.set_position_floating(x,y)
+        client.set_size_floating(w,h)
+        client.bring_to_front()
+    wm_class = client.info()['wm_class']
+    if "Friday Night Funkin" in client.name or 'kade engine.exe' in wm_class or (wm_class[0].endswith('.exe') and 'fnf ' in wm_class[0]):
+        client.enable_floating()
+    if client.name == "Pentablet":
+        client.enable_floating()
+
+@hook.subscribe.startup_once
+def autostart():
+    # run flameshot daemon to get copy working on wayland >:(
+    subprocess.Popen(['flameshot'])
 
 keys = [
     # A list of available commands that can be bound to keys can be found

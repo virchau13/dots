@@ -8,7 +8,6 @@
     nixpkgs.config.allowUnfree = true;
 
     nix = {
-        package = pkgs.nixUnstable;
         extraOptions = ''
             extra-experimental-features = nix-command flakes
             build-users-group = nixbld
@@ -52,7 +51,7 @@
                bcc
                transformers
                pytorch
-            ];
+            ] ++ (if pkgs.system == "x86_64-linux" then [ qtile ] else []);
             packages = [
                 (python3.withPackages pythonPackages)
 
@@ -113,6 +112,9 @@
                 tokei
                 wezterm
                 ffmpeg
+                rlwrap
+
+                ngn-k
 
                 nil
                 # sumneko-lua-language-server

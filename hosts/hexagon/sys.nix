@@ -30,6 +30,9 @@
             steam-fhsenv = super.steam-fhsenv.override (old: {
                 extraPkgs = with pkgs.pkgsi686Linux; [ gperftools ];
             });
+            steam = super.steam.override {
+                extraPkgs = p: with p; [ libkrb5 ];
+            };
         })
     ];
 
@@ -160,9 +163,16 @@
 
     services.netdata = {
         enable = true;
+        config = {
+            "health" = {
+                "enabled alarms" = "!30min_ram_swapped_out !used_swap *";
+            };
+        };
     };
 
-    services.udev.packages = with pkgs; [ yubikey-personalization ];
+    services.udev.packages = with pkgs; [
+        (pkgs.qt5.callPackage ../../apps/xp-pen/unwrapped.nix {})
+    ];
 
     # Enable sound.
     sound.enable = false;
@@ -237,7 +247,7 @@
         # switch to 15 because of https://github.com/clangd/clangd/issues/1188
         clang-tools_15
         lm_sensors
-        ((import inputs.xp-pen-nixpkgs { system = pkgs.system; config.allowUnfree = true; }).xp-pen-deco-01-v2-driver)
+        (pkgs.callPackage ../../apps/xp-pen {})
         yubikey-personalization
         ungoogled-chromium
         inputs.nix-gaming.packages.${pkgs.system}.wine-ge
@@ -266,7 +276,7 @@
     programs.gnupg.agent = {
         enable = true;
         enableSSHSupport = true;
-        pinentryFlavor = "gtk2";
+        pinentryFlavor = "curses";
     };
 
     programs.dconf.enable = true;

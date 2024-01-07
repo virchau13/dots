@@ -41,6 +41,7 @@ in
             winetricks
             transmission-qt
             prismlauncher
+            xcb-util-cursor
             refresh-playlist
             # Make discord run faster
             (writeShellScriptBin "discord" ''
@@ -55,23 +56,23 @@ in
             # language servers
             sumneko-lua-language-server
             pinentry.tty
-            flameshot
-            # (let flameshot = pkgs.flameshot.overrideAttrs(old: {
-            #     version = "12.1.0-alpha";
-            #     src = pkgs.fetchFromGitHub {
-            #         owner = "flameshot-org";
-            #         repo = "flameshot";
-            #         rev = "0bbb9528615c1d3697e0538c4a53d8d0e00ade0a";
-            #         sha256 = "sha256-5rckIuxtB4niCpxslZ6pQkTNwLeH3wcBImWmUa1KtZg=";
-            #     };
-            #     buildInputs = old.buildInputs ++ [ pkgs.libsForQt5.kguiaddons ];
-            #     patches = [ ./flameshot-fix-clipboard.patch ];
-            #     cmakeFlags = [ "-DUSE_WAYLAND_GRIM=1" "-DUSE_WAYLAND_CLIPBOARD=true"];
-            # }); in pkgs.writeShellScriptBin "flameshot" ''
-            #     export XDG_CURRENT_DESKTOP=sway 
-            #     export PATH="${pkgs.grim}/bin:$PATH"
-            #     exec ${flameshot}/bin/flameshot "$@"
-            # '')
+            (pkgs.flameshot.overrideAttrs(old: {
+                version = "12.2.0-alpha";
+                src = pkgs.fetchFromGitHub {
+                    owner = "flameshot-org";
+                    repo = "flameshot";
+                    rev = "3d21e4967b68e9ce80fb2238857aa1bf12c7b905";
+                    sha256 = "sha256-OLRtF/yjHDN+sIbgilBZ6sBZ3FO6K533kFC1L2peugc=";
+                };
+                buildInputs = old.buildInputs ++ [ pkgs.libsForQt5.kguiaddons ];
+                patches = [ ./flameshot-fix-clipboard.patch ];
+                cmakeFlags = [ "-DUSE_WAYLAND_GRIM=1" "-DUSE_WAYLAND_CLIPBOARD=true" ];
+
+                postInstall = ''
+                    wrapProgram $out/bin/flameshot \
+                        --prefix PATH : ${pkgs.grim}/bin
+                '';
+            }))
             java-language-server
         ];
         in packages;
@@ -159,17 +160,16 @@ in
         enable = true;
     };
 
-    # GTK themes
-    gtk = {
-        enable = true;
-        # theme = {
-        #     name = "Breeze";
-        #     package = pkgs.gnome-breeze;
-        # };
-        iconTheme = {
-            name = "Adwaita";
-            package = pkgs.gnome.adwaita-icon-theme;
-        };
+    home.pointerCursor = {
+        gtk.enable = true;
+        x11.enable = true;
+        name = "Adwaita";
+        package = pkgs.gnome.adwaita-icon-theme;
+        size = 16;
+    };
+    gtk.enable = true;
+    dconf.settings = {
+        "org/gnome/desktop/interface".cursor-theme = "Adwaita";
     };
 
     services.gpg-agent = {

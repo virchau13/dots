@@ -178,7 +178,11 @@ vim.g.coq_settings = {
 
 local npairs = require('nvim-autopairs')
 -- this has to be set up here to make sure the order is correct
-npairs.setup({ map_bs = false, map_cr = false })
+npairs.setup({ 
+    map_bs = false,
+    map_cr = false,
+    disable_filetype = { "TelescopePrompt", "kwt" }
+})
 
 -- get autopairs working properly with coq autocomplete
 -- for SOME REASON autopairs doesn't support `vim.keymap.set` (because autopairs_cr() returns an already-evaluated escape), so i have to do this instead

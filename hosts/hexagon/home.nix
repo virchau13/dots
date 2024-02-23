@@ -5,8 +5,9 @@ in
 {
     imports = [
         ../common/home.nix
-        ../../apps/qtile
-        # ../../apps/eww
+        ../../apps/hyprland/home.nix
+        ../../apps/eww
+        ../../apps/fontconfig/home.nix
     ];
 
     nixpkgs.overlays = [
@@ -40,6 +41,7 @@ in
             mpv
             winetricks
             transmission-qt
+            wofi
             prismlauncher
             xcb-util-cursor
             refresh-playlist
@@ -48,6 +50,8 @@ in
                 ${(discord)}/bin/discord \
                     --ignore-gpu-blocklist \
                     --enable-gpu-rasterization \
+                    --enable-features=VaapiVideoDecoder \
+                    --use-gl=desktop \
                     --enable-zero-copy \
                     --no-sandbox
             '')

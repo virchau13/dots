@@ -3,6 +3,8 @@
 {
     imports = [
         ./hw.nix
+        ../../apps/hyprland/sys.nix
+        ../../apps/backup
     ];
 
     nix = {
@@ -41,7 +43,6 @@
         age.keyFile = "/home/hexular/.config/sops/age/keys.txt";
         secrets = {
             "wg/privkey" = {};
-            "wifi/env" = {};
             "scripts/refresh-playlist" = {
                 mode = "0500";
                 owner = config.users.users.hexular.name;
@@ -76,6 +77,8 @@
         extraModulePackages = with kernelPackages; [
             # For lm_sensors
             it87
+            # obs camera
+            v4l2loopback
         ];
         kernelModules = [ "coretemp" "it87" "lm92" "k10temp" "amdgpu" ];
         kernelParams = [ "delayacct" "boot.shell_on_fail" "wireguard.dyndbg=\"module wireguard +p\""];
@@ -165,7 +168,7 @@
         enable = true;
         config = {
             "health" = {
-                "enabled alarms" = "!30min_ram_swapped_out !used_swap *";
+                "enabled alarms" = "!30min_ram_swapped_out !used_swap !inbound_packets_dropped_ratio *";
             };
         };
     };
@@ -271,6 +274,10 @@
         qtile
         xwayland
         arc-theme
+        linuxPackages.v4l2loopback
+        v4l-utils
+
+        emacs # lmao
     ];
 
     programs.gnupg.agent = {
@@ -386,6 +393,8 @@
     programs.sysdig.enable = true;
 
     programs.nbd.enable = true;
+
+    hardware.i2c.enable = true;
 
     # HACK: get hard-coded HIP GPU acceleration to work
     systemd.tmpfiles.rules = [

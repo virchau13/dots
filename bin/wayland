@@ -17,5 +17,5 @@ export XDG_CURRENT_DESKTOP=qtile
 export XDG_SESSION_TYPE=wayland
 export MOZ_ENABLE_WAYLAND=1
 
-# qtile!
-qtile start -b wayland "$@"
+# hyprland!
+Hyprland "$@" &>/tmp/hyprland-seat.log

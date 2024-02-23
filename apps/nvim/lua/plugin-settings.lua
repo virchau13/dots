@@ -24,7 +24,13 @@ if not os.getenv('NVIM_DISABLE_TS') then
         indent = {
             enable = false,
         },
-        ignore_install = { 'go' },
+        incremental_selection = {
+            enable = true,
+            keymaps = {
+                node_incremental = "<Tab>",
+                node_decremental = "<S-Tab>",
+            }
+        }
     }
 end
 

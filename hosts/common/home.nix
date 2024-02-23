@@ -42,7 +42,7 @@ in {
         userName = "Vir Chaudhury";
         userEmail = "virchau13@hexular.net";
         signing = {
-            signByDefault = true;
+            signByDefault = false; # burned too many times
             key = "AA1BA03FFF02700DFD836BD325B242ED74B61B15";
         };
         extraConfig.http.cookiefile = "/home/hexular/.gitcookies";

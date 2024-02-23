@@ -8,22 +8,13 @@
     boot.kernelModules = [ "kvm-amd" ];
     boot.extraModulePackages = [ ];
 
-# TODO change
     fileSystems."/" = { 
-        device = "/dev/disk/by-uuid/f0ce0357-daf2-47a8-97cc-b5ae428441df";
+        device = "/dev/disk/by-uuid/6851773a-37ab-45d7-93c4-8981c0ceabb2";
         fsType = "xfs";
     };
 
     fileSystems."/boot" = { 
-        device = "/dev/disk/by-uuid/A774-6C06";
+        device = "/dev/disk/by-uuid/7341-93CB";
         fsType = "vfat";
     };
-
-    # just died on me for no reason lmfao
-    # fileSystems."/hdd" = {
-    #     device = "/dev/disk/by-uuid/6494f0d3-4b3e-4d06-8080-8446a302ad93";
-    #     fsType = "ext4";
-    # };
-
-    powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }

@@ -78,6 +78,7 @@ in
                 '';
             }))
             java-language-server
+            cargo-nextest
         ];
         in packages;
 
@@ -178,7 +179,7 @@ in
 
     services.gpg-agent = {
         enable = true;
-        pinentryFlavor = "tty";
+        pinentryPackage = pkgs.pinentry.tty;
     };
 
     programs.tmux = {
@@ -190,13 +191,33 @@ in
         '';
     };
 
-    # xdg.mimeApps = {
-    #     enable = true;
-    #     defaultApplications = {
-    #         "x-scheme-handler/http" = "firefox.desktop";
-    #         "x-scheme-handler/https" = "firefox.desktop";
-    #     };
-    # };
+    # FIXME:
+    # This really shouldn't be here...
+    systemd.user.services.update-aquiladns = {
+        Unit.Description = "Aquila DNS update Chechia IP";
+        Service = {
+            Type = "simple";
+            ExecStart = pkgs.writeShellScript "ua" ''
+                set -euo pipefail
+                env
+                IP=$(~/bin/ipv4)
+                echo "sending $IP"
+                ${pkgs.openssh}/bin/ssh -i ~/.ssh/id_rsa altair "echo '$IP' > /var/lib/dnscontrol/chechia-ip"
+            '';
+        };
+    };
+    systemd.user.timers.update-aquiladns = {
+        Unit = {
+            Description = "Aquila DNS update Chechia IP";
+            After = [ "network.target" ];
+        };
+        Install.WantedBy = [ "multi-user.target" ];
+
+        Timer = {
+            OnUnitActiveSec = "10min";
+            OnBootSec = "30";
+        };
+    };
 
     home.file = {
         ".xinitrc".source = ../../apps/x11/xinitrc;

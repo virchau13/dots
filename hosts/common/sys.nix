@@ -51,6 +51,7 @@
                bcc
                transformers
                pytorch
+               z3-solver
             ] ++ (if pkgs.system == "x86_64-linux" then [ qtile ] else []);
             packages = [
                 (python3.withPackages pythonPackages)

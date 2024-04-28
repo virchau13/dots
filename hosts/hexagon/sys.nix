@@ -247,8 +247,7 @@
         wireshark
         iw
         xdotool
-        # switch to 15 because of https://github.com/clangd/clangd/issues/1188
-        clang-tools_15
+        clang-tools
         lm_sensors
         (pkgs.callPackage ../../apps/xp-pen {})
         yubikey-personalization
@@ -277,13 +276,15 @@
         linuxPackages.v4l2loopback
         v4l-utils
 
-        emacs # lmao
+        
+        wxmaxima
+        maxima
     ];
 
     programs.gnupg.agent = {
         enable = true;
         enableSSHSupport = true;
-        pinentryFlavor = "curses";
+        pinentryPackage = pkgs.pinentry.tty;
     };
 
     programs.dconf.enable = true;

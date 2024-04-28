@@ -1,12 +1,13 @@
 require 'util'
 
+require 'completion'
 -- Load in custom language server configs for those that don't exist in nvim-lspconfig.
 require 'lsp-custom'
 
 local on_attach = require 'lsp-on-attach'
 
 local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
@@ -148,9 +149,7 @@ local settings = {
     -- kotlin_language_server = {},
 }
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
--- https://github.com/neovim/neovim/issues/23291
-capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local nvim_lsp = require('lspconfig')
 for server, config in pairs(settings) do
     local setup_obj = {
@@ -175,36 +174,3 @@ vim.g.coq_settings = {
         recommended = false
     }
 }
-
-local npairs = require('nvim-autopairs')
--- this has to be set up here to make sure the order is correct
-npairs.setup({ 
-    map_bs = false,
-    map_cr = false,
-    disable_filetype = { "TelescopePrompt", "kwt" }
-})
-
--- get autopairs working properly with coq autocomplete
--- for SOME REASON autopairs doesn't support `vim.keymap.set` (because autopairs_cr() returns an already-evaluated escape), so i have to do this instead
-_G.annoying_lua_functions = {}
-_G.annoying_lua_functions.autopairsCR = function()
-    if vim.fn.pumvisible() ~= 0 then
-        if vim.fn.complete_info({ 'selected' }).selected ~= -1 then
-            return npairs.esc('<c-y>')
-        else
-            return npairs.esc('<c-e>') .. npairs.autopairs_cr()
-        end
-    else
-        return npairs.autopairs_cr()
-    end
-end
-vim.api.nvim_set_keymap('i', '<CR>', 'v:lua.annoying_lua_functions.autopairsCR()', { expr = true, noremap = true })
-
-_G.annoying_lua_functions.autopairsBS = function()
-    if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
-        return npairs.esc('<c-e>') .. npairs.autopairs_bs()
-    else
-        return npairs.autopairs_bs()
-    end
-end
-vim.api.nvim_set_keymap('i', '<BS>', 'v:lua.annoying_lua_functions.autopairsBS()', { expr = true, noremap = true })

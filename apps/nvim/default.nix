@@ -36,8 +36,6 @@ in {
             plenary-nvim
             # colorscheme
             extra.colorscheme
-            # file browser (alternative to nerdtree)
-            nvim-tree-lua
             # bar
             lualine-nvim
             # lsp configuration
@@ -59,8 +57,11 @@ in {
             # displays gitsigns on the left bar
             # (TODO check performance) gitsigns-nvim
             # autocomplete
-            coq-artifacts
-            coq_nvim
+            cmp-nvim-lsp
+            cmp-buffer
+            cmp-path
+            cmp-cmdline
+            nvim-cmp
             # snippets
             luasnip 
             # lisp expression indents
@@ -108,6 +109,11 @@ in {
             bufferline-nvim
             # make jdtls language server extensions work with nvim
             nvim-jdtls
+            # better netrw view
+            oil-nvim
+            # collection of plugins, currently used:
+            # `mini.files`: better file manipulation on-the-fly
+            mini-nvim
         ];
         extraConfig = ''
             lua require('init') { typescript = "${pkgs.nodePackages.typescript}", powershellEditorServices = "${powershellLangBundle}", dotnet = "${pkgs.dotnetCorePackages.sdk_7_0}", openjdk8 = "${pkgs.openjdk8}" }

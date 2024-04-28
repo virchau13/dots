@@ -13,7 +13,7 @@ function telescope_bind(bind, builtin, opts)
     noremap('n', bind, ':<C-u>Telescope ' .. builtin .. '<CR>', opts)
 end
 
-noremap('n', '<Leader>nt', ':<C-u>NvimTreeToggle<CR>', { silent = true })
+noremap('n', '<Leader>nt', ':<C-u>lua MiniFiles.open()<CR>', { silent = true })
 noremap('n', '<Leader>tn', ':<C-u>tabnew ')
 noremap('n', '<Leader>tl', ':<C-u>Telescope<CR>')
 -- noremap('n', '<Leader>f', ':<C-u>Format<CR>')

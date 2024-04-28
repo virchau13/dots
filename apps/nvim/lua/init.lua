@@ -1,6 +1,8 @@
 deps = {}
 hextmp={}
 return function(deps_)
+    -- TODO (eventually) remove this when all plugins update to be compatible
+    vim.tbl_isarray = vim.isarray
     require 'profile-by-env'
     deps = deps_
     require 'options'

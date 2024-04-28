@@ -14,4 +14,6 @@ path="$(find-up sops.nix)"
 echo "Found sops.nix at $path"
 nix eval --json -f "$path"/sops.nix > "$path"/.sops.yaml
 # Now do the actual editing.
-exec sops "$@"
+sops "$@"
+# Then after, rekey.
+sops updatekeys "$1"

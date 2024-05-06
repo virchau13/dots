@@ -43,6 +43,7 @@
         age.keyFile = "/home/hexular/.config/sops/age/keys.txt";
         secrets = {
             "wg/privkey" = {};
+            "wifi/env" = {};
             "scripts/refresh-playlist" = {
                 mode = "0500";
                 owner = config.users.users.hexular.name;
@@ -138,6 +139,16 @@
                         persistentKeepalive = 25;
                     }
                 ];
+            };
+        };
+    };
+
+    networking.wireless = {
+        enable = true;
+        environmentFile = "/run/secrets/wifi/env";
+        networks = {
+            "SHLNA 5.0" = {
+                psk = "@PASSWD@";
             };
         };
     };

@@ -13,6 +13,15 @@ setopt("expandtab")
 -- setopt("autoindent")
 -- setopt("smartindent")
 
+vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
+    pattern = {"*.rkt"},
+    callback = function()
+        setopt("tabstop", 2)
+        setopt("shiftwidth", 2)
+        setopt("autoindent")
+    end
+})
+
 -- Line numbers
 setopt("number")
 -- Highlight line cursor is over

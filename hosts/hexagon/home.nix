@@ -10,12 +10,6 @@ in
         ../../apps/fontconfig/home.nix
     ];
 
-    nixpkgs.overlays = [
-        (self: super: {
-            discord = super.discord.override { nss = self.nss_latest; };
-        })
-    ];
-
     home.packages = let 
         # Work around https://github.com/Mic92/sops-nix/issues/150
         refresh-playlist = pkgs.writeShellScriptBin "refresh-playlist" ''
@@ -29,7 +23,6 @@ in
             xbindkeys
             pamixer
             picom
-            minecraft
             stack
             rofi
             notify-desktop
@@ -40,21 +33,23 @@ in
             lutris
             mpv
             winetricks
-            transmission-qt
+            transmission_4-qt
             wofi
             prismlauncher
             xcb-util-cursor
             refresh-playlist
+            vesktop
             # Make discord run faster
-            (writeShellScriptBin "discord" ''
-                ${(discord)}/bin/discord \
-                    --ignore-gpu-blocklist \
-                    --enable-gpu-rasterization \
-                    --enable-features=VaapiVideoDecoder \
-                    --use-gl=desktop \
-                    --enable-zero-copy \
-                    --no-sandbox
-            '')
+            # (writeShellScriptBin "discord" ''
+            #     ${discord}/bin/discord \
+            #         --ignore-gpu-blocklist \
+            #         --enable-gpu-rasterization \
+            #         --enable-features=VaapiVideoDecoder \
+            #         --use-gl=egl \
+            #         --enable-zero-copy \
+            #         --no-sandbox
+            # '')
+            vesktop
             bspwm
             sxhkd
             # language servers
@@ -174,7 +169,10 @@ in
     };
     gtk.enable = true;
     dconf.settings = {
-        "org/gnome/desktop/interface".cursor-theme = "Adwaita";
+        "org/gnome/desktop/interface" = {
+            cursor-theme = "Adwaita";
+            font-antialiasing = "rgba";
+        };
     };
 
     services.gpg-agent = {

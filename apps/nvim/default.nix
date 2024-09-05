@@ -11,20 +11,10 @@ in {
     xdg.configFile = {
     } // utils.symlinkDirContents "apps/nvim" "nvim";
 
-    # https://github.com/NixOS/nixpkgs/pull/264096
-    nixpkgs.overlays = [ (self: super: {
-        libvterm-neovim = super.libvterm-neovim.overrideAttrs(old: {
-            version = "0.3.3";
-            src = self.fetchurl {
-                url = "https://launchpad.net/libvterm/trunk/v0.3/+download/libvterm-0.3.3.tar.gz";
-                sha256 = "sha256-CRVvQ90hKL00fL7r5Q2aVx0yxk4M8Y0hEZeUav9yJuA=";
-            };
-        });
-    })];
+    nixpkgs.overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
 
     programs.neovim = {
         enable = true;
-        package = inputs.neovim-nightly.packages."${pkgs.system}".default.override(old: old // { inherit (pkgs) libvterm-neovim; });
         plugins = with pkgs.vimPlugins; let 
             extra = import ./extra-plugins.nix args;
         in [
@@ -81,7 +71,7 @@ in {
             # cool lines for diagnostics
             # extra.lsp_lines-nvim
             # smooth scrolling
-            extra.sexy_scroller-vim
+            # extra.sexy_scroller-vim
             # for proper indentation
             # i really hate the fact i have to install this >:(
             { 

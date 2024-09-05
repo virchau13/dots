@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-/run/current-system/sw/bin/emacs --xrm "Xft.hinting: 1" --xrm "Xft.hintstyle: hintfull" --xrm "Xft.rgba: rgb" --xrm "Xft.lcdfilter: lcddefault" "$@"

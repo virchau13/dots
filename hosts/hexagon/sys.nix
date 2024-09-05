@@ -80,9 +80,11 @@
             it87
             # obs camera
             v4l2loopback
+            # wifi
+            rtl8192eu
         ];
-        kernelModules = [ "coretemp" "it87" "lm92" "k10temp" "amdgpu" ];
-        kernelParams = [ "delayacct" "boot.shell_on_fail" "wireguard.dyndbg=\"module wireguard +p\""];
+        kernelModules = [ "coretemp" "it87" "lm92" "k10temp" "amdgpu" "rtl8192eu" ];
+        kernelParams = [ "delayacct" "boot.shell_on_fail" ];
         # enable sysrq (https://github.com/NixOS/nixpkgs/issues/83694)
         kernel.sysctl."kernel.sysrq" = 1;
     };
@@ -90,39 +92,39 @@
     networking.hostName = "hexagon";
 
     # Set your time zone.
-    time.timeZone = "Asia/Singapore";
+    time.timeZone = "America/Toronto";
 
     # use systemd-networkd
-    networking.useDHCP = false;
-    systemd.network = {
-        enable = true;
-        networks = {
-            "20-enp5s0" = {
-                matchConfig.Name = "enp5s0";
-                networkConfig = {
-                    DHCP = "ipv6";
-                    Address = "192.168.18.211/24";
-                    Gateway = "192.168.18.1";
-                    DNS = "1.1.1.1";
-                    IPv6AcceptRA = "yes";
-                    LinkLocalAddressing = "yes";
-                    MulticastDNS = "yes"; # resolves .local addresses
-                    # for docker
-                    IPMasquerade = "yes";
-                    IPForward = "yes";
-                };
-            };
-        };
-        links = {
-            "30-docker-unmanaged" = {
-                matchConfig.OriginalName = "docker0";
-                extraConfig = ''
-                    [Link]
-                    Unmanaged=yes
-                '';
-            };
-        };
-    };
+    networking.useDHCP = true;
+    # systemd.network = {
+    #     enable = true;
+    #     networks = {
+    #         "20-enp10s0" = {
+    #             matchConfig.Name = "enp10s0";
+    #             networkConfig = {
+    #                 DHCP = "ipv6";
+    #                 Address = "192.168.0.211/24";
+    #                 Gateway = "192.168.0.1";
+    #                 DNS = "1.1.1.1";
+    #                 IPv6AcceptRA = "yes";
+    #                 LinkLocalAddressing = "yes";
+    #                 MulticastDNS = "yes"; # resolves .local addresses
+    #                 # for docker
+    #                 IPMasquerade = "yes";
+    #                 IPForward = "yes";
+    #             };
+    #         };
+    #     };
+    #     links = {
+    #         "30-docker-unmanaged" = {
+    #             matchConfig.OriginalName = "docker0";
+    #             extraConfig = ''
+    #                 [Link]
+    #                 Unmanaged=yes
+    #             '';
+    #         };
+    #     };
+    # };
 
     networking.wireguard.enable = true;
     networking.wg-quick = {
@@ -143,15 +145,19 @@
         };
     };
 
-    networking.wireless = {
-        enable = true;
-        environmentFile = "/run/secrets/wifi/env";
-        networks = {
-            "SHLNA 5.0" = {
-                psk = "@PASSWD@";
-            };
-        };
-    };
+    # networking.wireless = {
+    #     enable = true;
+    #     environmentFile = "/run/secrets/wifi/env";
+    #     networks = {
+    #         "SHLNA 2.4" = {
+    #             psk = "@PASSWD@";
+    #             # for some reason this is the only one that works reliably
+    #             # extraConfig = ''
+    #             #     freq_list=2462
+    #             # '';
+    #         };
+    #     };
+    # };
 
     # Select internationalisation properties.
     i18n.defaultLocale = "en_US.UTF-8";
@@ -163,14 +169,15 @@
     services.xserver = {
         enable = true;
         displayManager.startx.enable = true;
-        libinput = {
-            enable = true;
-            mouse = {
-                accelProfile = "flat";
-                middleEmulation = false;
-            };
-        };
         videoDrivers = [ "amdgpu" ];
+    };
+
+    services.libinput = {
+        enable = true;
+        mouse = {
+            accelProfile = "flat";
+            middleEmulation = false;
+        };
     };
 
     services.printing.enable = true;
@@ -179,7 +186,10 @@
         enable = true;
         config = {
             "health" = {
-                "enabled alarms" = "!30min_ram_swapped_out !used_swap !inbound_packets_dropped_ratio *";
+                "enabled alarms" = 
+                    "!30min_ram_swapped_out !used_swap !inbound_packets_dropped_ratio"
+                    + " !system_clock_sync_state !1m_received_traffic_overflow"
+                    + " *";
             };
         };
     };
@@ -188,8 +198,6 @@
         (pkgs.qt5.callPackage ../../apps/xp-pen/unwrapped.nix {})
     ];
 
-    # Enable sound.
-    sound.enable = false;
     security.rtkit.enable = true;
     services.pipewire = {
         enable = true;
@@ -198,10 +206,8 @@
         pulse.enable = true;
     };
 
-    hardware.opengl = {
+    hardware.graphics = {
         enable = true;
-        driSupport = true;
-        driSupport32Bit = true;
     };
 
     # For Corsair keyboard control.
@@ -247,7 +253,7 @@
         killall
         feh
         xcolor
-        gnome.adwaita-icon-theme
+        adwaita-icon-theme
         xclip
         breeze-icons
         inkscape
@@ -281,15 +287,19 @@
         ckan
 
         # wayland
-        qtile
         xwayland
         arc-theme
         linuxPackages.v4l2loopback
         v4l-utils
-
         
         wxmaxima
         maxima
+
+        r2modman
+
+        emacs29-pgtk
+
+        android-tools
     ];
 
     programs.gnupg.agent = {
@@ -307,6 +317,8 @@
     };
 
     programs.mosh.enable = true;
+
+    programs.sway.enable = true;
 
     systemd.services = { 
         ttyd = {
@@ -336,9 +348,9 @@
                 User = "hexular";
                 WorkingDirectory = "/home/hexular";
             };
-            # update my IP on libertas
+            # update my IP on altair
             script = ''
-                ${pkgs.dig}/bin/dig @resolver4.opendns.com myip.opendns.com +short | ${pkgs.openssh}/bin/ssh libertas 'cat > /var/lib/dnscontrol/ip'
+                ${pkgs.dig}/bin/dig @resolver4.opendns.com myip.opendns.com +short | ${pkgs.openssh}/bin/ssh altair 'cat > /var/lib/dnscontrol/chechia-ip'
             '';
         };
     };
@@ -359,6 +371,9 @@
     networking.firewall.enable = false;
 
     programs.steam.enable = true;
+    
+    # replace systemd-timesyncd
+    services.chrony.enable = true;
 
     services.dbus.enable = true;
     xdg.portal = {
@@ -389,10 +404,14 @@
     #     };
     # };
 
-    i18n.inputMethod = {
-        enabled = "fcitx5";
-        fcitx5.addons = with pkgs; [ fcitx5-chinese-addons ];
-    };
+    # i18n.inputMethod = {
+    #     enable = true;
+    #     type = "fcitx5";
+    #     fcitx5 = {
+    #         waylandFrontend = true;
+    #         addons = with pkgs; [ fcitx5-chinese-addons ];
+    #     };
+    # };
 
     # for m1k1o/neko
     services.nginx = {

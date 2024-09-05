@@ -52,7 +52,7 @@
                transformers
                pytorch
                z3-solver
-            ] ++ (if pkgs.system == "x86_64-linux" then [ qtile ] else []);
+            ] ++ (if pkgs.system == "x86_64-linux" then [ i3ipc ] else []);
             packages = [
                 (python3.withPackages pythonPackages)
 
@@ -116,6 +116,12 @@
                 rlwrap
 
                 ngn-k
+
+                racket
+
+                typst
+                typst-lsp
+                typst-live
 
                 nil
                 # sumneko-lua-language-server

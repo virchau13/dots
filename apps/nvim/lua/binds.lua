@@ -1,12 +1,15 @@
 require 'util'
 
 function noremap(mode, keys, bind, options)
-    opts = { noremap = true }
+    local opts = { noremap = true }
     if options ~= nil then
         merge(opts, options)
     end
-
-    vim.api.nvim_set_keymap(mode, keys, bind, opts)
+    if type(bind) == "function" then
+        vim.keymap.set(mode, keys, bind, opts)
+    else
+        vim.api.nvim_set_keymap(mode, keys, bind, opts)
+    end
 end
 
 function telescope_bind(bind, builtin, opts)
@@ -25,6 +28,9 @@ noremap('i', '<esc>', [[pumvisible() ? "<c-e><esc>" : "<esc>"]], { expr = true }
 noremap('i', '<c-c>', [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]], { expr = true })
 noremap('i', '<tab>', [[pumvisible() ? "<c-n>" : "<tab>"]], { expr = true })
 noremap('i', '<s-tab>', [[pumvisible() ? "<c-p>" : "<bs>"]], { expr = true })
+noremap('n', '<Leader>pp', function() vim.g.parinfer_mode = 'paren' end)
+noremap('n', '<Leader>pi', function() vim.g.parinfer_mode = 'indent' end)
+
 
 -- Open files
 telescope_bind('<Leader>op', 'find_files')

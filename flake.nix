@@ -11,8 +11,8 @@
             url = github:nix-community/home-manager;
             inputs.nixpkgs.follows = "nixpkgs";
         };
-        neovim-nightly = {
-            url = github:neovim/neovim?dir=contrib;
+        neovim-nightly-overlay = {
+            url = github:nix-community/neovim-nightly-overlay;
             inputs.nixpkgs.follows = "nixpkgs";
         };
         sops-nix = {
@@ -69,7 +69,7 @@
         };
     };
 
-    outputs = inputs@{ self, nixpkgs, darwin, home-manager, neovim-nightly, sops-nix, flake-utils, ... }: {
+    outputs = inputs@{ self, nixpkgs, darwin, home-manager, sops-nix, flake-utils, ... }: {
         darwinConfigurations.hexamac = darwin.lib.darwinSystem {
             system = "x86_64-darwin";
             specialArgs = { inputs = inputs; };

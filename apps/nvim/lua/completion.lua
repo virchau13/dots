@@ -13,7 +13,7 @@ window = {
     documentation = cmp.config.window.bordered(),
 },
 mapping = cmp.mapping.preset.insert({
-    ['<CR>'] = cmp.mapping(function(fallback)
+    ['<C-CR>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
             cmp.confirm({ select = false, })
         else

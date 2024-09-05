@@ -39,7 +39,7 @@ in {
                 wrap-max-lines = "unlimited";
             };
         };
-        userName = "Vir Chaudhury";
+        userName = "virchau13";
         userEmail = "virchau13@hexular.net";
         signing = {
             signByDefault = false; # burned too many times

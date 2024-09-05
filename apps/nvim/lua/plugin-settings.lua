@@ -22,7 +22,7 @@ if not os.getenv('NVIM_DISABLE_TS') then
             additional_vim_regex_highlighting = true -- to get vim-polyglot indentation to work
         },
         indent = {
-            enable = false,
+            enable = { 'astro' },
         },
         incremental_selection = {
             enable = true,

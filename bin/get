@@ -118,9 +118,16 @@ elif [ "$nixcmd" = "run" ]; then
     args+=("--")
     args+=("$@")
 elif [ "$nixcmd" = "path-info" ]; then
+    nixargs+=("--impure")
     # note: path-info doesn't install if it doesn't already exist
     # so get it first
     nix build --no-link "${nixargs[@]}"
+    # get the path
+    path="$(nix "$nixcmd" "${nixargs[@]}" "${args[@]}")"
+    # if we don't do it like this, then there's no newline
+    # seperating the stderr from the stdout
+    printf '%s\n' "$path"
+    exit
 fi
 
 exec_or_echo nix "$nixcmd" "${nixargs[@]}" "${args[@]}"

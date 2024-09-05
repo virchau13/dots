@@ -24,6 +24,7 @@ in {
 
     xdg.configFile = {
         "wezterm".source = mkOutOfStoreSymlink "${configDir}/apps/wezterm";
+        "sway".source = mkOutOfStoreSymlink "${configDir}/apps/sway";
     };
 
     # Extra $PATH directories

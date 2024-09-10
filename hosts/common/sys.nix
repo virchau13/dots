@@ -52,6 +52,7 @@
                transformers
                pytorch
                z3-solver
+               gmpy2
             ] ++ (if pkgs.system == "x86_64-linux" then [ i3ipc ] else []);
             packages = [
                 (python3.withPackages pythonPackages)
@@ -114,6 +115,7 @@
                 wezterm
                 ffmpeg
                 rlwrap
+                lua-language-server
 
                 ngn-k
 
@@ -129,6 +131,10 @@
                 openjdk
                 kotlin-language-server
                 jdt-language-server
+
+                firefox
+                lshw
+                wl-clipboard
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

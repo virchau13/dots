@@ -49,6 +49,57 @@ in {
         extraConfig.http.cookiefile = "/home/hexular/.gitcookies";
     };
 
+    home.packages = with pkgs; [
+      pavucontrol
+      pass
+      pamixer
+      notify-desktop
+      easyeffects
+      mpv
+      wofi
+      vesktop
+      pinentry.tty
+      (pkgs.flameshot.overrideAttrs(old: {
+          version = "12.2.0-alpha";
+          src = pkgs.fetchFromGitHub {
+              owner = "flameshot-org";
+              repo = "flameshot";
+              rev = "3d21e4967b68e9ce80fb2238857aa1bf12c7b905";
+              sha256 = "sha256-OLRtF/yjHDN+sIbgilBZ6sBZ3FO6K533kFC1L2peugc=";
+          };
+          buildInputs = old.buildInputs ++ [ pkgs.libsForQt5.kguiaddons ];
+          patches = [ ./flameshot-fix-clipboard.patch ];
+          cmakeFlags = [ "-DUSE_WAYLAND_GRIM=1" "-DUSE_WAYLAND_CLIPBOARD=true" ];
+
+          postInstall = ''
+              wrapProgram $out/bin/flameshot \
+                  --prefix PATH : ${pkgs.grim}/bin
+          '';
+      }))
+    ];
+
+    programs.alacritty = {
+        enable = true;
+        settings = {
+            font.normal.family = "Hex Mono";
+            font.size = 10.5;
+        };
+    };
+
+    services.gpg-agent = {
+        enable = true;
+        pinentryPackage = pkgs.pinentry.tty;
+    };
+
+    programs.tmux = {
+        enable = true;
+        clock24 = true;
+        mouse = true;
+        extraConfig = ''
+            set-option -sa terminal-overrides ",xterm*:Tc"
+        '';
+    };
+
     # This value determines the Home Manager release that your
     # configuration is compatible with. This helps avoid breakage
     # when a new Home Manager release introduces backwards

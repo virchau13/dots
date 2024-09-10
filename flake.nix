@@ -90,6 +90,17 @@
                 ./hosts/common/sys.nix
             ];
         };
+
+        nixosConfigurations.hexgoer = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = { inputs = inputs; };
+            modules = [
+                sops-nix.nixosModules.sops
+                home-manager.nixosModule
+                ./hosts/hexgoer/sys.nix
+                ./hosts/common/sys.nix
+            ];
+        };
     } // flake-utils.lib.eachDefaultSystem (system: {
         devShell = nixpkgs.legacyPackages."${system}".mkShell {
             buildInputs = let pkgs = nixpkgs.legacyPackages."${system}";  in with pkgs; [

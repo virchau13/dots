@@ -8,7 +8,8 @@ return function(deps_)
     require 'options'
     require 'plugin-settings'
     require 'format'
-    require 'tree-sitter-custom'
+    -- for astro development 
+    -- require 'tree-sitter-custom'
     require 'binds'
     require 'lsp'
     require 'hydra-modes'

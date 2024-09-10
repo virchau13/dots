@@ -58,6 +58,8 @@ case "$HOSTNAME" in
         fi # added by Nix installer
         export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
         ;;
+    hexgoer)
+        HOST_COLOR="blue"
 esac
 
 alias tree='eza --tree -A'

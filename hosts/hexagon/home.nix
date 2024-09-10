@@ -17,11 +17,8 @@ in
         '';
         packages = with pkgs; [
             xfce.thunar xfce.xfconf xfce.tumbler xfce.exo
-            pavucontrol
-            pass
             google-chrome
             xbindkeys
-            pamixer
             picom
             stack
             rofi
@@ -29,16 +26,12 @@ in
             mpc_cli
             obs-studio
             i3lock
-            easyeffects
             lutris
-            mpv
             winetricks
             transmission_4-qt
-            wofi
             prismlauncher
             xcb-util-cursor
             refresh-playlist
-            vesktop
             # Make discord run faster
             # (writeShellScriptBin "discord" ''
             #     ${discord}/bin/discord \
@@ -49,29 +42,10 @@ in
             #         --enable-zero-copy \
             #         --no-sandbox
             # '')
-            vesktop
             bspwm
             sxhkd
             # language servers
             sumneko-lua-language-server
-            pinentry.tty
-            (pkgs.flameshot.overrideAttrs(old: {
-                version = "12.2.0-alpha";
-                src = pkgs.fetchFromGitHub {
-                    owner = "flameshot-org";
-                    repo = "flameshot";
-                    rev = "3d21e4967b68e9ce80fb2238857aa1bf12c7b905";
-                    sha256 = "sha256-OLRtF/yjHDN+sIbgilBZ6sBZ3FO6K533kFC1L2peugc=";
-                };
-                buildInputs = old.buildInputs ++ [ pkgs.libsForQt5.kguiaddons ];
-                patches = [ ./flameshot-fix-clipboard.patch ];
-                cmakeFlags = [ "-DUSE_WAYLAND_GRIM=1" "-DUSE_WAYLAND_CLIPBOARD=true" ];
-
-                postInstall = ''
-                    wrapProgram $out/bin/flameshot \
-                        --prefix PATH : ${pkgs.grim}/bin
-                '';
-            }))
             java-language-server
             cargo-nextest
         ];
@@ -173,20 +147,6 @@ in
             cursor-theme = "Adwaita";
             font-antialiasing = "rgba";
         };
-    };
-
-    services.gpg-agent = {
-        enable = true;
-        pinentryPackage = pkgs.pinentry.tty;
-    };
-
-    programs.tmux = {
-        enable = true;
-        clock24 = true;
-        mouse = true;
-        extraConfig = ''
-            set-option -sa terminal-overrides ",xterm*:Tc"
-        '';
     };
 
     # FIXME:

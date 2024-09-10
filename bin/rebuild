@@ -4,7 +4,7 @@ HOST="$(hostname -s)"
 
 
 case "$HOST" in
-    hexagon)
+    hexagon|hexgoer)
         # Don't burn through all my cores
         exec sudo nixos-rebuild --flake "$(realpath ~/config)" --option cores 1 --option max-jobs 4 "$@"
         ;;

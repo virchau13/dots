@@ -9,12 +9,12 @@
     ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/f3d08a03-36ed-4c0a-b485-559a2ab39e73";
+    { device = "/dev/disk/by-uuid/27bd3bc2-483d-4e29-ad08-96d049d7a76a";
       fsType = "xfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/D55C-F3DC";
+    { device = "/dev/disk/by-uuid/42B2-FA74";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
@@ -26,8 +26,8 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

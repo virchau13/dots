@@ -14,22 +14,18 @@
       efi.canTouchEfiVariables = true;
     };
     initrd = {
-      availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];
+      availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
       kernelModules = [ ];
     };
-    kernelModules = [ "kvm-intel" ];
+    kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ ];
-    kernelParams = [ "boot.shell_on_fail" "acpi_backlight=intel" ];
+    kernelParams = [ "boot.shell_on_fail" ];
     # enable SysRq key
     kernel.sysctl."kernel.sysrq" = 1;
-  
-};
+  };
 
   networking.hostName = "hexgoer";
   networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "America/Toronto";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -77,11 +73,17 @@
     vim
     wget
     git
+    brightnessctl
+    networkmanagerapplet
   ];
 
   programs.sway.enable = true;
 
   networking.firewall.enable = false;
+
+  services.tzupdate.enable = true;
+
+  programs.steam.enable = true;
 
   home-manager.extraSpecialArgs = let
       homeDir = config.users.users.hexular.home;

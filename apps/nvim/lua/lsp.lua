@@ -50,7 +50,7 @@ local settings = {
     clangd = {
         cmd = clangd_cmd,
     },
-    tsserver = {
+    ts_ls = {
         cmd = { 'typescript-language-server', '--stdio', } -- '--tsserver-path', deps.typescript .. "/lib/node_modules/typescript/lib" }
     },
     pyright = {

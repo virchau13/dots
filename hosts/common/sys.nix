@@ -135,6 +135,9 @@
                 firefox
                 lshw
                 wl-clipboard
+                
+                asm-lsp
+                clang-tools
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

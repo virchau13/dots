@@ -70,7 +70,7 @@ input "1133:49970:Logitech_Gaming_Mouse_G502" {
     scroll_method none
 }
 
-input "1267:13035:VEN_04F3:00_04F3:32EB_Touchpad" {
+input "1267:12821:ELAN0524:01_04F3:3215_Touchpad" {
     dwt disabled
     natural_scroll enabled
 }
@@ -98,6 +98,9 @@ input * xkb_options compose:ralt
     bindsym KP_Divide exec mpc prev
     bindsym XF86AudioNext exec mpc next
     bindsym KP_Subtract exec mpc next
+
+    bindsym XF86MonBrightnessUp exec brightnessctl s 5+
+    bindsym XF86MonBrightnessDown exec brightnessctl s 5-
 
     # Kill focused window
     bindsym $mod+c kill

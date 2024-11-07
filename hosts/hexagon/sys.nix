@@ -264,7 +264,6 @@
         wireshark
         iw
         xdotool
-        clang-tools
         lm_sensors
         (pkgs.callPackage ../../apps/xp-pen {})
         yubikey-personalization

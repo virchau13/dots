@@ -57,7 +57,11 @@ in {
       easyeffects
       mpv
       wofi
-      vesktop
+      (vesktop.overrideAttrs(old: {
+        preBuild = ''
+          rm -r static/shiggy.gif
+        '';
+      }))
       pinentry.tty
       (pkgs.flameshot.overrideAttrs(old: {
           version = "12.2.0-alpha";

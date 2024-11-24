@@ -40,7 +40,7 @@ output Unknown-1 mode 1920x1080 position 0,0 scale 2
 #
 # Example configuration:
 #
-exec swayidle -w \
+exec [[ "$HOSTNAME" == hexgoer ]] && swayidle -w \
          timeout 300 'swaylock -f -c 000000' \
          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
          before-sleep 'swaylock -f -c 000000'
@@ -87,9 +87,9 @@ input * xkb_options compose:ralt
 #
     # Start a terminal
     bindsym $mod+Return exec $term
-    bindsym XF86AudioRaiseVolume exec pamixer -i 2
+    bindsym XF86AudioRaiseVolume exec pamixer -i 5
     bindsym KP_Up exec pamixer -i 2
-    bindsym XF86AudioLowerVolume exec pamixer -d 2
+    bindsym XF86AudioLowerVolume exec pamixer -d 5
     bindsym KP_Down exec pamixer -d 2
     bindsym XF86AudioMute exec pamixer -t
     bindsym XF86AudioPlay exec mpc toggle
@@ -254,3 +254,4 @@ bar {
 
 for_window [app_id="flameshot"] border pixel 0, floating enable, move absolute position 0 0, fullscreen enable global
 for_window [title="Holy Quintet"] floating enable
+for_window [title="FNF: Sburban Showtime"] floating enable

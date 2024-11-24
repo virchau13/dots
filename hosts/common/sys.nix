@@ -53,8 +53,10 @@
                pytorch
                z3-solver
                gmpy2
+               pygmt
             ] ++ (if pkgs.system == "x86_64-linux" then [ i3ipc ] else []);
             packages = [
+                zip
                 (python3.withPackages pythonPackages)
 
                 # lua
@@ -62,7 +64,8 @@
 
                 # haskell
                 haskell-language-server
-                (haskellPackages.ghcWithPackages (pkgs: with pkgs; [ lens xmonad xmonad-contrib ]))
+                ghc
+                ihaskell
 
                 # js
                 nodejs
@@ -138,6 +141,8 @@
                 
                 asm-lsp
                 clang-tools
+
+                ghostscript
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

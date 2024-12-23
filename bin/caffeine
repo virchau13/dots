@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec systemd-inhibit --what=idle --who=Caffeine --why=Caffeine --mode=block sleep inf

@@ -34,6 +34,14 @@
     useXkbConfig = true; # use xkb.options in tty.
   };
 
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (action.id.indexOf("org.freedesktop.NetworkManager.") == 0 && subject.isInGroup("network")) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
+
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
@@ -62,10 +70,9 @@
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.hexular = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "network" ];
     shell = pkgs.zsh;
   };
 

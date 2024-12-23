@@ -143,6 +143,8 @@
                 clang-tools
 
                 ghostscript
+
+                mosh
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

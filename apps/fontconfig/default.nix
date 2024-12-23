@@ -17,12 +17,12 @@ in {
             liberation_ttf
             fira-code
             fira-code-symbols
-            nerdfonts
             google-fonts
             open-sans
             inter
             corefonts
             vistafonts
+            fira-math
             # (input-fonts.overrideAttrs(old: {
             #     pname = "input-fonts-nerd-font";
             #     version = input-fonts.version;
@@ -35,7 +35,7 @@ in {
             #         find $out/ -type f -name '*.ttf' -exec fontforge ${pkgs.nerd-font-patcher}/bin/font-patcher {} \; 
             #     '';
             # }))
-        ];
+        ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
     } // (if pkgs.stdenv.isLinux then {
         enableDefaultPackages = true;
         fontconfig.localConf = builtins.readFile ../../apps/fontconfig/fonts.xml;

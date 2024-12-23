@@ -69,9 +69,9 @@ local settings = {
             }
         }
     },
-    omnisharp = {
-        cmd = {'bash', '-c', 'DOTNET_ROOT=' .. deps.dotnet .. ' exec OmniSharp --languageserver'}
-    },
+    -- omnisharp = {
+    --     cmd = {'bash', '-c', 'DOTNET_ROOT=' .. deps.dotnet .. ' exec OmniSharp --languageserver'}
+    -- },
     cmake = {},
     texlab = {
         cmd = { 'texlab', '-vvvv', '--log-file', '/home/hexular/log' },

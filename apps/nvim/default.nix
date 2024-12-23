@@ -106,7 +106,7 @@ in {
             mini-nvim
         ];
         extraConfig = ''
-            lua require('init') { typescript = "${pkgs.nodePackages.typescript}", powershellEditorServices = "${powershellLangBundle}", dotnet = "${pkgs.dotnetCorePackages.sdk_7_0}", openjdk8 = "${pkgs.openjdk8}" }
+            lua require('init') { typescript = "${pkgs.nodePackages.typescript}", powershellEditorServices = "${powershellLangBundle}", --[[ dotnet = "{pkgs.dotnetCorePackages.sdk_7_0}", ]] openjdk8 = "${pkgs.openjdk8}" }
         '';
     };
 

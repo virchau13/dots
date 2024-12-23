@@ -271,7 +271,6 @@
         inputs.nix-gaming.packages.${pkgs.system}.wine-ge
         # i know right?
         omnisharp-roslyn
-        dotnet-sdk_7
         pipx
         turbovnc
         docker-credential-helpers
@@ -282,6 +281,7 @@
         framesh
         gamescope # for steam
         gamemode
+        kdenlive
 
         ckan
 

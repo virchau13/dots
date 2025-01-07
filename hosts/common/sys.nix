@@ -145,6 +145,10 @@
                 ghostscript
 
                 mosh
+
+                zed-editor
+
+                jujutsu
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

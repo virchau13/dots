@@ -129,8 +129,7 @@ local settings = {
     jsonls = {},
     svelte = {},
     astro = {
-        -- cmd = { 'npx', 'astro-ls', '--stdio' },
-        cmd = {'bash', '-c', 'node /home/hexular/prog/repos/language-tools/packages/language-server/dist/node.js --stdio'}
+        cmd = { 'npx', 'astro-ls', '--stdio' },
     },
     gopls = {},
     wgsl_analyzer = {
@@ -148,7 +147,7 @@ local settings = {
     racket_langserver = {
         cmd = {'bash', '-c', 'cd ~/prog/repos/racket-langserver; exec racket main.rkt'}
     },
-    typst_lsp = {},
+    tinymist = {},
     -- this can take 6GB+ RAM, i don't have enough RAM for that
     -- kotlin_language_server = {},
 }

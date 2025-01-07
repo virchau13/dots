@@ -59,16 +59,13 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  # Enable sound.
-  # hardware.pulseaudio.enable = true;
-  # OR
   services.pipewire = {
     enable = true;
     pulse.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
+  # services.libinput.enable = true;
 
   users.users.hexular = {
     isNormalUser = true;
@@ -82,6 +79,8 @@
     git
     brightnessctl
     networkmanagerapplet
+    spotify
+    kdenlive
   ];
 
   programs.sway.enable = true;
@@ -91,6 +90,8 @@
   services.tzupdate.enable = true;
 
   programs.steam.enable = true;
+
+  hardware.bluetooth.enable = true;
 
   home-manager.extraSpecialArgs = let
       homeDir = config.users.users.hexular.home;

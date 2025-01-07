@@ -21,7 +21,7 @@ shellcmd="SHELL=$escshell $escshell"
 
 while (($#)); do
     case "$1" in
-        -s) 
+        -s|--bash) 
             # turn off custom shell
             shellcmd="return"
             shift
@@ -41,6 +41,12 @@ while (($#)); do
             # use Nixpkgs package
             export IN_NIX_DEV_SHELL_NAME="$1"
             exec nix-shell '<nixpkgs>' -A "$1" --command "$shellcmd"
+            ;;
+        -E)
+            shift
+            # evaluate expression
+            export IN_NIX_DEV_SHELL_NAME="<expr>"
+            exec nix-shell '<nixpkgs>' -E "$1" --command "$shellcmd"
             ;;
         -c)
             shift

@@ -17,8 +17,6 @@ in {
 
     fidget-nvim = simplePlugin inputs.fidget-nvim "fidget.nvim";
 
-    virt-column-nvim = simplePlugin inputs.virt-column-nvim "virt-column.nvim";
-
     lsp_lines-nvim = simplePlugin inputs.lsp_lines-nvim "lsp_lines.nvim";
 
     sexy_scroller-vim = simplePlugin inputs.sexy_scroller-vim "sexy_scroller.vim";

@@ -511,7 +511,6 @@
         "profile-nvim": "profile-nvim",
         "sexy_scroller-vim": "sexy_scroller-vim",
         "sops-nix": "sops-nix",
-        "virt-column-nvim": "virt-column-nvim",
         "yuck-vim": "yuck-vim"
       }
     },
@@ -625,22 +624,6 @@
         "submodules": true,
         "type": "git",
         "url": "https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging/nix"
-      }
-    },
-    "virt-column-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1731379921,
-        "narHash": "sha256-ozrjz34YIlDziuc9KLYM9zikTlg2YKYlIewapzN/nlY=",
-        "owner": "lukas-reineke",
-        "repo": "virt-column.nvim",
-        "rev": "b87e3e0864211a32724a2ebf3be37e24e9e2fa99",
-        "type": "github"
-      },
-      "original": {
-        "owner": "lukas-reineke",
-        "repo": "virt-column.nvim",
-        "type": "github"
       }
     },
     "wlroots": {

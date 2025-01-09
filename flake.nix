@@ -39,10 +39,6 @@
             url = github:j-hui/fidget.nvim/legacy;
             flake = false;
         };
-        virt-column-nvim = {
-            url = github:lukas-reineke/virt-column.nvim;
-            flake = false;
-        };
         # lsp_lines-nvim = {
         #     url = sourcehut:~whynothugo/lsp_lines.nvim;
         #     flake = false;

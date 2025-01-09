@@ -153,7 +153,7 @@
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools
                 pnpm
-                ijavascript
+                # ijavascript
 
                 # language servers
                 bash-language-server

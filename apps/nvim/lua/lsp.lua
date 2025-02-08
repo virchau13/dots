@@ -145,7 +145,7 @@ local settings = {
         cmd = {'/nix/store/klca0c3i4ad3jvd2ymv743nw2fs9zd4l-java-language-server-0.2.46/bin/java-language-server'}
     },
     racket_langserver = {
-        cmd = {'bash', '-c', 'cd ~/prog/repos/racket-langserver; exec racket main.rkt'}
+        -- cmd = {'bash', '-c', 'cd ~/prog/repos/racket-langserver; exec racket main.rkt'}
     },
     tinymist = {},
     -- this can take 6GB+ RAM, i don't have enough RAM for that

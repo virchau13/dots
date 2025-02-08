@@ -16,6 +16,24 @@ in
             exec /run/secrets/scripts/refresh-playlist "$@"
         '';
         packages = with pkgs; [
+
+      (pkgs.flameshot.overrideAttrs(old: {
+          version = "12.2.0-alpha";
+          src = pkgs.fetchFromGitHub {
+              owner = "flameshot-org";
+              repo = "flameshot";
+              rev = "3d21e4967b68e9ce80fb2238857aa1bf12c7b905";
+              sha256 = "sha256-OLRtF/yjHDN+sIbgilBZ6sBZ3FO6K533kFC1L2peugc=";
+          };
+          buildInputs = old.buildInputs ++ [ pkgs.libsForQt5.kguiaddons ];
+          patches = [ ./flameshot-fix-clipboard.patch ];
+          cmakeFlags = [ "-DUSE_WAYLAND_GRIM=1" "-DUSE_WAYLAND_CLIPBOARD=true" ];
+
+          postInstall = ''
+              wrapProgram $out/bin/flameshot \
+                  --prefix PATH : ${pkgs.grim}/bin
+          '';
+      }))
             xfce.thunar xfce.xfconf xfce.tumbler xfce.exo
             google-chrome
             xbindkeys

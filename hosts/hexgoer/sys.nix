@@ -81,6 +81,12 @@
     networkmanagerapplet
     spotify
     kdenlive
+    ghidra
+    wireshark
+    gdb
+    gcc
+    bcc
+    bpftrace
   ];
 
   programs.sway.enable = true;

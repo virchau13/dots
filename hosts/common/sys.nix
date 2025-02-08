@@ -29,35 +29,36 @@
     
     environment.systemPackages = with pkgs; let 
             pythonPackages = pypkgs: with pypkgs; [
-               ipython
-               jupyter
-               python-lsp-server
-               z3
-               fonttools
-               black # formatter
-               pylsp-mypy
-               pylint
-               imageio
-               numpy
-               pandas
-               xkcdpass
-               flask
-               pyjwt
-               pillow
-               aiohttp
-               scipy
-               setuptools
-               graphviz
-               bcc
-               transformers
-               pytorch
-               z3-solver
-               gmpy2
-               pygmt
-               cython
-               pycryptodome
-               pwntools
-               hypothesis
+                ipython
+                jupyter
+                python-lsp-server
+                z3
+                fonttools
+                black # formatter
+                pylsp-mypy
+                pylint
+                imageio
+                numpy
+                pandas
+                xkcdpass
+                flask
+                pyjwt
+                pillow
+                aiohttp
+                scipy
+                setuptools
+                graphviz
+                bcc
+                transformers
+                pytorch
+                z3-solver
+                gmpy2
+                pygmt
+                cython
+                pycryptodome
+                pwntools
+                hypothesis
+                opencv
             ] ++ (if pkgs.system == "x86_64-linux" then [ i3ipc ] else []);
             packages = [
                 zip
@@ -153,9 +154,14 @@
                 zed-editor
 
                 jujutsu
+<<<<<<< Updated upstream
                 nasm
             # sage
                 cvc5
+=======
+
+                (opencv.override(old: { enablePython = true; }))
+>>>>>>> Stashed changes
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

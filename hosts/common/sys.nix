@@ -54,6 +54,10 @@
                z3-solver
                gmpy2
                pygmt
+               cython
+               pycryptodome
+               pwntools
+               hypothesis
             ] ++ (if pkgs.system == "x86_64-linux" then [ i3ipc ] else []);
             packages = [
                 zip
@@ -64,7 +68,7 @@
 
                 # haskell
                 haskell-language-server
-                ghc
+                (ghc.withPackages (hs: with hs; [ QuickCheck ]))
                 ihaskell
 
                 # js
@@ -125,7 +129,7 @@
                 racket
 
                 typst
-                typst-lsp
+                tinymist
                 typst-live
 
                 nil
@@ -149,6 +153,9 @@
                 zed-editor
 
                 jujutsu
+                nasm
+            # sage
+                cvc5
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

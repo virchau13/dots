@@ -56,7 +56,7 @@ local settings = {
     pyright = {
         cmd = { 'npx', '--package=pyright', 'pyright-langserver', '--stdio' },
         before_init = function(_, config)
-            config.settings.python.pythonPath = get_python_path(config.root_dir)
+            config.settings.python.pythonPath = get_python_path(config.root_dir or vim.fn.getcwd())
         end,
     },
     rust_analyzer = {

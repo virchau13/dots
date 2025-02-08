@@ -31,9 +31,9 @@ in
                     passwordFile = "/run/secrets/backblaze/pw";
                     environmentFile = "/run/secrets/backblaze/env";
                     initialize = true;
+                    timerConfig = config.services.custom-backup.timerConfig;
                 };
             };
-            timerConfig = config.services.custom-backup.timerConfig;
         };
 
         sops.secrets = {

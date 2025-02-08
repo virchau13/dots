@@ -35,6 +35,14 @@
             steam = super.steam.override {
                 extraPkgs = p: with p; [ libkrb5 ];
             };
+            python3 = super.python3.override {
+                packageOverrides = py-self: py-super: {
+                    fontmake = py-super.fontmake.overridePythonAttrs(old: {
+                        # TODO remove
+                        doCheck = false;
+                    });
+                };
+            };
         })
     ];
 
@@ -137,7 +145,7 @@
                     {
                         publicKey = "ODEdIe46o4+tGe1biG2vCn+3wUk3pO5iFdvXDIGbGzo=";
                         allowedIPs = [ "10.200.200.0/24" ];
-                        endpoint = "wg.hexular.net:5298";
+                        endpoint = "almizan.aquila.n.hexular.net:5298";
                         persistentKeepalive = 25;
                     }
                 ];
@@ -291,14 +299,17 @@
         linuxPackages.v4l2loopback
         v4l-utils
         
-        wxmaxima
-        maxima
+        # wxmaxima
+        # maxima
 
         r2modman
 
         emacs29-pgtk
 
         android-tools
+
+        docker-compose
+        ghidra
     ];
 
     programs.gnupg.agent = {
@@ -312,7 +323,7 @@
     # Enable the OpenSSH daemon.
     services.openssh = {
         enable = true;
-        ports = [ 22 25565 22000 ];
+        ports = [ 22 22000 ];
     };
 
     programs.mosh.enable = true;

@@ -87,6 +87,7 @@
     bcc
     bpftrace
     kdePackages.kdenlive
+    lm_sensors
   ];
 
   programs.sway.enable = true;

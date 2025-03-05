@@ -80,13 +80,13 @@
     brightnessctl
     networkmanagerapplet
     spotify
-    kdenlive
     ghidra
     wireshark
     gdb
     gcc
     bcc
     bpftrace
+    kdePackages.kdenlive
   ];
 
   programs.sway.enable = true;

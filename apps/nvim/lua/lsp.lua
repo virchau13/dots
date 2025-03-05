@@ -146,6 +146,7 @@ local settings = {
     },
     racket_langserver = {
         -- cmd = {'bash', '-c', 'cd ~/prog/repos/racket-langserver; exec racket main.rkt'}
+        cmd = {'racket', '-l', 'racket-langserver'}
     },
     tinymist = {},
     -- this can take 6GB+ RAM, i don't have enough RAM for that

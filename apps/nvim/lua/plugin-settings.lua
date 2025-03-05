@@ -49,4 +49,4 @@ require('mini.files').setup()
 --     virtual_lines = false,
 -- })
 
-require('lsp-inlayhints').setup()
+-- require('lsp-inlayhints').setup()

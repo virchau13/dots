@@ -87,7 +87,7 @@ in {
             # profiler
             extra.profile-nvim
             # LSP inlay hints
-            extra.lsp-inlayhints-nvim
+            # extra.lsp-inlayhints-nvim
 
             # extra modes library
             hydra-nvim

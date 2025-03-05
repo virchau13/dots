@@ -6,6 +6,8 @@ autoload -Uz colors && colors
 autoload -Uz compinit && compinit
 autoload -Uz bashcompinit && bashcompinit
 
+source <(fzf --zsh)
+
 setopt interactive_comments
 
 export HISTSIZE=500000

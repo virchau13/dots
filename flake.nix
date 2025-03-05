@@ -81,7 +81,7 @@
             specialArgs = { inputs = inputs; };
             modules = [
                 sops-nix.nixosModules.sops
-                home-manager.nixosModule
+                home-manager.nixosModules.home-manager
                 ./hosts/hexagon/sys.nix
                 ./hosts/common/sys.nix
             ];
@@ -92,7 +92,7 @@
             specialArgs = { inputs = inputs; };
             modules = [
                 sops-nix.nixosModules.sops
-                home-manager.nixosModule
+                home-manager.nixosModules.home-manager
                 ./hosts/hexgoer/sys.nix
                 ./hosts/common/sys.nix
             ];

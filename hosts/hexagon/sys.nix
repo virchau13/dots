@@ -74,7 +74,8 @@
     # Without this my CPU defaults to 1.4GHz frequency when it should be running at 3.7GHz.
     powerManagement.cpuFreqGovernor = "performance";
 
-    boot = let kernelPackages = pkgs.linuxKernel.packages.linux_xanmod; in {
+    # NOTE: change when rtl8192eu gets fixed for later kernel versions
+    boot = let kernelPackages = pkgs.linuxKernel.packages.linux_6_6; in {
         inherit kernelPackages;
         # Use the systemd-boot EFI boot loader.
         loader.systemd-boot = {
@@ -263,7 +264,7 @@
         xcolor
         adwaita-icon-theme
         xclip
-        breeze-icons
+        kdePackages.breeze-icons
         inkscape
         cargo-flamegraph
         gthumb
@@ -289,7 +290,6 @@
         framesh
         gamescope # for steam
         gamemode
-        kdenlive
 
         ckan
 
@@ -304,7 +304,7 @@
 
         r2modman
 
-        emacs29-pgtk
+        emacs
 
         android-tools
 

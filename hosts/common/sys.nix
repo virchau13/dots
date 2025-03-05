@@ -59,6 +59,7 @@
                 pwntools
                 hypothesis
                 opencv
+                cryptography
             ] ++ (if pkgs.system == "x86_64-linux" then [ i3ipc ] else []);
             packages = [
                 zip
@@ -69,7 +70,7 @@
 
                 # haskell
                 haskell-language-server
-                (ghc.withPackages (hs: with hs; [ QuickCheck ]))
+                (ghc.withPackages (hs: with hs; [ QuickCheck sdl2 ]))
                 ihaskell
 
                 # js
@@ -154,14 +155,12 @@
                 zed-editor
 
                 jujutsu
-<<<<<<< Updated upstream
                 nasm
             # sage
                 cvc5
-=======
 
-                (opencv.override(old: { enablePython = true; }))
->>>>>>> Stashed changes
+                valgrind
+                fzf
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

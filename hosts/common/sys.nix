@@ -60,6 +60,7 @@
                 hypothesis
                 opencv
                 cryptography
+                pytest
             ] ++ (if pkgs.system == "x86_64-linux" then [ i3ipc ] else []);
             packages = [
                 zip
@@ -161,6 +162,7 @@
 
                 valgrind
                 fzf
+                ghostty
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

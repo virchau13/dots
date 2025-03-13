@@ -136,6 +136,16 @@ in {
         };
     };
 
+    programs.ghostty = {
+        enable = true;
+        enableZshIntegration = true;
+        settings = {
+            font-size = 10;
+            font-feature = "-calt";
+            theme = "Dark Pastel";
+        };
+    };
+
     # This value determines the Home Manager release that your
     # configuration is compatible with. This helps avoid breakage
     # when a new Home Manager release introduces backwards

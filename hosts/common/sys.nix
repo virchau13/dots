@@ -71,7 +71,7 @@
 
                 # haskell
                 haskell-language-server
-                (ghc.withPackages (hs: with hs; [ QuickCheck sdl2 ]))
+                (ghc.withPackages (hs: with hs; [ QuickCheck sdl2 digits ]))
                 ihaskell
 
                 # js
@@ -162,7 +162,8 @@
 
                 valgrind
                 fzf
-                ghostty
+                swi-prolog
+                frink
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

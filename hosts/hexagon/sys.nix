@@ -310,6 +310,8 @@
 
         docker-compose
         ghidra
+
+        spotify
     ];
 
     programs.gnupg.agent = {

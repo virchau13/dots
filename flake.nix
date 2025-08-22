@@ -3,6 +3,7 @@
 
     inputs = {
         nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
+        nixpkgs-pymupdf.url = github:NixOS/nixpkgs/staging-next;
         darwin = {
             url = "github:lnl7/nix-darwin/master";
             inputs.nixpkgs.follows = "nixpkgs";
@@ -21,10 +22,6 @@
         };
         flake-utils.url = github:numtide/flake-utils;
         nix-gaming.url = github:fufexan/nix-gaming;
-        hyprland = {
-            url = github:hyprwm/Hyprland/v0.35.0;
-            inputs.nixpkgs.follows = "nixpkgs";
-        };
 
         # nvim plugins
         parinfer-rust = {

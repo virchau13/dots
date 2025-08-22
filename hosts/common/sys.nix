@@ -27,7 +27,41 @@
         nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     };
     
-    environment.systemPackages = with pkgs; let 
+    environment.systemPackages = let 
+            pythonPackageOverrides = self: super: {
+                torch = super.torch.override { 
+                    # triton = super.triton-no-cuda;
+                    rocmSupport = true;
+                    cudaSupport = false; 
+                };
+                #torch = super.torch-bin.overridePythonAttrs(old: {
+                #    src = pkgs.fetchurl {
+                #        name = "torch-2.7.1+rocm6.3-cp312-cp312-manylinux_2_28_x86_64.whl";
+                #        url = "https://download.pytorch.org/whl/rocm6.3/torch-2.7.1%2Brocm6.3-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=b0c10342f64a34998ae8d5084aa1beae7e11defa46a4e05fe9aa6f09ffb0db37";
+                #        hash = "";
+                #    }; 
+                #    passthru = old.passthru // {
+                #        cudaSupport = false;
+                #        rocmSupport = true;
+                #    };
+                #});
+                #torchvision = super.torchvision-bin.overridePythonAttrs(old: {
+                #    buildInputs = old.buildInputs ++ (with pkgs; [
+                #        rocmPackages.clr
+                #        hip
+                #    ]);
+                #    src = pkgs.fetchurl {
+                #        name = "torchvision-0.22.1+rocm6.3-cp312-cp312-manylinux_2_28_x86_64.whl";
+                #        url = "https://download.pytorch.org/whl/rocm6.3/torchvision-0.22.1%2Brocm6.3-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=0dce205fb04d9eb2f6feb74faf17cba9180aff70a8c8ac084912ce41b2dc0ab7";
+                #        hash = "sha256-Dc4gX7BNnrL2/rdPrxfLqRgK/3CoyKwISRLOQbLcCrc=";
+                #    };
+                #});
+                pymupdf = (pkgs.python3.pkgs.callPackage ../../apps/pymupdf-fix/package.nix {
+                    mupdf = inputs.nixpkgs-pymupdf.legacyPackages.x86_64-linux.mupdf;
+                });
+                mahotas = super.mahotas.overridePythonAttrs { doCheck = false; };
+            };
+            pythonCustom = pkgs.python3.override { packageOverrides = pythonPackageOverrides; self = pythonCustom; };
             pythonPackages = pypkgs: with pypkgs; [
                 ipython
                 jupyter
@@ -50,7 +84,6 @@
                 graphviz
                 bcc
                 transformers
-                pytorch
                 z3-solver
                 gmpy2
                 pygmt
@@ -58,20 +91,66 @@
                 pycryptodome
                 pwntools
                 hypothesis
-                opencv
+                networkx
+                opencv4
                 cryptography
                 pytest
+                matplotlib
+                scikit-learn
+                scikit-image
+                torch
+                torchvision
+                kornia
+                transformers
+                thefuzz
+                easyocr
+                seaborn
+                dtw-python
+                ratelimit
+                backoff
+                ftfy
+                pdfplumber
+                flask-cors
+                shapely
+                onnx
+                paddlepaddle
+                paddleocr
+                paddlex
+                # paddlex[ocr]
+                einops imagesize jinja2 lxml openpyxl pyclipper pypdfium2 regex tiktoken tokenizers
+                watchfiles
+                pyqt6
+                boto3
+                ultralytics
+                tifffile
+                pooch
+                rich
+                qdrant-client
+                pympler
+                mlflow
+                onnxruntime
+                mahotas
+                guppy3
+                rq
+                redis
+                selenium
+                stripe
+                flask-socketio
+                pymongo
+                flask-mail
+                galois
+                elasticsearch
             ] ++ (if pkgs.system == "x86_64-linux" then [ i3ipc ] else []);
-            packages = [
+            packages = with pkgs; [
                 zip
-                (python3.withPackages pythonPackages)
+                (pythonCustom.withPackages pythonPackages)
 
                 # lua
                 lua
 
                 # haskell
                 haskell-language-server
-                (ghc.withPackages (hs: with hs; [ QuickCheck sdl2 digits ]))
+                (ghc.withPackages (hs: with hs; [ QuickCheck sdl2 digits tardis ]))
                 ihaskell
 
                 # js
@@ -164,6 +243,13 @@
                 fzf
                 swi-prolog
                 frink
+                ccache
+                qdrant
+                httpie
+                chromedriver
+                neovim-remote
+                sage
+                socat
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

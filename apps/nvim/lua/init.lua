@@ -18,7 +18,7 @@ return function(deps_)
         colors = {
             black = '#181b20'
         },
-        themes = function(colors)
+        highlights = function(colors)
             return {
                 Normal = { bg = colors.black }
             }

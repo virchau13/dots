@@ -12,9 +12,10 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 # Fix krita and other Egl-using apps
 export LD_LIBRARY_PATH=/run/opengl-driver/lib
 # For xdg-desktop-portal
-export XDG_CURRENT_DESKTOP=qtile
+#export XDG_CURRENT_DESKTOP=qtile
 export XDG_SESSION_TYPE=wayland
 export MOZ_ENABLE_WAYLAND=1
 
-# sway!
-sway "$@" &>/tmp/sway-seat.log
+#sway "$@" &>/tmp/sway-seat.log
+# hyprland!
+hyprland "$@" &>/tmp/hyprland-seat.log

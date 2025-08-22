@@ -44,6 +44,13 @@
                 };
             };
         })
+        # (final: prev: { # Overlay to disable buildDocs for rocdbgapi
+        #     # TODO remove when possible
+        #     rocmPackages = prev.rocmPackages.overrideScope (rocmFinal: rocmPrev: {
+        #       rocdbgapi = rocmPrev.rocdbgapi.override { buildDocs = false; };
+        #     });
+        # })
+     # ...
     ];
 
     sops = {
@@ -193,6 +200,7 @@
 
     services.netdata = {
         enable = true;
+        package = pkgs.netdata.override { withCloudUi = true; };
         config = {
             "health" = {
                 "enabled alarms" = 
@@ -312,6 +320,19 @@
         ghidra
 
         spotify
+
+        rocmPackages.rocm-runtime
+        rocmPackages.rocm-smi
+        rocmPackages.clr
+        pciutils
+
+        obsidian
+        hyprlock
+        waybar
+        poppler-utils
+        entr
+
+        mangohud
     ];
 
     programs.gnupg.agent = {
@@ -445,6 +466,26 @@
     ];
 
     services.custom-backup = {
+        enable = true;
+    };
+
+    hardware.bluetooth = {
+        enable = true;
+        powerOnBoot = true;
+    };
+    services.blueman.enable = true;
+
+    services.redis.servers.testing = {
+        enable = true;
+        port = 6379;
+        bind = "127.0.0.1";
+    };
+
+    services.mongodb = {
+        enable = true;
+    };
+
+    services.elasticsearch = {
         enable = true;
     };
 

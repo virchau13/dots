@@ -142,7 +142,7 @@ local settings = {
     terraformls = {},
     nil_ls = {},
     java_language_server = {
-        cmd = {'/nix/store/klca0c3i4ad3jvd2ymv743nw2fs9zd4l-java-language-server-0.2.46/bin/java-language-server'}
+        cmd = {'java-language-server'}
     },
     racket_langserver = {
         -- cmd = {'bash', '-c', 'cd ~/prog/repos/racket-langserver; exec racket main.rkt'}

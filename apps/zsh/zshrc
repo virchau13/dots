@@ -40,6 +40,7 @@ alias rs-fmt='cargo fmt'
 alias ll='ls -lah'
 alias pbimgview='pbimgpaste | feh -'
 alias gs='git status'
+alias swapd='pushd;' # empty pushd means swap top two
 
 setopt HIST_IGNORE_SPACE
 

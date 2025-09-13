@@ -62,7 +62,7 @@ local settings = {
     rust_analyzer = {
         settings = {
             ["rust-analyzer"] = {
-                cargo = {loadOutDirsFromCheck = true, features = 'full'},
+                -- cargo = {loadOutDirsFromCheck = true, features = 'full'},
                 procMacro = {enable = true},
                 expressionAdjustmentHints = { enable = true },
                 lifetimeElisionHints = { enable = true },

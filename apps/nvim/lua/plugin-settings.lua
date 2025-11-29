@@ -2,7 +2,8 @@ require 'util'
 
 require('lualine').setup {
     options = {
-        theme = 'one_monokai'
+        -- theme = 'one_monokai'
+        theme = 'auto' -- dynamic based on colorscheme
     }
 }
 

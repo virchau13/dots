@@ -26,47 +26,20 @@
         # to get nix-index to use flakes
         nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     };
+
+    nixpkgs.config.permittedInsecurePackages = [
+        "python3.13-ecdsa-0.19.1" # Only used for playground/CTF solving
+    ];
     
     environment.systemPackages = let 
             pythonPackageOverrides = self: super: {
-                torch = super.torch.override { 
-                    # triton = super.triton-no-cuda;
-                    rocmSupport = true;
-                    cudaSupport = false; 
-                };
-                #torch = super.torch-bin.overridePythonAttrs(old: {
-                #    src = pkgs.fetchurl {
-                #        name = "torch-2.7.1+rocm6.3-cp312-cp312-manylinux_2_28_x86_64.whl";
-                #        url = "https://download.pytorch.org/whl/rocm6.3/torch-2.7.1%2Brocm6.3-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=b0c10342f64a34998ae8d5084aa1beae7e11defa46a4e05fe9aa6f09ffb0db37";
-                #        hash = "";
-                #    }; 
-                #    passthru = old.passthru // {
-                #        cudaSupport = false;
-                #        rocmSupport = true;
-                #    };
-                #});
-                #torchvision = super.torchvision-bin.overridePythonAttrs(old: {
-                #    buildInputs = old.buildInputs ++ (with pkgs; [
-                #        rocmPackages.clr
-                #        hip
-                #    ]);
-                #    src = pkgs.fetchurl {
-                #        name = "torchvision-0.22.1+rocm6.3-cp312-cp312-manylinux_2_28_x86_64.whl";
-                #        url = "https://download.pytorch.org/whl/rocm6.3/torchvision-0.22.1%2Brocm6.3-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=0dce205fb04d9eb2f6feb74faf17cba9180aff70a8c8ac084912ce41b2dc0ab7";
-                #        hash = "sha256-Dc4gX7BNnrL2/rdPrxfLqRgK/3CoyKwISRLOQbLcCrc=";
-                #    };
-                #});
-                pymupdf = (pkgs.python3.pkgs.callPackage ../../apps/pymupdf-fix/package.nix {
-                    mupdf = inputs.nixpkgs-pymupdf.legacyPackages.x86_64-linux.mupdf;
-                });
-                mahotas = super.mahotas.overridePythonAttrs { doCheck = false; };
+                #mahotas = super.mahotas.overridePythonAttrs { doCheck = false; };
             };
             pythonCustom = pkgs.python3.override { packageOverrides = pythonPackageOverrides; self = pythonCustom; };
             pythonPackages = pypkgs: with pypkgs; [
                 ipython
                 jupyter
                 python-lsp-server
-                z3
                 fonttools
                 black # formatter
                 pylsp-mypy
@@ -98,26 +71,24 @@
                 matplotlib
                 scikit-learn
                 scikit-image
-                torch
-                torchvision
-                kornia
-                transformers
-                thefuzz
-                easyocr
-                seaborn
-                dtw-python
-                ratelimit
-                backoff
-                ftfy
-                pdfplumber
-                flask-cors
-                shapely
-                onnx
-                paddlepaddle
-                paddleocr
-                paddlex
-                # paddlex[ocr]
-                einops imagesize jinja2 lxml openpyxl pyclipper pypdfium2 regex tiktoken tokenizers
+#                kornia
+#                transformers
+#                thefuzz
+#                easyocr
+#                seaborn
+#                dtw-python
+#                ratelimit
+#                backoff
+#                ftfy
+#                pdfplumber
+#                flask-cors
+#                shapely
+#                onnx
+#                paddlepaddle
+#                paddleocr
+#                paddlex
+#                # paddlex[ocr]
+#                einops imagesize jinja2 lxml openpyxl pyclipper pypdfium2 regex tiktoken tokenizers
                 watchfiles
                 pyqt6
                 boto3
@@ -127,10 +98,6 @@
                 rich
                 qdrant-client
                 pympler
-                mlflow
-                onnxruntime
-                mahotas
-                guppy3
                 rq
                 redis
                 selenium
@@ -140,6 +107,10 @@
                 flask-mail
                 galois
                 elasticsearch
+                flask-cors
+                ecdsa
+                tree-sitter
+                tree-sitter-grammars.tree-sitter-cpp
             ] ++ (if pkgs.system == "x86_64-linux" then [ i3ipc ] else []);
             packages = with pkgs; [
                 zip
@@ -250,6 +221,13 @@
                 neovim-remote
                 sage
                 socat
+                ghostty
+                feh
+                clang
+                jetbrains.idea-community-src
+                google-chrome
+                llvmPackages.libllvm
+                anki
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

@@ -2,7 +2,8 @@
 <!DOCTYPE fontconfig SYSTEM 'fonts.dtd' [
     <!-- Macro to avoid having to define my monospace font in multiple places -->
     <!-- <!ENTITY hexmono "JetBrains Mono NerdFont"> -->
-    <!ENTITY hexmono "NotoSansM Nerd Font Mono">
+    <!-- <!ENTITY hexmono "NotoSansM Nerd Font Mono"> -->
+    <!ENTITY hexmono "GeistMono Nerd Font Mono">
 ]>
 
 <fontconfig>
@@ -12,18 +13,27 @@
             <family>&hexmono;</family>
         </prefer>
     </alias>
-    <alias>
-        <!-- GitHub is nice and uses `ui-monospace` as its default code font.
-            So override it, of course! -->
+    <!-- <alias>
+        /* GitHub is nice and uses `ui-monospace` as its default code font.
+            So override it, of course! */
         <family>ui-monospace</family>
         <prefer>
             <family>&hexmono;</family>
         </prefer>
-    </alias>
+    </alias> -->
     <match target="font">
         <!-- come on, why does this have "fi" ligatures?! -->
         <test name="family" compare="eq" ignore-blanks="true">
             <string>NotoSansM Nerd Font Mono</string>
+        </test>
+        <edit name="fontfeatures" mode="append">
+            <string>liga off</string>
+            <string>dlig off</string>
+        </edit>
+    </match>
+    <match target="font">
+        <test name="family" compare="eq" ignore-blanks="true">
+            <string>GeistMono Nerd Font Mono</string>
         </test>
         <edit name="fontfeatures" mode="append">
             <string>liga off</string>

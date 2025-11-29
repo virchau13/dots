@@ -44,8 +44,12 @@
             url = github:joeytwiddle/sexy_scroller.vim;
             flake = false;
         };
+        # nvim-colorscheme = {
+        #     url = github:cpea2506/one_monokai.nvim;
+        #     flake = false;
+        # };
         nvim-colorscheme = {
-            url = github:cpea2506/one_monokai.nvim;
+            url = github:scottmckendry/cyberdream.nvim;
             flake = false;
         };
         architext-nvim = {

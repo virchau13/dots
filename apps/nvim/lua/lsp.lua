@@ -20,7 +20,9 @@ end
 --     })
 -- })
 
-local clangd_cmd = { 'clangd' }
+-- TODO replace
+-- local clangd_cmd = { 'clangd' }
+local clangd_cmd = { '/nix/store/bx82p30rpg1nf54zs0gk7vqdg7bs7kb3-clang-tools-19.1.7/bin/clangd' }
 -- detect custom $CC/$CXX and add that, so clangd doesn't error in a devshell
 if vim.env.CC ~= nil or vim.env.CXX ~= nil then
     local path = vim.fn.exepath(vim.env.CC or vim.env.CXX)
@@ -88,9 +90,9 @@ local settings = {
     },
     bashls = {},
     html = {},
-    haxe_language_server = {
-        cmd = {'node', '~/prog/repos/haxe-language-server/bin/server.js'}
-    },
+    -- haxe_language_server = {
+    --     cmd = {'node', '~/prog/repos/haxe-language-server/bin/server.js'}
+    -- },
     lua_ls = {
         cmd = {"lua-language-server"},
         settings = {
@@ -149,19 +151,23 @@ local settings = {
         cmd = {'racket', '-l', 'racket-langserver'}
     },
     tinymist = {},
+    csharp_ls = {},
     -- this can take 6GB+ RAM, i don't have enough RAM for that
     -- kotlin_language_server = {},
 }
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local nvim_lsp = require('lspconfig')
+-- deprecated: local nvim_lsp = require('lspconfig')
+local nvim_lsp = vim.lsp.config
 for server, config in pairs(settings) do
     local setup_obj = {
         on_attach = on_attach,
         capabilities = capabilities
     }
     merge(setup_obj, config)
-    nvim_lsp[server].setup(setup_obj)
+    -- deprecated: nvim_lsp[server].setup(setup_obj)
+    vim.lsp.config(server, setup_obj)
+    vim.lsp.enable(server)
 end
 
 vim.g.coq_settings = {

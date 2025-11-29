@@ -14,14 +14,15 @@ return function(deps_)
     require 'lsp'
     require 'hydra-modes'
 
-    require('one_monokai').setup {
-        colors = {
-            black = '#181b20'
-        },
-        highlights = function(colors)
-            return {
-                Normal = { bg = colors.black }
-            }
-        end
-    }
+    -- require('one_monokai').setup {
+    --     colors = {
+    --         black = '#181b20'
+    --     },
+    --     highlights = function(colors)
+    --         return {
+    --             Normal = { bg = colors.black }
+    --         }
+    --     end
+    -- }
+    vim.cmd("colorscheme cyberdream")
 end

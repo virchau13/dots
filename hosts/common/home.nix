@@ -59,10 +59,10 @@ in {
       wofi
       (vesktop.overrideAttrs(old: {
         preBuild = ''
-          rm -r static/shiggy.gif
+          rm -r static/splash.webp
         '';
       }))
-      pinentry.tty
+      pinentry-curses
     ];
 
     programs.alacritty = {
@@ -75,7 +75,7 @@ in {
 
     services.gpg-agent = {
         enable = true;
-        pinentryPackage = pkgs.pinentry.tty;
+        pinentryPackage = pkgs.pinentry-curses;
     };
 
     programs.tmux = {
@@ -134,6 +134,16 @@ in {
 
             };
         };
+    };
+
+    dconf.settings = {
+        "org/gnome/desktop/interface" = {
+            font-antialiasing = "rgba";
+        };
+    };
+
+    xresources.properties = {
+        "Xft.rgba" = "rgb";
     };
 
     # This value determines the Home Manager release that your

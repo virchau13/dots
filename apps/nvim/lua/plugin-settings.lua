@@ -51,3 +51,6 @@ require('mini.files').setup()
 -- })
 
 -- require('lsp-inlayhints').setup()
+
+
+require('typst-preview').setup()

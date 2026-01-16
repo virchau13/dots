@@ -4,7 +4,7 @@ require 'completion'
 -- Load in custom language server configs for those that don't exist in nvim-lspconfig.
 require 'lsp-custom'
 
-local on_attach = require 'lsp-on-attach'
+local on_attach_maker = require 'lsp-on-attach'
 
 local has_words_before = function()
   local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
@@ -150,7 +150,17 @@ local settings = {
         -- cmd = {'bash', '-c', 'cd ~/prog/repos/racket-langserver; exec racket main.rkt'}
         cmd = {'racket', '-l', 'racket-langserver'}
     },
-    tinymist = {},
+    tinymist = {
+        settings = {
+            tinymist = {
+                preview = {
+                    background = {
+                        enabled = true,
+                    },
+                },
+            }
+        }
+    },
     csharp_ls = {},
     -- this can take 6GB+ RAM, i don't have enough RAM for that
     -- kotlin_language_server = {},
@@ -161,13 +171,18 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local nvim_lsp = vim.lsp.config
 for server, config in pairs(settings) do
     local setup_obj = {
-        on_attach = on_attach,
+        on_attach = on_attach_maker(config),
         capabilities = capabilities
     }
     merge(setup_obj, config)
     -- deprecated: nvim_lsp[server].setup(setup_obj)
     vim.lsp.config(server, setup_obj)
     vim.lsp.enable(server)
+end
+
+if vim.env["LSPDBG"] then
+    print("LSP debug enabled")
+    vim.lsp.set_log_level('debug')
 end
 
 vim.g.coq_settings = {

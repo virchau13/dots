@@ -104,6 +104,8 @@ in {
             # collection of plugins, currently used:
             # `mini.files`: better file manipulation on-the-fly
             mini-nvim
+            # enable tinymist to live preview files on type
+            typst-preview-nvim
         ];
         extraConfig = ''
             lua require('init') { typescript = "${pkgs.nodePackages.typescript}", powershellEditorServices = "${powershellLangBundle}", --[[ dotnet = "{pkgs.dotnetCorePackages.sdk_7_0}", ]] openjdk8 = "${pkgs.openjdk8}" }

@@ -120,8 +120,7 @@
                 lua
 
                 # haskell
-                haskell-language-server
-                (ghc.withPackages (hs: with hs; [ QuickCheck sdl2 digits tardis ]))
+                (haskell.packages.ghc912.ghcWithPackages (hs: with hs; [ QuickCheck digits tardis haskell-language-server megaparsec ]))
                 ihaskell
 
                 # js
@@ -228,6 +227,7 @@
                 google-chrome
                 llvmPackages.libllvm
                 anki
+                usbutils
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools

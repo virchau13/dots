@@ -152,12 +152,24 @@
     timer.enable = true;
   };
 
+  services.udev = {
+    extraHwdb = ''
+      mouse:usb:v0461p4d81:*
+        MOUSE_DPI=800@131
+    '';
+  };
+
   programs.steam.enable = true;
 
   hardware.bluetooth.enable = true;
 
   virtualisation.docker = {
       enable = true;
+  };
+
+  services.syncthing = {
+    enable = true;
+    openDefaultPorts = true;
   };
 
   home-manager.extraSpecialArgs = let

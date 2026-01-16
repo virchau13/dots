@@ -1,9 +1,10 @@
 <?xml version='1.0'?>
 <!DOCTYPE fontconfig SYSTEM 'fonts.dtd' [
     <!-- Macro to avoid having to define my monospace font in multiple places -->
-    <!-- <!ENTITY hexmono "JetBrains Mono NerdFont"> -->
+    <!ENTITY hexmono "JetBrains Mono NerdFont">
     <!-- <!ENTITY hexmono "NotoSansM Nerd Font Mono"> -->
-    <!ENTITY hexmono "GeistMono Nerd Font Mono">
+    <!-- <!ENTITY hexmono "GeistMono Nerd Font Mono"> -->
+    <!-- <!ENTITY hexmono "BigBlueTermPlus Nerd Font Mono"> -->
 ]>
 
 <fontconfig>

@@ -123,7 +123,6 @@
     brightnessctl
     networkmanagerapplet
     spotify
-    ghidra
     wireshark
     gdb
     gcc

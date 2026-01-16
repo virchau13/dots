@@ -23,6 +23,7 @@ in {
             corefonts
             vista-fonts
             fira-math
+            stix-two
             # (input-fonts.overrideAttrs(old: {
             #     pname = "input-fonts-nerd-font";
             #     version = input-fonts.version;

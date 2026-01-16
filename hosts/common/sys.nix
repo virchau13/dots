@@ -33,7 +33,6 @@
     
     environment.systemPackages = let 
             pythonPackageOverrides = self: super: {
-                #mahotas = super.mahotas.overridePythonAttrs { doCheck = false; };
             };
             pythonCustom = pkgs.python3.override { packageOverrides = pythonPackageOverrides; self = pythonCustom; };
             pythonPackages = pypkgs: with pypkgs; [
@@ -119,8 +118,9 @@
                 # lua
                 lua
 
-                # haskell
-                (haskell.packages.ghc912.ghcWithPackages (hs: with hs; [ QuickCheck digits tardis haskell-language-server megaparsec ]))
+                # haskell (TODO switch to latest GHC version)
+                # https://github.com/haskell/haskell-language-server/issues/4674
+                (haskell.packages.ghc9122.ghcWithPackages (hs: with hs; [ QuickCheck digits tardis haskell-language-server megaparsec ]))
                 ihaskell
 
                 # js
@@ -214,7 +214,6 @@
                 swi-prolog
                 frink
                 ccache
-                qdrant
                 httpie
                 chromedriver
                 neovim-remote
@@ -228,6 +227,11 @@
                 llvmPackages.libllvm
                 anki
                 usbutils
+                ncdu
+                restic
+                discord
+                zed-editor
+                ghidra-bin
             ];
             nodePackages = with pkgs.nodePackages; [
                 # firebase-tools
@@ -237,7 +241,7 @@
                 # language servers
                 bash-language-server
                 typescript-language-server
-                dockerfile-language-server-nodejs
+                # dockerfile-language-server
                 svelte-language-server
                 vscode-langservers-extracted
             ];

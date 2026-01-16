@@ -153,27 +153,29 @@
                     {
                         publicKey = "ODEdIe46o4+tGe1biG2vCn+3wUk3pO5iFdvXDIGbGzo=";
                         allowedIPs = [ "10.200.200.0/24" ];
+                        # allowedIPs = [ "0.0.0.0/24" ];
                         endpoint = "almizan.aquila.n.hexular.net:5298";
-                        persistentKeepalive = 25;
+                        persistentKeepalive = 45;
                     }
                 ];
             };
         };
     };
 
-    # networking.wireless = {
-    #     enable = true;
-    #     environmentFile = "/run/secrets/wifi/env";
-    #     networks = {
-    #         "SHLNA 2.4" = {
-    #             psk = "@PASSWD@";
-    #             # for some reason this is the only one that works reliably
-    #             # extraConfig = ''
-    #             #     freq_list=2462
-    #             # '';
-    #         };
-    #     };
-    # };
+    networking.wireless = {
+        enable = true;
+        secretsFile = "/run/secrets/wifi/env";
+        userControlled.enable = true;
+        networks = {
+            "Elora-House" = {
+                pskRaw = "ext:PASSWD";
+                # for some reason this is the only one that works reliably
+                # extraConfig = ''
+                #     freq_list=2462
+                # '';
+            };
+        };
+    };
 
     # Select internationalisation properties.
     i18n.defaultLocale = "en_US.UTF-8";
@@ -227,9 +229,6 @@
         enable = true;
     };
 
-    # For Corsair keyboard control.
-    hardware.ckb-next.enable = true;
-
     users.users.hexular = {
         isNormalUser = true;
         extraGroups = [
@@ -261,7 +260,7 @@
         gdb
         zsh
         p7zip
-        glxinfo
+        mesa-demos
         wl-clipboard
         alsa-utils
         htop
@@ -317,8 +316,6 @@
         android-tools
 
         docker-compose
-        ghidra
-
         spotify
 
         rocmPackages.rocm-runtime
@@ -479,14 +476,6 @@
         enable = true;
         port = 6379;
         bind = "127.0.0.1";
-    };
-
-    services.mongodb = {
-        enable = true;
-    };
-
-    services.elasticsearch = {
-        enable = true;
     };
 
     # This value determines the NixOS release from which the default

@@ -3,7 +3,6 @@
 
     inputs = {
         nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
-        nixpkgs-pymupdf.url = github:NixOS/nixpkgs/staging-next;
         darwin = {
             url = "github:lnl7/nix-darwin/master";
             inputs.nixpkgs.follows = "nixpkgs";

@@ -22,7 +22,7 @@ end
 
 -- TODO replace
 -- local clangd_cmd = { 'clangd' }
-local clangd_cmd = { '/nix/store/bx82p30rpg1nf54zs0gk7vqdg7bs7kb3-clang-tools-19.1.7/bin/clangd' }
+local clangd_cmd = { '/nix/store/0bmw5wnwf9zc8wdwyd20mg470ki46dgh-clang-tools-19.1.7/bin/clangd' }
 -- detect custom $CC/$CXX and add that, so clangd doesn't error in a devshell
 if vim.env.CC ~= nil or vim.env.CXX ~= nil then
     local path = vim.fn.exepath(vim.env.CC or vim.env.CXX)

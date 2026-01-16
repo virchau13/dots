@@ -76,12 +76,12 @@ in {
             # i really hate the fact i have to install this >:(
             { 
                 plugin = vim-polyglot;
-                # vim-polyglot sets tabstop/shiftwidth to 2 unless set otherwise
+                # vim-polyglot sets tabstop/shiftwidth to 2 unless set otherwise (autoindent)
                 # and the nix plugin included also sets it to 2 so like don't thanks
                 # ftdetect breaks filetype.lua so disable it
                 config = ''
                     set ts=4 sw=4
-                    let g:polyglot_disabled = ['nix', 'ftdetect']
+                    let g:polyglot_disabled = ['nix', 'ftdetect', 'autoindent']
                 '';
             }
             # profiler

@@ -32,21 +32,25 @@ in {
 
     programs.git = {
         enable = true;
-        delta = {
-            enable = true;
-            options = {
-                line-numbers = true;
-                side-by-side = true;
-                wrap-max-lines = "unlimited";
-            };
+        settings = {
+            user.email = "virchau13@hexular.net";
+            user.name = "Vir Chaudhury";
+            http.cookiefile = "/home/hexular/.gitcookies";
         };
-        userName = "Vir Chaudhury";
-        userEmail = "virchau13@hexular.net";
         signing = {
             signByDefault = false; # burned too many times
             key = "AA1BA03FFF02700DFD836BD325B242ED74B61B15";
         };
-        extraConfig.http.cookiefile = "/home/hexular/.gitcookies";
+    };
+
+    programs.delta = {
+        enable = true;
+        enableGitIntegration = true;
+        options = {
+            line-numbers = true;
+            side-by-side = true;
+            wrap-max-lines = "unlimited";
+        };
     };
 
     home.packages = with pkgs; [
@@ -57,11 +61,6 @@ in {
       easyeffects
       mpv
       wofi
-      (vesktop.overrideAttrs(old: {
-        preBuild = ''
-          rm -r static/splash.webp
-        '';
-      }))
       pinentry-curses
     ];
 

@@ -71,7 +71,7 @@ in stdenv.mkDerivation rec {
     description = "Drivers for the XP-PEN drawing tablets";
     platforms = [ "x86_64-linux" ];
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-    maintainers = with maintainers; [ virchau13 ivar sochotnicky ];
+    maintainers = with maintainers; [ virchau13 sochotnicky ];
     license = licenses.unfree;
   };
 }

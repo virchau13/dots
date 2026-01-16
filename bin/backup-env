@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+export $(sudo cat /run/secrets/backblaze/env | xargs)
+export RESTIC_PASSWORD=$(sudo cat /run/secrets/backblaze/pw)
+exec $SHELL

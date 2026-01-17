@@ -222,7 +222,7 @@
                 ghostty
                 feh
                 clang
-                jetbrains.idea-community-src
+                # jetbrains.idea-oss
                 google-chrome
                 llvmPackages.libllvm
                 anki

@@ -284,7 +284,7 @@
         (pkgs.callPackage ../../apps/xp-pen {})
         yubikey-personalization
         ungoogled-chromium
-        inputs.nix-gaming.packages.${pkgs.system}.wine-ge
+        inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.wine-ge
         # i know right?
         omnisharp-roslyn
         pipx

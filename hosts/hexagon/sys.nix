@@ -330,6 +330,7 @@
         entr
 
         mangohud
+        hyprshot
     ];
 
     programs.gnupg.agent = {
@@ -471,6 +472,8 @@
         powerOnBoot = true;
     };
     services.blueman.enable = true;
+
+    services.flatpak.enable = true;
 
     services.redis.servers.testing = {
         enable = true;

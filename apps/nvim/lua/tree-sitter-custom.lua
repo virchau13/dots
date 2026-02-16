@@ -4,6 +4,7 @@
 -- parser_config.astro.install_info.url = "~/prog/repos/tree-sitter-astro"
 
 local lang = vim.treesitter.language
+--[[
 vim.treesitter.language.add(
   "astro",
   {
@@ -45,7 +46,7 @@ vtquery.set("astro", "injections", [[
   (#eq? @_lang_attr "lang")
   (#eq? @_lang_value "scss")
   (#set! injection.language "scss"))
-]])
+]] --[[)
 
 vtquery.set("astro", "highlights", [[
 (tag_name) @tag
@@ -173,4 +174,4 @@ vtquery.set("astro", "highlights", [[
 ((erroneous_end_tag
   (erroneous_end_tag_name) @type)
   (#lua-match? @type "^[A-Z]"))
-]])
+]] -- )

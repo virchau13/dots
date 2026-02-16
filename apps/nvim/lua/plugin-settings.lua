@@ -39,13 +39,17 @@ if not os.getenv('NVIM_DISABLE_TS') then
     ts.setup()
     vim.api.nvim_create_autocmd('FileType', {
         pattern = ts.get_available(),
-        callback = function(event) 
+        callback = function(event)
             if vim.api.nvim_buf_line_count(event.buf) < 20000 then
-                vim.treesitter.start()
-                vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                local filetype = vim.bo[event.buf].filetype
+                local language = vim.treesitter.language.get_lang(filetype)
+                if language and vim.treesitter.language.add(language) then
+                    -- vim.treesitter.start()
+                    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 
-                -- additional_vim_syntax_highlighting = true
-                vim.bo[event.buf].syntax = "ON"
+                    -- additional_vim_syntax_highlighting = true
+                    -- vim.bo[event.buf].syntax = "ON"
+                end
             end
         end
     });
